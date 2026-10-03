@@ -16,12 +16,16 @@ fotos oficiais — nao invente numero aqui.
 import html
 import os
 import pathlib
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import home_modelos
 
 WHATS = "5511950295494"
 
 # Muda a cada deploy que mexa em site.css ou site.js: sem isso o navegador
 # serve a versao em cache e o site quebra em pedacos dificeis de diagnosticar.
-VERSAO_ASSETS = "202610032032"
+VERSAO_ASSETS = "202610032048"
 
 CAIXA_MOLDADO = [
     "Fone de ouvido in ear moldado",
@@ -481,7 +485,7 @@ def pagina(m, todos):
     <div class="section-head rv">
       <span class="kicker">Quem já usa</span>
       <h2 class="h2">{e(reel_nome)} explica.</h2>
-      <p class="body">{e(reel_papel)} · direto do Instagram da Xtreme Ears.</p>
+      <p class="body">{e(reel_papel)}</p>
     </div>
     <div class="reel-um rv">
       <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/{reel}/" data-instgrm-version="14"></blockquote>
@@ -605,7 +609,8 @@ def main():
         destino.mkdir(exist_ok=True)
         (destino / "index.html").write_text(pagina(m, MODELOS), encoding="utf-8")
         print(f"  {m['slug']}/index.html")
-    print(f"\n{len(MODELOS)} páginas geradas.")
+    home_modelos.injetar(raiz, MODELOS, AREAS)
+    print(f"\n{len(MODELOS)} páginas + seção de modelos da home.")
 
 
 if __name__ == "__main__":

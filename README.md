@@ -60,9 +60,26 @@ O "indicado para" de cada card é a recomendação oficial da marca, transcrita 
 
 As trilhas do quiz (`TRILHAS` no script) ficam **dentro** da área que a resposta indica, pra não contradizer essa seção. Ao mexer numa, confira a outra.
 
+## Artistas
+
+`assets/artistas/` tem as 58 fotos da página oficial de artistas da Xtreme Ears, em um letreiro na seção `#artistas`.
+
+**Quem usa qual modelo** fica em `ARTISTAS_POR_MODELO` (`tools/home_modelos.py`). Só entra ali o que a marca declara publicamente:
+
+| modelo | artista | fonte |
+|---|---|---|
+| XE4/PRO | Lauana Prado | banner da home de xtremeears.com.br |
+| XE12/PRO | Marcelo Falcão | banner da home |
+| XE14/PRO | Felipe Amorim | banner da home |
+| XE3/PRO · Xtreme Stage · Xtreme One Plus | Aquiles Priester | produtos signature no catálogo |
+
+Os outros seis modelos ficam **sem** a faixa de artista, de propósito. Afirmar que alguém usa um fone sem fonte é forjar endosso, e o estrago cai na marca e no artista. Quando a Xtreme Ears passar a lista de quem usa o quê, é só completar o dicionário e rodar o gerador.
+
 ## Uma página por modelo
 
 Cada fone tem a sua própria página, em `/<slug>/` — o vendedor manda o link do modelo exato no WhatsApp e o músico abre a apresentação completa: pra quem é, como soa, configuração dos drivers, specs, o que vem na caixa, depoimento em vídeo, processo e CTA.
+
+A seção de modelos da **home** sai do mesmo lugar (`tools/home_modelos.py`), injetada entre `<!-- MODELOS:INICIO -->` e `<!-- MODELOS:FIM -->` no index.html. Cada fone ocupa uma linha inteira, alternando o lado da foto. Não edite essa parte do index.html à mão.
 
 As 12 páginas são **geradas**, não escritas à mão:
 
