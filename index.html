@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Xtreme Ears — In-ear moldados sob medida para músicos</title>
+<meta name="description" content="Fones in-ear moldados sob medida para o seu ouvido. Mais de 15 anos de palco, fabricação nacional e atendimento consultivo do primeiro contato ao fone pronto. Fale com um especialista.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="assets/logo-xtreme-branco.png" type="image/png">
+<meta property="og:title" content="Xtreme Ears — Sinta o verdadeiro som">
+<meta property="og:description" content="In-ear moldados sob medida, feitos no Brasil. Atendimento consultivo do primeiro contato ao palco.">
+<meta property="og:image" content="assets/artista-lauana.jpg">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap">
+
+<style>
+/* ===================================================================
+   XTREME EARS — sistema visual
+   Base preta · tipografia display pesada e fechada · tiles claros
+   =================================================================== */
+:root{
+  color-scheme: dark;
+
+  --black:#000000;
+  --surface:#0b0b0b;
+  --surface-2:#141414;
+  --surface-3:#1d1d1f;
+  --tile:#f2f2f2;
+  --tile-ink:#0b0b0b;
+
+  --ink:#ffffff;
+  --ink-2:#d6d6d8;
+  --muted:#8e8e93;
+  --faint:#5c5c61;
+
+  --red:#c20000;
+  --red-hi:#e01a0e;
+  --line:rgba(255,255,255,.14);
+  --line-soft:rgba(255,255,255,.08);
+
+  --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --gutter:clamp(20px,5vw,64px);
+  --maxw:1320px;
+  --nav-h:60px;
+  --r-lg:28px;
+  --r-md:18px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px);-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--black);color:var(--ink);
+  font:400 17px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+body.is-locked{overflow:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--red-hi);outline-offset:3px;border-radius:4px}
+
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+.skip{position:absolute;left:-9999px;top:0;background:var(--red);padding:12px 18px;z-index:400;border-radius:0 0 8px 0;font-weight:700}
+.skip:focus{left:0;top:0}
+
+/* ---------- tipografia ---------- */
+.display{
+  font-weight:900;letter-spacing:-.035em;line-height:.93;margin:0;
+  font-size:clamp(44px,8.4vw,116px);text-wrap:balance;
+}
+.h1{font-weight:900;letter-spacing:-.034em;line-height:.96;margin:0;font-size:clamp(38px,6.2vw,84px);text-wrap:balance}
+.h2{font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:0;font-size:clamp(30px,4vw,56px);text-wrap:balance}
+.h3{font-weight:800;letter-spacing:-.024em;line-height:1.1;margin:0;font-size:clamp(22px,2.2vw,30px)}
+.h4{font-weight:700;letter-spacing:-.02em;line-height:1.2;margin:0;font-size:19px}
+.kicker{
+  display:inline-block;margin:0 0 20px;font:700 12px/1 var(--sans);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--red-hi);
+}
+.kicker.neutral{color:var(--muted)}
+.lede{font-size:clamp(17px,1.5vw,21px);line-height:1.55;color:var(--ink-2);max-width:56ch;margin:22px 0 0;font-weight:400}
+.body{color:var(--muted);max-width:62ch;margin:18px 0 0;font-size:16px;line-height:1.65}
+.tiny{font-size:13px;line-height:1.5;color:var(--faint)}
+
+/* ---------- botões ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:15px 30px;border-radius:999px;border:1px solid transparent;
+  font:700 16px/1 var(--sans);letter-spacing:-.01em;cursor:pointer;
+  transition:transform .25s var(--ease),background .25s var(--ease),border-color .25s,color .25s;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary:hover{background:var(--red-hi)}
+.btn-light{background:var(--ink);color:#000}
+.btn-light:hover{background:#d8d8da}
+.btn-outline{background:transparent;color:var(--ink);border-color:rgba(255,255,255,.35)}
+.btn-outline:hover{border-color:var(--ink);background:rgba(255,255,255,.07)}
+.btn-sm{padding:11px 20px;font-size:14px}
+.btn-wide{width:100%}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:200;height:var(--nav-h);
+  background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line-soft);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:var(--nav-h);max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+.brand{display:flex;align-items:center;gap:10px;flex:none}
+.brand img{height:26px;width:auto}
+.brand span{font-weight:800;letter-spacing:-.02em;font-size:16px}
+.nav-links{display:flex;align-items:center;gap:26px;font-size:14px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.nav-links a{transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.burger{display:none;width:42px;height:42px;align-items:center;justify-content:center;background:none;border:0;cursor:pointer;border-radius:50%}
+.burger span{display:block;width:19px;height:1.8px;background:var(--ink);border-radius:2px;position:relative;transition:transform .3s var(--ease),opacity .2s}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:19px;height:1.8px;background:var(--ink);border-radius:2px;transition:transform .3s var(--ease)}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.burger[aria-expanded="true"] span{transform:rotate(45deg)}
+.burger[aria-expanded="true"] span::before{transform:translateY(6px) rotate(0)}
+.burger[aria-expanded="true"] span::after{transform:translateY(-6px) rotate(-90deg)}
+
+.drawer{
+  position:fixed;inset:var(--nav-h) 0 0;z-index:190;background:#000;
+  padding:34px var(--gutter) 60px;display:flex;flex-direction:column;gap:4px;
+  transform:translateY(-12px);opacity:0;pointer-events:none;transition:opacity .25s,transform .3s var(--ease);
+  overflow-y:auto;
+}
+.drawer.open{opacity:1;transform:none;pointer-events:auto}
+.drawer a{font-size:30px;font-weight:800;letter-spacing:-.03em;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+.drawer .btn{margin-top:32px;font-size:16px;font-weight:700;letter-spacing:-.01em;padding:17px 28px;border-bottom:0;width:100%}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:min(92vh,860px);display:flex;align-items:flex-end;overflow:hidden;background:#000}
+.hero-media{position:absolute;inset:0}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:62% 35%;opacity:.78}
+.hero-media::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(to top,#000 4%,rgba(0,0,0,.72) 38%,rgba(0,0,0,.12) 72%,rgba(0,0,0,.45) 100%),
+    linear-gradient(to right,rgba(0,0,0,.8) 0%,rgba(0,0,0,.22) 55%,transparent 100%);
+}
+.hero-in{position:relative;z-index:2;width:100%;padding-block:clamp(64px,10vh,120px)}
+.hero .display{max-width:15ch}
+.hero .lede{max-width:46ch;color:#e9e9ea}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:9px;margin-bottom:26px;padding:8px 16px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;font:700 12px/1.25 var(--sans);letter-spacing:.11em;text-transform:uppercase;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.hero-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--red-hi);box-shadow:0 0 0 4px rgba(224,26,14,.22)}
+.hero-credit{position:absolute;right:var(--gutter);bottom:18px;z-index:2;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600}
+
+/* ---------- faixa de credenciais ---------- */
+.ticker{border-block:1px solid var(--line-soft);background:var(--surface);overflow:hidden;padding:16px 0}
+.ticker-track{display:flex;gap:56px;width:max-content;animation:slide 42s linear infinite}
+.ticker-track span{display:inline-flex;align-items:center;gap:12px;font:700 13px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.ticker-track span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--red-hi);flex:none}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+
+/* ---------- blocos de seção ---------- */
+.section{padding-block:clamp(76px,10vw,140px)}
+.section-head{max-width:72ch;margin-bottom:clamp(40px,5vw,66px)}
+
+/* ---------- por que moldado ---------- */
+.why-grid{display:grid;gap:18px;grid-template-columns:repeat(3,1fr)}
+.why-card{
+  background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-lg);
+  padding:34px 30px 36px;display:flex;flex-direction:column;gap:14px;min-height:280px;
+  transition:border-color .3s,background .3s,transform .3s var(--ease);
+}
+.why-card:hover{border-color:var(--line);background:var(--surface-3);transform:translateY(-3px)}
+.why-n{font:800 13px/1 var(--sans);letter-spacing:.16em;color:var(--red-hi)}
+.why-card p{margin:0;color:var(--muted);font-size:15.5px;line-height:1.62}
+.why-card .h3{margin-top:auto}
+
+/* ---------- quiz ---------- */
+.quiz{background:var(--surface);border-radius:var(--r-lg);border:1px solid var(--line-soft);overflow:hidden}
+.quiz-top{padding:clamp(30px,4vw,46px) clamp(24px,4vw,50px) 0}
+.quiz-prog{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+.quiz-prog i{height:3px;flex:1;background:rgba(255,255,255,.14);border-radius:3px;overflow:hidden}
+.quiz-prog i b{display:block;height:100%;width:0;background:var(--red-hi);border-radius:3px;transition:width .45s var(--ease)}
+.quiz-prog em{font:700 12px/1 var(--sans);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);flex:none}
+.quiz-body{padding:0 clamp(24px,4vw,50px) clamp(30px,4vw,46px)}
+.quiz-step{display:none}
+.quiz-step.active{display:block;animation:fade .4s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.quiz-q{font-weight:800;letter-spacing:-.025em;font-size:clamp(23px,2.6vw,34px);line-height:1.15;margin:0 0 28px;max-width:22ch}
+.opts{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
+.opt{
+  text-align:left;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-md);
+  padding:24px 22px;cursor:pointer;display:flex;flex-direction:column;gap:7px;
+  transition:border-color .25s,background .25s,transform .25s var(--ease);
+}
+.opt:hover{border-color:rgba(255,255,255,.3);background:var(--surface-3);transform:translateY(-2px)}
+.opt b{font-weight:700;font-size:17px;letter-spacing:-.015em}
+.opt small{color:var(--muted);font-size:14px;line-height:1.45}
+.quiz-back{margin-top:24px;background:none;border:0;cursor:pointer;color:var(--muted);font-size:14px;font-weight:600;padding:6px 0}
+.quiz-back:hover{color:var(--ink)}
+
+.quiz-result{display:none}
+.quiz-result.active{display:block;animation:fade .45s var(--ease)}
+.result-grid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr);margin-bottom:30px}
+.result-card{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-md);padding:26px 24px}
+.result-card.lead{border-color:rgba(224,26,14,.5);background:linear-gradient(180deg,rgba(194,0,0,.1),var(--surface-2))}
+.result-badge{display:inline-block;font:800 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--red-hi);margin-bottom:12px}
+.result-card h4{margin:0 0 6px;font-size:26px;font-weight:900;letter-spacing:-.03em}
+.result-price{font-size:14px;color:var(--muted);font-weight:600;margin:0 0 14px}
+.result-card p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.6}
+.result-cta{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-md);padding:28px 26px}
+.result-steps{margin:18px 0 24px;padding:0;list-style:none;display:grid;gap:11px}
+.result-steps li{position:relative;padding-left:30px;color:var(--ink-2);font-size:15.5px}
+.result-steps li::before{content:"";position:absolute;left:0;top:9px;width:14px;height:1.5px;background:var(--red-hi)}
+
+/* ---------- rail de produtos ---------- */
+.rail-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;margin-bottom:34px}
+.rail{
+  display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:4px calc(var(--gutter)) 24px;margin-inline:calc(var(--gutter) * -1);
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.rail::-webkit-scrollbar{display:none}
+.card{
+  flex:0 0 clamp(268px,30vw,340px);scroll-snap-align:start;
+  background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-lg);
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .3s,transform .3s var(--ease);
+}
+.card:hover{border-color:var(--line);transform:translateY(-4px)}
+.card-media{background:var(--tile);aspect-ratio:4/3;overflow:hidden;position:relative}
+.card-media img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;transition:transform .5s var(--ease)}
+.card:hover .card-media img{transform:scale(1.05)}
+.card-flag{
+  position:absolute;top:14px;left:14px;background:#000;color:#fff;
+  font:800 10px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;
+  padding:7px 11px;border-radius:999px;
+}
+.card-body{padding:24px 24px 26px;display:flex;flex-direction:column;gap:12px;flex:1}
+.card-body h3{margin:0;font-size:24px;font-weight:900;letter-spacing:-.03em}
+.card-sig{font-size:14px;font-weight:700;color:var(--red-hi);letter-spacing:-.005em;margin:-6px 0 0}
+.card-body p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.58}
+.spec{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.spec b{
+  font:600 11.5px/1 var(--sans);letter-spacing:.02em;color:var(--ink-2);
+  background:rgba(255,255,255,.07);border:1px solid var(--line-soft);
+  padding:7px 10px;border-radius:7px;
+}
+.card-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--line-soft);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card-price{font-size:13px;color:var(--muted);line-height:1.3}
+.card-price b{display:block;font-size:17px;color:var(--ink);font-weight:800;letter-spacing:-.02em}
+.rail-hint{font-size:13px;color:var(--faint);margin-top:-8px}
+
+/* ---------- processo ---------- */
+.steps{display:grid;gap:16px;grid-template-columns:repeat(5,1fr);counter-reset:s}
+.step{
+  background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-md);
+  padding:28px 24px 30px;display:flex;flex-direction:column;gap:12px;counter-increment:s;
+}
+.step::before{
+  content:"0" counter(s);font:900 13px/1 var(--sans);letter-spacing:.1em;color:var(--red-hi);
+}
+.step h4{margin:0;font-size:17.5px;font-weight:800;letter-spacing:-.02em}
+.step p{margin:0;font-size:14.5px;line-height:1.58;color:var(--muted)}
+.step-note{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+.step-chip{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--ink-2)}
+.step-chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red-hi)}
+
+/* ---------- artistas ---------- */
+.artists{background:var(--surface);border-block:1px solid var(--line-soft)}
+.art-grid{display:grid;gap:16px;grid-template-columns:repeat(3,1fr);margin-bottom:46px}
+.art{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/5;background:#111}
+.art img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.art:hover img{transform:scale(1.04)}
+.art figcaption{position:absolute;inset:auto 0 0;padding:28px 26px;background:linear-gradient(to top,#000 2%,rgba(0,0,0,.86) 42%,rgba(0,0,0,.3) 78%,transparent)}
+.art strong{display:block;font-size:24px;font-weight:900;letter-spacing:-.03em}
+.art span{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red-hi)}
+.names{overflow:hidden;padding:4px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.names-track{display:flex;gap:34px;width:max-content;animation:slide 60s linear infinite}
+.names-track b{font-size:clamp(17px,1.8vw,24px);font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.42);white-space:nowrap;transition:color .25s}
+.names-track b:hover{color:var(--ink)}
+.names + .names .names-track{animation-duration:74s;animation-direction:reverse}
+
+/* ---------- garantia ---------- */
+.care-grid{display:grid;gap:16px;grid-template-columns:repeat(4,1fr)}
+.care{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-md);padding:28px 24px}
+.care b{display:block;font-size:34px;font-weight:900;letter-spacing:-.04em;margin-bottom:8px}
+.care span{display:block;font-size:14.5px;color:var(--muted);line-height:1.55}
+
+/* ---------- faq ---------- */
+.faq{max-width:900px}
+.fitem{border-bottom:1px solid var(--line-soft)}
+.fq{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  background:none;border:0;cursor:pointer;text-align:left;padding:26px 0;
+  font-weight:700;font-size:clamp(17px,1.7vw,21px);letter-spacing:-.02em;transition:color .2s;
+}
+.fq:hover{color:var(--ink-2)}
+.fq i{flex:none;width:22px;height:22px;position:relative}
+.fq i::before,.fq i::after{content:"";position:absolute;background:var(--red-hi);border-radius:2px;transition:transform .3s var(--ease)}
+.fq i::before{top:10px;left:0;width:22px;height:2px}
+.fq i::after{top:0;left:10px;width:2px;height:22px}
+.fq[aria-expanded="true"] i::after{transform:rotate(90deg)}
+.fa{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+.fa p{margin:0 0 26px;color:var(--muted);font-size:16px;line-height:1.68;max-width:72ch}
+
+/* ---------- formulário / handoff comercial ---------- */
+.lead{background:var(--surface);border-block:1px solid var(--line-soft)}
+.lead-in{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,80px);align-items:start}
+.lead-list{margin:30px 0 0;padding:0;list-style:none;display:grid;gap:16px}
+.lead-list li{display:flex;gap:14px;align-items:flex-start;color:var(--ink-2);font-size:15.5px;line-height:1.55}
+.lead-list li::before{content:"";flex:none;margin-top:8px;width:16px;height:2px;background:var(--red-hi)}
+.form{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:clamp(26px,3.4vw,40px)}
+.frow{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--ink-2)}
+.field input,.field select,.field textarea{
+  background:#0a0a0a;border:1px solid var(--line-soft);border-radius:12px;
+  padding:14px 15px;font-size:15.5px;transition:border-color .2s,background .2s;width:100%;
+}
+.field textarea{resize:vertical;min-height:96px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(255,255,255,.4);background:#0f0f0f;outline:none}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e93' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.form .btn{margin-top:10px}
+.form-note{margin:16px 0 0;font-size:13px;color:var(--faint);line-height:1.5}
+
+/* ---------- cta final ---------- */
+.final{position:relative;overflow:hidden;background:#000}
+.final-media{position:absolute;inset:0}
+.final-media img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;opacity:.5}
+.final-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#000 10%,rgba(0,0,0,.6) 60%,rgba(0,0,0,.8))}
+.final-in{position:relative;z-index:2;text-align:center;padding-block:clamp(90px,13vw,170px)}
+.final .h1{margin-inline:auto;max-width:17ch}
+.final .lede{margin-inline:auto;text-align:center}
+.final .btn-row{justify-content:center}
+
+/* ---------- rodapé ---------- */
+.foot{background:#000;border-top:1px solid var(--line-soft);padding-block:60px 96px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:40px 32px}
+.foot h5{margin:0 0 18px;font:700 12px/1 var(--sans);letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+.foot ul{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+.foot a,.foot li{font-size:15px;color:var(--ink-2)}
+.foot a:hover{color:var(--ink)}
+.foot .brand img{height:30px}
+.foot-bottom{margin-top:52px;padding-top:26px;border-top:1px solid var(--line-soft);display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:space-between;align-items:center}
+.foot-bottom p{margin:0;font-size:13px;color:var(--faint)}
+
+/* ---------- botão flutuante ---------- */
+.float{
+  position:fixed;right:20px;bottom:20px;z-index:150;
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--red);color:#fff;border-radius:999px;padding:14px 22px;
+  font:700 15px/1 var(--sans);box-shadow:0 10px 34px rgba(0,0,0,.6);
+  transform:translateY(160%);opacity:0;visibility:hidden;transition:transform .45s var(--ease),opacity .3s,visibility .3s,background .25s;
+}
+.float.show{transform:none;opacity:1;visibility:visible}
+.float:hover{background:var(--red-hi)}
+.float svg{width:19px;height:19px;flex:none;fill:currentColor}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- responsivo ---------- */
+@media (max-width:1080px){
+  .why-grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:repeat(3,1fr)}
+  .care-grid{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:1100px){
+  .nav-links{display:none}
+  .burger{display:inline-flex}
+}
+@media (max-width:860px){
+  .nav-right .btn{display:none}
+  .hero-media img{object-position:66% 30%}
+  .opts{grid-template-columns:1fr}
+  .result-grid{grid-template-columns:1fr}
+  .art-grid{grid-template-columns:1fr;gap:12px}
+  .art{aspect-ratio:16/11}
+  .lead-in{grid-template-columns:1fr}
+  .hero-credit{display:none}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .why-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .care-grid{grid-template-columns:1fr 1fr}
+  .frow{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr;gap:34px}
+  .card{flex-basis:80vw}
+  .btn-row .btn{width:100%}
+  .float{right:14px;bottom:14px;padding:13px 18px;font-size:14px}
+  .hero-tag{font-size:11px;letter-spacing:.08em;padding:7px 14px}
+  .hero{min-height:88vh}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#topo" aria-label="Xtreme Ears — início">
+      <img src="assets/logo-xtreme-branco.png" alt="" width="104" height="26">
+    </a>
+
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#porque">Por que moldado</a>
+      <a href="#encontre">Encontre seu fone</a>
+      <a href="#modelos">Modelos</a>
+      <a href="#processo">Como funciona</a>
+      <a href="#artistas">Quem usa</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+
+    <div class="nav-right">
+      <a class="btn btn-primary btn-sm" href="#falar" data-cta="nav">Falar com um especialista</a>
+      <button class="burger" id="burger" aria-expanded="false" aria-controls="drawer" aria-label="Abrir menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer">
+  <a href="#porque">Por que moldado</a>
+  <a href="#encontre">Encontre seu fone</a>
+  <a href="#modelos">Modelos</a>
+  <a href="#processo">Como funciona</a>
+  <a href="#artistas">Quem usa</a>
+  <a href="#duvidas">Dúvidas</a>
+  <a class="btn btn-primary" href="#falar" data-cta="menu">Falar com um especialista</a>
+</div>
+
+<main id="conteudo">
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="topo">
+  <div class="hero-media">
+    <img src="assets/artista-lauana.jpg" alt="Cantora no palco usando in-ear moldado Xtreme Ears" width="1920" height="1080" fetchpriority="high">
+  </div>
+  <div class="hero-in wrap">
+    <span class="hero-tag"><span class="dot" aria-hidden="true"></span>15 anos no palco brasileiro</span>
+    <h1 class="display">SINTA O VERDADEIRO SOM.</h1>
+    <p class="lede">In-ear moldados sob medida para a anatomia do seu ouvido. Fabricação nacional, microdrivers de armadura balanceada e um especialista com você do primeiro contato até o fone no palco.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#falar" data-cta="hero-primario">Falar com um especialista</a>
+      <a class="btn btn-outline" href="#encontre">Descobrir meu modelo</a>
+    </div>
+  </div>
+  <p class="hero-credit">Lauana Prado · XE4/PRO</p>
+</section>
+
+<!-- ============================ TICKER ============================ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Pioneira no Brasil</span><span>Fabricação nacional</span><span>Atendimento consultivo</span>
+    <span>Garantia de 1 ano</span><span>Frete grátis</span><span>Produção em ~4 semanas</span>
+    <span>Assistência técnica própria</span><span>Personalização completa</span>
+    <span>Pioneira no Brasil</span><span>Fabricação nacional</span><span>Atendimento consultivo</span>
+    <span>Garantia de 1 ano</span><span>Frete grátis</span><span>Produção em ~4 semanas</span>
+    <span>Assistência técnica própria</span><span>Personalização completa</span>
+  </div>
+</div>
+
+<!-- ============================ POR QUE MOLDADO ============================ -->
+<section class="section wrap" id="porque">
+  <div class="section-head rv">
+    <span class="kicker">Por que moldado</span>
+    <h2 class="h2">Um fone genérico nunca vai caber no seu ouvido.</h2>
+    <p class="lede">O in-ear só funciona de verdade quando veda o canal auditivo. É a vedação que entrega isolamento, grave real e a chance de monitorar em volume mais baixo — e ela só é perfeita quando a cápsula é feita a partir do molde do seu próprio ouvido.</p>
+  </div>
+
+  <div class="why-grid">
+    <article class="why-card rv">
+      <span class="why-n">01</span>
+      <h3 class="h3">Vedação perfeita</h3>
+      <p>A cápsula é moldada no formato exato do seu canal auditivo, incluindo a segunda curva. Isso bloqueia fisicamente o ruído do palco em toda a faixa de frequências — sem bateria, sem circuito, sem perda de qualidade.</p>
+    </article>
+    <article class="why-card rv">
+      <span class="why-n">02</span>
+      <h3 class="h3">Menos volume, mais audição</h3>
+      <p>Com o ruído externo bloqueado, você para de competir com o palco aumentando o volume. Ouve cada detalhe do seu retorno em níveis mais baixos e reduz o risco de dano à sua audição ao longo da carreira.</p>
+    </article>
+    <article class="why-card rv">
+      <span class="why-n">03</span>
+      <h3 class="h3">Conforto de show inteiro</h3>
+      <p>Feito sob medida, o monitor não pressiona nem escorrega. É a diferença entre um fone que você tolera por três músicas e um que você esquece que está usando durante a turnê toda.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================ QUIZ ============================ -->
+<section class="section wrap" id="encontre" style="padding-top:0">
+  <div class="section-head rv">
+    <span class="kicker">Encontre seu fone</span>
+    <h2 class="h2">Três perguntas. Depois, uma conversa de verdade.</h2>
+    <p class="lede">O número de drivers não diz tudo — o que importa é a assinatura sonora certa para o que você toca. Responda abaixo para ver por onde começar, e nosso time fecha a escolha com você.</p>
+  </div>
+
+  <div class="quiz rv" id="quiz">
+    <div class="quiz-top">
+      <div class="quiz-prog">
+        <em id="quizLabel">Passo 1 de 3</em>
+        <i><b id="quizBar"></b></i>
+      </div>
+    </div>
+
+    <div class="quiz-body">
+      <!-- passo 1 -->
+      <div class="quiz-step active" data-step="1">
+        <p class="quiz-q">Qual é o seu principal objetivo com o fone?</p>
+        <div class="opts">
+          <button class="opt" data-q="1" data-v="palco"><b>Monitoramento de palco</b><small>Retorno preciso para shows e ensaios</small></button>
+          <button class="opt" data-q="1" data-v="estudio"><b>Produção em estúdio</b><small>Mixagem, masterização e referência</small></button>
+          <button class="opt" data-q="1" data-v="hifi"><b>Audição de alta fidelidade</b><small>Ouvir música com máxima qualidade</small></button>
+        </div>
+      </div>
+
+      <!-- passo 2 -->
+      <div class="quiz-step" data-step="2">
+        <p class="quiz-q" id="q2Title">Qual sonoridade você precisa no retorno?</p>
+        <div class="opts" id="q2Opts"></div>
+        <button class="quiz-back" data-back="1">← Voltar</button>
+      </div>
+
+      <!-- passo 3 -->
+      <div class="quiz-step" data-step="3">
+        <p class="quiz-q">Qual nível de detalhe e precisão você busca?</p>
+        <div class="opts">
+          <button class="opt" data-q="3" data-v="essencial"><b>Profissional essencial</b><small>Clareza e confiabilidade para o dia a dia</small></button>
+          <button class="opt" data-q="3" data-v="alta"><b>Alta definição</b><small>Para ouvir cada nuance e textura</small></button>
+          <button class="opt" data-q="3" data-v="referencia"><b>Referência absoluta</b><small>A experiência sonora definitiva</small></button>
+        </div>
+        <button class="quiz-back" data-back="2">← Voltar</button>
+      </div>
+
+      <!-- resultado -->
+      <div class="quiz-result" id="quizResult">
+        <p class="quiz-q" style="margin-bottom:20px">Encontramos seu ponto de partida.</p>
+        <div class="result-grid" id="resultGrid"></div>
+
+        <div class="result-cta">
+          <h4 class="h4">A partir daqui, é com a gente.</h4>
+          <ol class="result-steps">
+            <li>Você fala com um especialista no WhatsApp e confirmamos o modelo certo para o seu uso.</li>
+            <li>Enviamos as instruções e a indicação do fonoaudiólogo mais perto de você para o pré-molde.</li>
+            <li>Pré-molde aprovado, seu fone entra em produção — cerca de 4 semanas, com garantia de 1 ano.</li>
+          </ol>
+          <div class="btn-row" style="margin-top:0">
+            <a class="btn btn-primary" id="quizWhats" href="#" target="_blank" rel="noopener" data-cta="quiz">Falar com um especialista</a>
+            <button class="btn btn-outline" id="quizRestart" type="button">Refazer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MODELOS MOLDADOS ============================ -->
+<section class="section" id="modelos">
+  <div class="wrap">
+    <div class="rail-head rv">
+      <div>
+        <span class="kicker">Linha PRO · moldados</span>
+        <h2 class="h2">Feitos para o seu ouvido<br>e para o que você toca.</h2>
+      </div>
+      <p class="rail-hint">Arraste para o lado para ver todos os modelos →</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="rail" id="railPro">
+
+      <article class="card">
+        <div class="card-media"><img src="assets/one-plus-pro.jpg" alt="Fone in-ear moldado XE ONE+/PRO" loading="lazy" width="900" height="900"><span class="card-flag">Entrada PRO</span></div>
+        <div class="card-body">
+          <h3>XE ONE+/PRO</h3>
+          <p class="card-sig">Separação instrumental e som limpo</p>
+          <p>Três microdrivers com crossover de 3 vias: cada faixa de frequência no seu transdutor. O começo certo para quem está saindo do universal.</p>
+          <div class="spec"><b>3 drivers</b><b>Crossover 3 vias</b><b>Moldado</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 2.690</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE ONE+/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/onemax-pro.jpg" alt="Fone in-ear moldado XE ONEMAX/PRO" loading="lazy" width="900" height="900"></div>
+        <div class="card-body">
+          <h3>XE ONEMAX/PRO</h3>
+          <p class="card-sig">Musical, aveludado e equilibrado</p>
+          <p>Quatro drivers — dois para graves, um médio e um agudo. Graves aveludados e agudos cristalinos: o favorito de cantores e audiófilos.</p>
+          <div class="spec"><b>4 drivers</b><b>3 vias</b><b>28 Ω</b><b>10 Hz–20 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 3.990</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE ONEMAX/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/xe3-pro.jpg" alt="Fone in-ear moldado XE3/PRO" loading="lazy" width="900" height="900"><span class="card-flag">Mais grave</span></div>
+        <div class="card-body">
+          <h3>XE3/PRO</h3>
+          <p class="card-sig">O rei do punch</p>
+          <p>Maior sensibilidade e headroom dinâmico da linha. Dois drivers para graves e médios, um para altas. Bateristas, baixistas e DJs sentem a diferença na primeira música.</p>
+          <div class="spec"><b>3 drivers</b><b>2 vias</b><b>35 Ω</b><b>123 dB/mW</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 4.280</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE3/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/xe4-pro.jpg" alt="Fone in-ear moldado XE4/PRO" loading="lazy" width="900" height="900"></div>
+        <div class="card-body">
+          <h3>XE4/PRO</h3>
+          <p class="card-sig">A definição de flat</p>
+          <p>Resposta plana, sem ênfase em nenhuma região. Agudo presente sem acentuação, médio equilibrado e grave somando ao sub de forma homogênea.</p>
+          <div class="spec"><b>4 drivers</b><b>3 vias</b><b>25 Ω</b><b>10 Hz–17 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 4.680</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE4/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/xe5-pro.jpg" alt="Fone in-ear moldado XE5/PRO" loading="lazy" width="900" height="900"></div>
+        <div class="card-body">
+          <h3>XE5/PRO</h3>
+          <p class="card-sig">Transparente e cirúrgico</p>
+          <p>Drivers duplos para graves e médios mais um de precisão para as altas. Versatilidade absoluta: funciona no calor do palco e na fidelidade do estúdio.</p>
+          <div class="spec"><b>5 drivers</b><b>3 vias</b><b>25 Ω</b><b>10 Hz–17 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 5.290</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE5/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/xe6-pro.jpg" alt="Fone in-ear moldado XE6/PRO" loading="lazy" width="900" height="900"></div>
+        <div class="card-body">
+          <h3>XE6/PRO</h3>
+          <p class="card-sig">Analítico e brilhante</p>
+          <p>Resposta estendida e riqueza de detalhes para quem precisa de apresentação analítica impecável. A escolha de artistas consagrados.</p>
+          <div class="spec"><b>6 drivers</b><b>3 vias</b><b>30 Ω</b><b>122 dB/mW</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 5.890</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE6/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/xe8-pro.jpg" alt="Fone in-ear moldado XE8/PRO" loading="lazy" width="900" height="900"></div>
+        <div class="card-body">
+          <h3>XE8/PRO</h3>
+          <p class="card-sig">Grave articulado, equilíbrio total</p>
+          <p>Quatro drivers dedicados só aos graves, com presença texturizada. O equilíbrio entre a energia do palco e a sofisticação de estúdio.</p>
+          <div class="spec"><b>8 drivers</b><b>3 vias</b><b>22 Ω</b><b>10 Hz–20 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 7.890</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE8/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/xe12-pro.jpg" alt="Fone in-ear moldado XE12/PRO" loading="lazy" width="900" height="900"><span class="card-flag">Padrão ouro</span></div>
+        <div class="card-body">
+          <h3>XE12/PRO</h3>
+          <p class="card-sig">Resolução máxima e soundstage</p>
+          <p>Doze microdrivers: 4 subgraves, 4 graves, 2 médios e 2 agudos, com crossover de 4 vias. Separação de frequências e palco sonoro que desafiam a realidade.</p>
+          <div class="spec"><b>12 drivers</b><b>4 vias</b><b>15 Ω</b><b>10 Hz–20 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 11.890</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE12/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="assets/xe14-pro.jpg" alt="Fone in-ear moldado XE14/PRO" loading="lazy" width="900" height="900"><span class="card-flag">Flagship</span></div>
+        <div class="card-body">
+          <h3>XE14/PRO</h3>
+          <p class="card-sig">O topo absoluto da linha</p>
+          <p>Catorze microdrivers com HexaDrive Array™ — seis drivers em formação hexagonal só para os médios — e driver E50D com resposta estendida até 50 kHz.</p>
+          <div class="spec"><b>14 drivers</b><b>4 vias</b><b>HexaDrive Array™</b><b>até 50 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 18.990</b></span>
+            <a class="btn btn-light btn-sm" href="#falar" data-model="XE14/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <p class="tiny" style="margin-top:4px">Valores a partir de, para a configuração base. Personalização de cápsula, faceplate, cabo e logo é orçada junto com o especialista.</p>
+  </div>
+</section>
+
+<!-- ============================ UNIVERSAIS ============================ -->
+<section class="section wrap" style="padding-top:0">
+  <div class="rail-head rv">
+    <div>
+      <span class="kicker neutral">Linha universal</span>
+      <h2 class="h2">Começando agora?</h2>
+      <p class="body">Os universais usam ponteiras de silicone ou espuma e saem em até 2 dias úteis — sem pré-molde. É o caminho de quem quer entrar no in-ear antes de partir para o moldado.</p>
+    </div>
+  </div>
+
+  <div class="rail">
+    <article class="card">
+      <div class="card-media"><img src="assets/xtreme-stage.jpg" alt="Fone in-ear universal Xtreme Stage" loading="lazy" width="900" height="900"></div>
+      <div class="card-body">
+        <h3>Xtreme Stage</h3>
+        <p class="card-sig">O primeiro passo</p>
+        <p>Driver dinâmico de neodímio com cápsula ergonômica e acoplador acústico 3D. Som detalhado e grave profundo para o dia a dia.</p>
+        <div class="spec"><b>1 driver dinâmico</b><b>16 Ω</b><b>20 Hz–17 kHz</b></div>
+        <div class="card-foot">
+          <span class="card-price">A partir de<b>R$ 890</b></span>
+          <a class="btn btn-light btn-sm" href="#falar" data-model="Xtreme Stage (universal)" data-cta="card">Falar sobre</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-media"><img src="assets/xtreme-one-plus.jpg" alt="Fone in-ear universal Xtreme One Plus" loading="lazy" width="900" height="900"></div>
+      <div class="card-body">
+        <h3>Xtreme One Plus</h3>
+        <p class="card-sig">Topo da linha universal</p>
+        <p>Três microdrivers de armadura balanceada com tecnologia Knowles e crossover de 3 vias. Alta resolução com cabo removível.</p>
+        <div class="spec"><b>3 drivers</b><b>3 vias</b><b>26 Ω</b><b>10 Hz–17 kHz</b></div>
+        <div class="card-foot">
+          <span class="card-price">A partir de<b>R$ 2.200</b></span>
+          <a class="btn btn-light btn-sm" href="#falar" data-model="Xtreme One Plus (universal)" data-cta="card">Falar sobre</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-media"><img src="assets/xtreme-onemax.jpg" alt="Fone in-ear universal Xtreme ONEMAX" loading="lazy" width="900" height="900"></div>
+      <div class="card-body">
+        <h3>Xtreme ONEMAX</h3>
+        <p class="card-sig">Quatro drivers sem pré-molde</p>
+        <p>Dois drivers para graves, um médio e um agudo com crossover integrado de 3 vias. A sonoridade da linha PRO em formato universal.</p>
+        <div class="spec"><b>4 drivers</b><b>3 vias</b><b>28 Ω</b><b>10 Hz–20 kHz</b></div>
+        <div class="card-foot">
+          <span class="card-price">A partir de<b>R$ 2.890</b></span>
+          <a class="btn btn-light btn-sm" href="#falar" data-model="Xtreme ONEMAX (universal)" data-cta="card">Falar sobre</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============================ PROCESSO ============================ -->
+<section class="section wrap" id="processo" style="padding-top:0">
+  <div class="section-head rv">
+    <span class="kicker">Como funciona</span>
+    <h2 class="h2">Ninguém compra um moldado sozinho — e nem deveria.</h2>
+    <p class="lede">Seu fone é feito por encomenda, a partir do molde do seu ouvido. Por isso cada pedido passa por um especialista: para você acertar o modelo, o pré-molde chegar correto e o fone sair certo da primeira vez.</p>
+  </div>
+
+  <div class="steps">
+    <article class="step rv">
+      <h4>Conversa com o especialista</h4>
+      <p>Você conta o que toca, onde toca e o que está faltando no seu retorno hoje. A gente indica o modelo — e explica por quê.</p>
+    </article>
+    <article class="step rv">
+      <h4>Pré-molde com fonoaudiólogo</h4>
+      <p>Indicamos um profissional perto de você. O molde precisa ser do tipo concha completa e incluir a segunda curva do canal auditivo.</p>
+    </article>
+    <article class="step rv">
+      <h4>Aprovação antes de produzir</h4>
+      <p>Você envia fotos, vídeo ou faz uma videochamada com nosso time. Só seguimos com o pré-molde aprovado.</p>
+    </article>
+    <article class="step rv">
+      <h4>Personalização</h4>
+      <p>Cores da cápsula, faceplate, cabo e, se quiser, sua logomarca gravada. Envie o arquivo vetorizado e a gente adapta.</p>
+    </article>
+    <article class="step rv">
+      <h4>Produção e entrega</h4>
+      <p>Pré-molde recebido, seu fone entra em produção: cerca de 4 semanas, com frete grátis e garantia de 1 ano.</p>
+    </article>
+  </div>
+
+  <div class="step-note rv">
+    <span class="step-chip">Produção ~4 semanas após o pré-molde</span>
+    <span class="step-chip">Rede de fonoaudiólogos em todo o Brasil</span>
+    <span class="step-chip">Frete grátis</span>
+  </div>
+</section>
+
+<!-- ============================ ARTISTAS ============================ -->
+<section class="section artists" id="artistas">
+  <div class="wrap">
+    <div class="section-head rv">
+      <span class="kicker">Quem usa</span>
+      <h2 class="h2">Há 15 anos no ouvido de quem não pode errar.</h2>
+      <p class="lede">Do sertanejo ao metal, do gospel à MPB: artistas e músicos que escolheram a Xtreme Ears para estar com eles no palco.</p>
+    </div>
+
+    <div class="art-grid">
+      <figure class="art rv">
+        <img src="assets/artista-felipe.jpg" alt="Felipe Amorim no palco com in-ear Xtreme Ears" loading="lazy" width="1920" height="1080">
+        <figcaption><span>XE14/PRO</span><strong>Felipe Amorim</strong></figcaption>
+      </figure>
+      <figure class="art rv">
+        <img src="assets/artista-falcao.jpg" alt="Marcelo Falcão no palco com in-ear Xtreme Ears" loading="lazy" width="1900" height="920">
+        <figcaption><span>XE12/PRO</span><strong>Marcelo Falcão</strong></figcaption>
+      </figure>
+      <figure class="art rv">
+        <img src="assets/artista-lauana.jpg" alt="Lauana Prado no palco com in-ear Xtreme Ears" loading="lazy" width="1920" height="1080">
+        <figcaption><span>XE4/PRO</span><strong>Lauana Prado</strong></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="names" aria-hidden="true">
+    <div class="names-track">
+      <b>Milton Nascimento</b><b>Gilberto Gil</b><b>Caetano Veloso</b><b>Toquinho</b><b>Criolo</b><b>Anitta</b><b>Leo Santana</b><b>Wesley Safadão</b><b>Paula Fernandes</b><b>Aline Barros</b><b>Eli Soares</b><b>Dinho Ouro Preto</b><b>Pepeu Gomes</b><b>Aquiles Priester</b><b>Serginho Herval</b><b>Vera Figueiredo</b><b>Black Alien</b><b>MC Guimê</b><b>Sorocaba</b><b>Fernando Zor</b>
+      <b>Milton Nascimento</b><b>Gilberto Gil</b><b>Caetano Veloso</b><b>Toquinho</b><b>Criolo</b><b>Anitta</b><b>Leo Santana</b><b>Wesley Safadão</b><b>Paula Fernandes</b><b>Aline Barros</b><b>Eli Soares</b><b>Dinho Ouro Preto</b><b>Pepeu Gomes</b><b>Aquiles Priester</b><b>Serginho Herval</b><b>Vera Figueiredo</b><b>Black Alien</b><b>MC Guimê</b><b>Sorocaba</b><b>Fernando Zor</b>
+    </div>
+  </div>
+  <div class="names" aria-hidden="true" style="margin-top:12px">
+    <div class="names-track">
+      <b>Elba Ramalho</b><b>Ed Motta</b><b>Andreas Kisser</b><b>Derrick Green</b><b>Paulo Ricardo</b><b>Rodolfo Abrantes</b><b>Geraldo Azevedo</b><b>Solange Almeida</b><b>Liminha</b><b>Marcelo Lobato</b><b>Kabeto</b><b>China de Castro</b><b>Thiago Castanho</b><b>Jones da Lua</b><b>Will Damiani</b><b>Lena Papini</b><b>Nestor Lemos</b><b>Luis Nativus</b>
+      <b>Elba Ramalho</b><b>Ed Motta</b><b>Andreas Kisser</b><b>Derrick Green</b><b>Paulo Ricardo</b><b>Rodolfo Abrantes</b><b>Geraldo Azevedo</b><b>Solange Almeida</b><b>Liminha</b><b>Marcelo Lobato</b><b>Kabeto</b><b>China de Castro</b><b>Thiago Castanho</b><b>Jones da Lua</b><b>Will Damiani</b><b>Lena Papini</b><b>Nestor Lemos</b><b>Luis Nativus</b>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ GARANTIA ============================ -->
+<section class="section wrap">
+  <div class="section-head rv">
+    <span class="kicker">Depois da compra</span>
+    <h2 class="h2">O acompanhamento não acaba na entrega.</h2>
+    <p class="lede">Assistência técnica própria, especializada nos fones que nós mesmos fabricamos. Antes de enviar qualquer coisa, você fala com o nosso suporte — boa parte dos casos se resolve na conversa.</p>
+  </div>
+
+  <div class="care-grid">
+    <article class="care rv"><b>1 ano</b><span>De garantia contra defeitos de fabricação e eventuais entupimentos, sem custo de serviço.</span></article>
+    <article class="care rv"><b>60 dias</b><span>Para ajustes de molde nas cápsulas de acrílico, caso o encaixe precise ser refinado.</span></article>
+    <article class="care rv"><b>90 dias</b><span>De garantia nos cabos, que são removíveis e podem ser substituídos em condições especiais.</span></article>
+    <article class="care rv"><b>7 dias</b><span>Problema nos primeiros 7 dias após a entrega? Frete de ida e volta por nossa conta.</span></article>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section class="section wrap" id="duvidas" style="padding-top:0">
+  <div class="section-head rv">
+    <span class="kicker">Dúvidas frequentes</span>
+    <h2 class="h2">O que todo músico pergunta antes.</h2>
+  </div>
+
+  <div class="faq rv">
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>Por que preciso ir a um fonoaudiólogo?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>O pré-molde é a base física do seu fone. Ele deve ser feito somente por um fonoaudiólogo, porque só um profissional garante segurança e precisão no procedimento. O molde precisa ser do tipo “concha completa” e incluir a segunda curva do canal auditivo. Nós indicamos um profissional perto de você através da nossa parceria com um centro auditivo com unidades em todo o Brasil.</p></div>
+    </div>
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>Quanto tempo leva para o fone ficar pronto?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>A produção começa quando recebemos o seu pré-molde aprovado. Hoje o prazo é de aproximadamente 4 semanas. O prazo pode variar conforme o volume de trabalho — por isso combinamos a data de entrega com você durante o atendimento, especialmente se houver show ou turnê marcada.</p></div>
+    </div>
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>Qual a diferença entre o universal e o moldado?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>O universal tem um duto sonoro com ponteira macia de silicone ou espuma, que se adapta ao contorno do ouvido. O moldado é fabricado sob encomenda, a partir do molde da sua anatomia, para um ajuste perfeito. Essa precisão é o que entrega o isolamento superior, o conforto por horas e a reprodução correta dos graves que o palco exige.</p></div>
+    </div>
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>Mais drivers significa melhor som?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>Significa mais separação de frequências, não necessariamente o som certo para você. O XE3/PRO tem 3 drivers e é a escolha de muitos bateristas por causa do punch e do headroom dinâmico; o XE4/PRO tem 4 e é flat, ideal para quem quer referência. A conversa com o especialista existe justamente para casar a assinatura sonora com o que você toca.</p></div>
+    </div>
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>O que é a opção Ambient?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>É uma ventilação variável que permite captar a ambiência externa — você escuta seu instrumento, os outros músicos e a plateia. Vem com 4 plugs que regulam o nível de som que passa pela ventilação, incluindo um fechado que restaura o isolamento completo. A contrapartida: quanto mais ventilação, maior a perda de graves e um pouco de clareza. Vale conversar antes de decidir.</p></div>
+    </div>
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>Posso personalizar o visual do fone?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>Sim. Você escolhe as cores da cápsula, do faceplate e do cabo, e pode gravar sua logomarca ou desenho. Envie o arquivo vetorizado (CorelDraw ou Illustrator) para que ele seja adaptado ao tamanho do fone — logomarcas muito detalhadas podem precisar de ajustes por causa da miniaturização.</p></div>
+    </div>
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>E se eu tiver problema com o fone depois?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>Fale com o nosso suporte no WhatsApp antes de enviar qualquer coisa — muita coisa se resolve na hora. Se for preciso enviar, nosso time passa as instruções. Durante a garantia de um ano, defeitos de fabricação e entupimentos são resolvidos sem custo de serviço, e a política de frete varia conforme o prazo: nos primeiros 7 dias, ida e volta por nossa conta.</p></div>
+    </div>
+    <div class="fitem">
+      <button class="fq" aria-expanded="false"><span>Vocês atendem fora de São Paulo?</span><i aria-hidden="true"></i></button>
+      <div class="fa"><p>Sim, todo o Brasil. Todo o atendimento consultivo acontece por WhatsApp, telefone ou videochamada, o pré-molde é feito com um fonoaudiólogo perto de você e o fone é enviado com frete grátis. Se preferir presencial, nosso endereço é Rua Dom José de Barros, 152, conj. 95/96 — Centro, São Paulo/SP.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HANDOFF COMERCIAL ============================ -->
+<section class="section lead" id="falar">
+  <div class="wrap lead-in">
+    <div class="rv">
+      <span class="kicker">Fale com um especialista</span>
+      <h2 class="h2">Conte o que você toca.<br>A gente indica o fone.</h2>
+      <p class="lede">Preencha os campos e abrimos o WhatsApp com a mensagem já escrita para o nosso time comercial. Sem formulário perdido, sem espera: a conversa começa na hora.</p>
+      <ul class="lead-list">
+        <li>Atendimento consultivo de verdade — quem responde entende de palco, não lê script.</li>
+        <li>Indicação do modelo pela sua necessidade real, não pelo preço mais alto.</li>
+        <li>Orientação completa sobre pré-molde, personalização, prazo e forma de pagamento.</li>
+        <li>Segunda a sexta, das 9h às 17h. Fora do horário, respondemos no próximo dia útil.</li>
+      </ul>
+    </div>
+
+    <form class="form rv" id="leadForm" novalidate>
+      <div class="frow">
+        <div class="field">
+          <label for="f-nome">Seu nome</label>
+          <input id="f-nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome" required>
+        </div>
+        <div class="field">
+          <label for="f-cidade">Cidade / UF</label>
+          <input id="f-cidade" name="cidade" type="text" autocomplete="address-level2" placeholder="Goiânia / GO">
+        </div>
+      </div>
+
+      <div class="frow">
+        <div class="field">
+          <label for="f-perfil">O que você faz</label>
+          <select id="f-perfil" name="perfil">
+            <option value="">Selecione</option>
+            <option>Vocalista</option>
+            <option>Baterista</option>
+            <option>Baixista</option>
+            <option>Guitarrista</option>
+            <option>Tecladista</option>
+            <option>Instrumentista (outro)</option>
+            <option>DJ / Produtor</option>
+            <option>Técnico de som</option>
+            <option>Audiófilo / uso pessoal</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-modelo">Modelo de interesse</label>
+          <select id="f-modelo" name="modelo">
+            <option value="">Ainda não sei — quero orientação</option>
+            <option>XE ONE+/PRO</option>
+            <option>XE ONEMAX/PRO</option>
+            <option>XE3/PRO</option>
+            <option>XE4/PRO</option>
+            <option>XE5/PRO</option>
+            <option>XE6/PRO</option>
+            <option>XE8/PRO</option>
+            <option>XE12/PRO</option>
+            <option>XE14/PRO</option>
+            <option>Linha universal</option>
+            <option>Atenuador / protetor auditivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-uso">Onde você vai usar e o que está faltando hoje</label>
+        <textarea id="f-uso" name="uso" placeholder="Ex.: toco bateria em shows de sertanejo, uso um universal e perco o grave do bumbo no retorno."></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-wide" type="submit">Abrir conversa no WhatsApp</button>
+      <p class="form-note">Ao enviar, o WhatsApp abre com a mensagem pronta para o nosso time comercial. Nada é publicado e você revisa o texto antes de mandar.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ============================ CTA FINAL ============================ -->
+<section class="final">
+  <div class="final-media">
+    <img src="assets/artista-felipe.jpg" alt="" loading="lazy" width="1920" height="1080" aria-hidden="true">
+  </div>
+  <div class="final-in wrap">
+    <h2 class="h1 rv">O seu fone ainda não existe.<br>Vamos construir ele juntos.</h2>
+    <p class="lede rv">Um especialista Xtreme Ears com você do primeiro contato até a primeira música.</p>
+    <div class="btn-row rv">
+      <a class="btn btn-primary" href="#falar" data-cta="final">Falar com um especialista</a>
+      <a class="btn btn-outline" href="tel:+551132562692">Ligar: (11) 3256-2692</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ RODAPÉ ============================ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#topo" aria-label="Xtreme Ears"><img src="assets/logo-xtreme-branco.png" alt="Xtreme Ears" width="120" height="30"></a>
+        <p class="body" style="margin-top:20px;max-width:34ch">In-ear moldados sob medida, fabricados no Brasil. Pioneira no país, mais de 15 anos acompanhando músicos do primeiro contato ao palco.</p>
+      </div>
+
+      <div>
+        <h5>Navegue</h5>
+        <ul>
+          <li><a href="#porque">Por que moldado</a></li>
+          <li><a href="#encontre">Encontre seu fone</a></li>
+          <li><a href="#modelos">Modelos</a></li>
+          <li><a href="#processo">Como funciona</a></li>
+          <li><a href="#artistas">Quem usa</a></li>
+          <li><a href="#duvidas">Dúvidas</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Atendimento</h5>
+        <ul>
+          <li><a href="#falar">WhatsApp: (11) 95029-5494</a></li>
+          <li><a href="tel:+551132562692">Telefone: (11) 3256-2692</a></li>
+          <li><a href="mailto:contato@xtremeears.com.br">contato@xtremeears.com.br</a></li>
+          <li>Segunda a sexta, 9h às 17h</li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Onde estamos</h5>
+        <ul>
+          <li>Rua Dom José de Barros, 152<br>conj. 95/96 — Centro<br>São Paulo / SP</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <p>© <span id="ano">2026</span> Xtreme Ears. Todos os direitos reservados.</p>
+      <p>Sinta o verdadeiro som.</p>
+    </div>
+  </div>
+</footer>
+
+<a class="float" id="float" href="#falar" data-cta="flutuante">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.1c-.24.68-1.4 1.3-1.95 1.38-.5.07-1.13.1-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.8-4.17-4.94-4.37-.15-.2-1.19-1.58-1.19-3.02 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.51-.1.2-.15.32-.29.49-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.12.63-.07.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.49.22.56.34.07.12.07.69-.17 1.37z"/></svg>
+  Falar agora
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  var WHATS = "5511950295494";
+
+  /* ---------- menu mobile ---------- */
+  var burger = document.getElementById('burger');
+  var drawer = document.getElementById('drawer');
+  function closeDrawer(){
+    burger.setAttribute('aria-expanded','false');
+    drawer.classList.remove('open');
+    document.body.classList.remove('is-locked');
+  }
+  burger.addEventListener('click', function(){
+    var open = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!open));
+    drawer.classList.toggle('open', !open);
+    document.body.classList.toggle('is-locked', !open);
+  });
+  drawer.addEventListener('click', function(e){ if(e.target.tagName === 'A') closeDrawer(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeDrawer(); });
+
+  /* ---------- reveal ---------- */
+  var rvs = document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {rootMargin:'240px 0px 240px 0px', threshold:0});
+    rvs.forEach(function(el, i){ el.style.transitionDelay = (Math.min(i % 4, 3) * 50) + 'ms'; io.observe(el); });
+  } else {
+    rvs.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---------- faq ---------- */
+  document.querySelectorAll('.fq').forEach(function(btn){
+    var panel = btn.nextElementSibling;
+    btn.addEventListener('click', function(){
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.fq').forEach(function(other){
+        if(other !== btn){ other.setAttribute('aria-expanded','false'); other.nextElementSibling.style.maxHeight = null; }
+      });
+      btn.setAttribute('aria-expanded', String(!open));
+      panel.style.maxHeight = open ? null : (panel.scrollHeight + 'px');
+    });
+  });
+
+  /* ---------- catálogo p/ o quiz ---------- */
+  var CAT = {
+    'one':    {nome:'XE ONE+/PRO',    preco:'A partir de R$ 2.690',  txt:'3 drivers com crossover de 3 vias. Separação instrumental perfeita e som limpo para quem busca precisão e clareza.'},
+    'onemax': {nome:'XE ONEMAX/PRO',  preco:'A partir de R$ 3.990',  txt:'4 drivers com graves aveludados e agudos cristalinos. Extremamente musical e equilibrado — favorito de cantores e audiófilos.'},
+    'xe3':    {nome:'XE3/PRO',        preco:'A partir de R$ 4.280',  txt:'O rei do punch. Maior sensibilidade e headroom da linha, com foco nos graves. Bateristas, baixistas e DJs.'},
+    'xe4':    {nome:'XE4/PRO',        preco:'A partir de R$ 4.680',  txt:'A definição de flat. Resposta plana, sem ênfase em nenhuma região — para ouvir tudo como realmente é.'},
+    'xe5':    {nome:'XE5/PRO',        preco:'A partir de R$ 5.290',  txt:'Versatilidade e alta resolução. Som transparente e cirúrgico, do palco à referência de estúdio.'},
+    'xe6':    {nome:'XE6/PRO',        preco:'A partir de R$ 5.890',  txt:'6 drivers para um som analítico, rico em detalhes e com brilho inigualável. A escolha de artistas consagrados.'},
+    'xe8':    {nome:'XE8/PRO',        preco:'A partir de R$ 7.890',  txt:'4 drivers só para os graves: presença articulada e texturizada, com equilíbrio e naturalidade em qualquer estilo.'},
+    'xe12':   {nome:'XE12/PRO',       preco:'A partir de R$ 11.890', txt:'12 drivers e crossover de 4 vias. Resolução máxima, profundidade cirúrgica e o soundstage do padrão ouro.'},
+    'xe14':   {nome:'XE14/PRO',       preco:'A partir de R$ 18.990', txt:'O flagship: 14 drivers, HexaDrive Array™ com 6 drivers só para os médios e resposta estendida até 50 kHz.'}
+  };
+
+  var Q2 = {
+    palco: {
+      titulo:'Qual sonoridade você precisa no seu retorno?',
+      opcoes:[
+        {v:'punch',    b:'Graves com punch',           s:'Bateristas, baixistas, DJs'},
+        {v:'clareza',  b:'Clareza nos médios e agudos', s:'Vocais e guitarras'},
+        {v:'equilibrio', b:'Equilíbrio total',          s:'Tecladistas e técnicos de som'}
+      ]
+    },
+    estudio: {
+      titulo:'Qual característica é mais importante na sua produção?',
+      opcoes:[
+        {v:'flat',     b:'Resposta plana (flat)',  s:'Análise crítica e mixagem precisa'},
+        {v:'detalhe',  b:'Riqueza de detalhes',    s:'Ouvir todas as nuances e texturas'},
+        {v:'extremos', b:'Extensão nos extremos',  s:'Graves profundos e agudos cristalinos'}
+      ]
+    },
+    hifi: {
+      titulo:'O que você mais valoriza em uma experiência sonora?',
+      opcoes:[
+        {v:'musical',  b:'Musicalidade e emoção',  s:'Um som rico, texturizado e envolvente'},
+        {v:'precisao', b:'Precisão analítica',     s:'Ouvir a gravação como ela foi feita'},
+        {v:'palco',    b:'Palco sonoro e imersão', s:'Sentir a música ao seu redor'}
+      ]
+    }
+  };
+
+  /* perfil + característica -> trilha de modelos por nível */
+  var TRILHAS = {
+    'palco|punch':        ['xe3','xe8','xe12'],
+    'palco|clareza':      ['onemax','xe6','xe12'],
+    'palco|equilibrio':   ['xe4','xe5','xe8'],
+    'estudio|flat':       ['xe4','xe5','xe12'],
+    'estudio|detalhe':    ['xe5','xe6','xe14'],
+    'estudio|extremos':   ['xe8','xe12','xe14'],
+    'hifi|musical':       ['onemax','xe8','xe12'],
+    'hifi|precisao':      ['one','xe6','xe14'],
+    'hifi|palco':         ['xe5','xe12','xe14']
+  };
+  var NIVEL = {essencial:0, alta:1, referencia:2};
+  var LABEL_PERFIL = {palco:'monitoramento de palco', estudio:'produção em estúdio', hifi:'audição de alta fidelidade'};
+
+  var resp = {};
+  var steps = document.querySelectorAll('.quiz-step');
+  var result = document.getElementById('quizResult');
+  var bar = document.getElementById('quizBar');
+  var label = document.getElementById('quizLabel');
+
+  function showStep(n){
+    steps.forEach(function(s){ s.classList.toggle('active', Number(s.dataset.step) === n); });
+    result.classList.remove('active');
+    bar.style.width = (n / 3 * 100) + '%';
+    label.textContent = 'Passo ' + n + ' de 3';
+  }
+
+  function buildQ2(){
+    var cfg = Q2[resp[1]];
+    document.getElementById('q2Title').textContent = cfg.titulo;
+    var box = document.getElementById('q2Opts');
+    box.innerHTML = '';
+    cfg.opcoes.forEach(function(o){
+      var el = document.createElement('button');
+      el.className = 'opt';
+      el.type = 'button';
+      el.dataset.q = '2';
+      el.dataset.v = o.v;
+      el.innerHTML = '<b>' + o.b + '</b><small>' + o.s + '</small>';
+      box.appendChild(el);
+    });
+  }
+
+  function render(){
+    var trilha = TRILHAS[resp[1] + '|' + resp[2]] || ['xe4','xe5','xe12'];
+    var idx = NIVEL[resp[3]] || 0;
+    var principal = CAT[trilha[idx]];
+    var alt = CAT[trilha[idx === 2 ? 1 : idx + 1]];
+
+    var grid = document.getElementById('resultGrid');
+    grid.innerHTML =
+      '<article class="result-card lead"><span class="result-badge">Recomendado para você</span>' +
+        '<h4>' + principal.nome + '</h4><p class="result-price">' + principal.preco + '</p><p>' + principal.txt + '</p></article>' +
+      '<article class="result-card"><span class="result-badge">Também vale ouvir</span>' +
+        '<h4>' + alt.nome + '</h4><p class="result-price">' + alt.preco + '</p><p>' + alt.txt + '</p></article>';
+
+    var msg = 'Olá! Fiz o teste no site da Xtreme Ears.\n\n' +
+              '• Objetivo: ' + LABEL_PERFIL[resp[1]] + '\n' +
+              '• Modelos sugeridos: ' + principal.nome + ' e ' + alt.nome + '\n\n' +
+              'Queria entender melhor qual faz mais sentido pra mim e como funciona o processo do pré-molde.';
+    document.getElementById('quizWhats').href = 'https://wa.me/' + WHATS + '?text=' + encodeURIComponent(msg);
+
+    steps.forEach(function(s){ s.classList.remove('active'); });
+    result.classList.add('active');
+    bar.style.width = '100%';
+    label.textContent = 'Resultado';
+  }
+
+  document.getElementById('quiz').addEventListener('click', function(e){
+    var opt = e.target.closest('.opt');
+    if(opt){
+      var q = Number(opt.dataset.q);
+      resp[q] = opt.dataset.v;
+      if(q === 1){ buildQ2(); showStep(2); }
+      else if(q === 2){ showStep(3); }
+      else { render(); }
+      return;
+    }
+    var back = e.target.closest('.quiz-back');
+    if(back) showStep(Number(back.dataset.back));
+  });
+
+  document.getElementById('quizRestart').addEventListener('click', function(){
+    resp = {};
+    showStep(1);
+  });
+
+  showStep(1);
+
+  /* ---------- cards -> pré-seleciona o modelo no formulário ---------- */
+  document.querySelectorAll('[data-model]').forEach(function(a){
+    a.addEventListener('click', function(){
+      var sel = document.getElementById('f-modelo');
+      var alvo = a.dataset.model;
+      var achou = Array.prototype.some.call(sel.options, function(o){
+        if(o.text === alvo){ sel.value = o.value; return true; }
+        return false;
+      });
+      if(!achou && /universal/i.test(alvo)) sel.value = 'Linha universal';
+      sel.dataset.detalhe = alvo;
+    });
+  });
+
+  /* ---------- formulário -> WhatsApp com a mensagem pronta ---------- */
+  document.getElementById('leadForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = e.target;
+    var nome = f.nome.value.trim();
+    if(!nome){ f.nome.focus(); return; }
+
+    var sel = f.modelo;
+    var modelo = sel.dataset.detalhe || sel.value;
+
+    var linhas = ['Olá! Vim pelo site da Xtreme Ears e queria falar com um especialista.', ''];
+    linhas.push('• Nome: ' + nome);
+    if(f.cidade.value.trim()) linhas.push('• Cidade: ' + f.cidade.value.trim());
+    if(f.perfil.value)        linhas.push('• Perfil: ' + f.perfil.value);
+    linhas.push('• Modelo de interesse: ' + (modelo || 'ainda não sei, quero orientação'));
+    if(f.uso.value.trim())    linhas.push('• Uso: ' + f.uso.value.trim());
+
+    window.open('https://wa.me/' + WHATS + '?text=' + encodeURIComponent(linhas.join('\n')), '_blank', 'noopener');
+  });
+
+  /* ---------- CTAs levam ao formulário com o campo pronto ---------- */
+  document.querySelectorAll('[data-cta]').forEach(function(el){
+    if(el.dataset.cta === 'quiz') return;
+    el.addEventListener('click', function(){
+      var campo = document.getElementById('f-nome');
+      if(campo) setTimeout(function(){ campo.focus({preventScroll:true}); }, 700);
+    });
+  });
+
+  /* ---------- botão flutuante ---------- */
+  var float = document.getElementById('float');
+  var leadSec = document.getElementById('falar');
+  window.addEventListener('scroll', function(){
+    var passouHero = window.scrollY > window.innerHeight * .7;
+    var noForm = leadSec.getBoundingClientRect().top < window.innerHeight * .8 &&
+                 leadSec.getBoundingClientRect().bottom > 0;
+    float.classList.toggle('show', passouHero && !noForm);
+  }, {passive:true});
+
+  /* ---------- ano ---------- */
+  document.getElementById('ano').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
