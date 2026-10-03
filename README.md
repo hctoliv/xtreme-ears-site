@@ -80,6 +80,14 @@ Specs, configuração de drivers e "indicado para" vêm do catálogo e das tarja
 
 Lauana Prado · Aquiles Priester · Gilberto Gil · Fabiano Manhas · Wesley Safadão · Marcelo Falcão · Robson Caffé · Bruno Graveto
 
+**Só entram vídeos 16:9.** O player do YouTube encaixota o que não for widescreen, e no fundo da hero essa tarja preta aparece nas laterais — foi o caso do vídeo do Fabiano Manhas em 4:3, trocado pela versão 16:9 do mesmo artista. Antes de adicionar um vídeo, confira a proporção:
+
+```bash
+curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json"
+```
+
+e veja se `width/height` dá ~1.77.
+
 Só entram vídeos com footage de palco. Os do canal que são card de título ou entrevista sentada (Lexa, Kiko Freitas, Hananiel, PJ, Johnny Essi, Júnior Carelli) ficam de fora: como fundo, viram tela parada. Cada item tem um `t`, o segundo onde começar, para pular a vinheta de abertura. Um vídeo que saia do ar ou bloqueie embed é pulado pelo `onError`.
 
 **Capital Inicial não está no canal.** O Dinho Ouro Preto só existe como reel no Instagram (`C9fyU-ZBS3a`), e reel do Instagram não serve de fundo. Ele aparece na seção de depoimentos.

@@ -258,16 +258,24 @@
      O video so aparece quando REALMENTE comeca a tocar; se o navegador
      bloquear o autoplay, a foto continua no lugar e ninguem ve buraco.
      ================================================================== */
-  /* Rodizio de artistas no fundo da hero. So entram videos com footage de
-     palco de verdade — os do canal que sao card de titulo ou entrevista
-     sentada ficam de fora, porque como fundo viram uma tela parada.
+  /* Rodizio de artistas no fundo da hero.
+     Duas regras pra entrar aqui:
+       1. SO 16:9. O player do YouTube encaixota o que nao for widescreen,
+          e no fundo da hero essa tarja preta aparece nas laterais. O video
+          do Fabiano Manhas em 4:3 (G6BkVSKdvz8) saiu por isso; entrou a
+          versao 16:9 do mesmo artista. Confira antes de adicionar:
+          curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json"
+          e veja se width/height da ~1.77.
+       2. Footage de palco. Card de titulo e entrevista sentada viram tela
+          parada como fundo (Lexa, Kiko Freitas, Hananiel, PJ, Junior
+          Carelli, Johnny Essi, Guilherme Fahl ficaram de fora por isso).
      `t` = segundo onde comecar, pra pular vinheta de abertura.
      Capital Inicial nao existe no canal: o Dinho so tem reel no Instagram. */
   var HERO_VIDEOS = [
     {id:'PI09H57rC9k', quem:'Lauana Prado',    t:5},
     {id:'cwc_h8WMzkw', quem:'Aquiles Priester', t:8},
     {id:'ZeooE9AeeZ0', quem:'Gilberto Gil',    t:5},
-    {id:'G6BkVSKdvz8', quem:'Fabiano Manhas',  t:6},
+    {id:'QbDrR2BFitE', quem:'Fabiano Manhas',  t:6},
     {id:'0LAQgR3c9YU', quem:'Wesley Safadão',  t:5},
     {id:'tIrMgNO4Ljk', quem:'Marcelo Falcão',  t:5},
     {id:'DHLvefrSbNk', quem:'Robson Caffé',    t:6},
