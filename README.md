@@ -41,10 +41,16 @@ Modelos, preços, specs (drivers, crossover, impedância, sensibilidade, respost
 
 Referência: beatsbydre.com — tipografia display pesada e fechada, hero full-bleed, rails horizontais de produto com tiles claros, pílulas de CTA, respiro generoso. Aqui em preto puro, que é a cor da marca.
 
-- Base `#000`, superfícies `#0b0b0b`/`#141414`, tiles de produto claros `#f2f2f2`
-- Acento `#c20000` (vermelho Xtreme) / `#e01a0e` no hover
+- Preto e branco puros, como a marca: base `#000`, superfícies `#0b0b0b`/`#141414`, tiles de produto em branco
+- Acento é o próprio branco — CTA é pílula branca com texto preto. Não há cor de destaque
 - Tipografia: **DM Sans** (400–900), display em 900 com tracking fechado
 - Um arquivo: `index.html` com CSS e JS inline. Sem build, sem dependência além da fonte do Google.
+
+## Fotos de produto
+
+As imagens do catálogo vinham com uma tarja preta de propaganda queimada na arte ("INDICADO PARA BATERISTAS…"), em enquadramentos e escalas diferentes. Foram reprocessadas: tarja recortada, produto isolado pelo bounding box e recentralizado num tile 4:3 branco com a mesma proporção em todos os modelos. O script está em `tools/crop.html` — abra servindo a pasta com `tools/writer.py` para regerar.
+
+**Pendência de conteúdo:** XE12/PRO e XE14/PRO usam praticamente a mesma foto no catálogo da marca (o mesmo par de madeira). Vale pedir fotos distintas para os dois.
 
 ## Rodar
 

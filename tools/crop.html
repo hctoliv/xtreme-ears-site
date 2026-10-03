@@ -1,0 +1,120 @@
+<!doctype html><meta charset=utf-8>
+<style>body{background:#111;color:#eee;font:13px system-ui;margin:0;padding:14px}
+.g{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+figure{margin:0;background:#000;border:1px solid #444}
+figure img{width:100%;aspect-ratio:4/3;object-fit:contain;display:block;background:#fff}
+figcaption{padding:4px;font-size:10px}
+#log{margin-bottom:10px;font-family:ui-monospace,monospace;font-size:11px;white-space:pre-wrap}</style>
+<div id=log>processando…</div>
+<div class=g id=g></div>
+<script>
+const JOBS = [
+  ["one-A.jpg",        "one-plus-pro.jpg"],
+  ["onemax-A.jpg",     "onemax-pro.jpg"],
+  ["xe3-pro.jpg",      "xe3-pro.jpg"],
+  ["xe4-pro.jpg",      "xe4-pro.jpg"],
+  ["xe5-A.jpg",        "xe5-pro.jpg"],
+  ["xe6-pro.jpg",      "xe6-pro.jpg"],
+  ["xe8-A.jpg",        "xe8-pro.jpg"],
+  ["xe12-pro.jpg",     "xe12-pro.jpg"],
+  ["xe14-A.jpg",       "xe14-pro.jpg"],
+  ["xtreme-stage.jpg", "xtreme-stage.jpg"],
+  ["xtreme-one-plus.jpg","xtreme-one-plus.jpg"],
+  ["xtreme-onemax.jpg","xtreme-onemax.jpg"]
+];
+
+const OW = 1200, OH = 900;   // tile 4:3, igual ao card
+const FILL_W = 0.84, FILL_H = 0.80;
+
+const lum = (r,g,b) => .2126*r + .7152*g + .0722*b;
+
+function load(src){
+  return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; });
+}
+
+function analyse(img){
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth; c.height = img.naturalHeight;
+  const x = c.getContext('2d', {willReadFrequently:true});
+  x.drawImage(img,0,0);
+  const W=c.width, H=c.height;
+  const d = x.getImageData(0,0,W,H).data;
+
+  // 1. faixas de banner: linha com um TRECHO CONTINUO de preto muito largo
+  //    (a tarja e solida; o produto, mesmo escuro, quebra em pedacos menores)
+  const bannerRow = new Uint8Array(H);
+  for(let y=0;y<H;y++){
+    let run=0, best=0;
+    for(let xx=0;xx<W;xx++){
+      const i=(y*W+xx)*4;
+      if(lum(d[i],d[i+1],d[i+2])<55){ run++; if(run>best) best=run; }
+      else run=0;
+    }
+    bannerRow[y] = (best > W*0.5) ? 1 : 0;
+  }
+  const MINBAND = Math.max(8, H*0.025);   // altura minima para valer como tarja
+  let top=0, bot=H-1;
+  // tarja colada no topo
+  for(let y=0; y<H*0.3; y++){
+    if(bannerRow[y]){
+      let e=y; while(e<H && bannerRow[e]) e++;
+      if(e-y >= MINBAND) top = Math.min(e + Math.round(H*0.01), H-1);
+      break;
+    }
+  }
+  // tarja na base: pega a PRIMEIRA linha de tarja do terco inferior
+  for(let y=Math.floor(H*0.62); y<H; y++){
+    if(bannerRow[y]){
+      let e=y; while(e<H && bannerRow[e]) e++;
+      if(e-y >= MINBAND){ bot = Math.max(y - Math.round(H*0.012), 0); break; }
+    }
+  }
+
+  // 2. bounding box do produto dentro da regiao limpa
+  let x0=W, x1=-1, y0=H, y1=-1;
+  for(let yy=top; yy<=bot; yy++){
+    for(let xx=0; xx<W; xx++){
+      const i=(yy*W+xx)*4;
+      if(lum(d[i],d[i+1],d[i+2]) < 238){
+        if(xx<x0)x0=xx; if(xx>x1)x1=xx;
+        if(yy<y0)y0=yy; if(yy>y1)y1=yy;
+      }
+    }
+  }
+  if(x1<0){ x0=0;y0=top;x1=W-1;y1=bot; }
+  return {c, top, bot, x0, y0, x1, y1, W, H};
+}
+
+function render(a){
+  const bw = a.x1-a.x0+1, bh = a.y1-a.y0+1;
+  const out = document.createElement('canvas');
+  out.width = OW; out.height = OH;
+  const o = out.getContext('2d');
+  o.fillStyle = '#ffffff'; o.fillRect(0,0,OW,OH);
+  o.imageSmoothingQuality = 'high';
+  const s = Math.min(OW*FILL_W/bw, OH*FILL_H/bh);
+  const dw = bw*s, dh = bh*s;
+  o.drawImage(a.c, a.x0, a.y0, bw, bh, (OW-dw)/2, (OH-dh)/2, dw, dh);
+  return out;
+}
+
+(async ()=>{
+  const lines=[];
+  for(const [src,dest] of JOBS){
+    try{
+      const img = await load(src);
+      const a = analyse(img);
+      const out = render(a);
+      const blob = await new Promise(r=>out.toBlob(r,'image/jpeg',0.9));
+      await fetch('/save?name='+encodeURIComponent(dest), {method:'POST', body:blob});
+      lines.push(`${dest.padEnd(22)} ok  fonte=${src} corte_y=${a.top}..${a.bot} bbox=${a.x1-a.x0+1}x${a.y1-a.y0+1} ${(blob.size/1024|0)}KB`);
+      const f=document.createElement('figure');
+      f.innerHTML=`<img src="${out.toDataURL('image/jpeg',0.7)}"><figcaption>${dest}</figcaption>`;
+      g.appendChild(f);
+    }catch(e){ lines.push(`${dest} ERRO ${e}`); }
+    log.textContent = lines.join('\n');
+  }
+  lines.push('— concluido —');
+  log.textContent = lines.join('\n');
+})();
+</script>
