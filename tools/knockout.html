@@ -1,0 +1,232 @@
+<!doctype html><meta charset=utf-8>
+<title>Recorte de fundo</title>
+<style>body{background:#0b0b0b;color:#ddd;font:12px ui-monospace,monospace;margin:0;padding:12px}
+.g{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+figure{margin:0;border:1px solid #333;border-radius:10px;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 38%,#232325 0%,#141416 55%,#0d0d0e 100%)}
+figure img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+  filter:drop-shadow(0 16px 22px rgba(0,0,0,.55))}
+figcaption{padding:5px 8px;font-size:10px;color:#9cf;background:#000}
+#log{white-space:pre-wrap;line-height:1.5}</style>
+<div id=log>processando…</div>
+<div class=g id=g></div>
+<script>
+const JOBS = [
+  // [arquivo, nome, zona?] — zona limita ONDE procurar as capsulas, em fracao da
+  // altura. So e preciso quando a propria foto atrapalha: laco de cabo por cima,
+  // reflexo espelhado por baixo.
+  ["one_1.jpg",     "one-plus-pro"],
+  ["onemax_0.jpg",  "onemax-pro",      [0.54, 1.00]],  // laco de cabo em cima
+  ["xe3_0.jpg",     "xe3-pro"],
+  ["xe4_0.jpg",     "xe4-pro"],
+  ["xe5_0.png",     "xe5-pro"],
+  ["xe6_1.png",     "xe6-pro",         [0.00, 0.52]],  // reflexo espelhado embaixo
+  ["xe8_0.png",     "xe8-pro"],
+  ["xe12_0.png",    "xe12-pro"],
+  ["xe14_0.png",    "xe14-pro"],
+  ["ustage_5.png",  "xtreme-stage"],
+  ["uone_4.jpg",    "xtreme-one-plus"],
+  ["uonemax_0.jpg", "xtreme-onemax"]
+];
+
+const OW = 1200, OH = 900;        // 4:3, igual ao card
+const CAP_W = 0.60, CAP_H = 0.52;   // quanto as CAPSULAS ocupam do quadro
+const REGIAO = 205;               // o que entra na regiao de fundo (ligado a borda)
+const A_OPACO = 216, A_VAZIO = 247;   // rampa de alfa por luminancia
+
+const lum=(r,g,b)=>.2126*r+.7152*g+.0722*b;
+const load=s=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>j(s);i.src=s;});
+
+// corta as tarjas pretas de propaganda queimadas na arte, antes de tirar o fundo
+function semTarja(img){
+  const W=img.naturalWidth, H=img.naturalHeight;
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const x=c.getContext('2d',{willReadFrequently:true});
+  x.fillStyle='#fff'; x.fillRect(0,0,W,H);
+  x.drawImage(img,0,0);
+  const d=x.getImageData(0,0,W,H).data;
+
+  const tarja=new Uint8Array(H), escuro=new Float32Array(H);
+  for(let y=0;y<H;y++){
+    let run=0,best=0,dark=0;
+    for(let px=0;px<W;px++){
+      const i=(y*W+px)*4;
+      if(lum(d[i],d[i+1],d[i+2])<55){ run++; dark++; if(run>best) best=run; }
+      else run=0;
+    }
+    escuro[y]=dark/W;
+    tarja[y]= best>W*0.5 ? 1 : 0;
+  }
+  // a tarja tem texto branco por cima, que quebra o trecho continuo:
+  // estica a banda enquanto a linha seguir majoritariamente escura
+  const cresce=(y,dir)=>{let e=y; while(e+dir>=0 && e+dir<H && escuro[e+dir]>0.45) e+=dir; return e;};
+  const MIN=Math.max(8,H*0.025);
+  let top=0, bot=H-1;
+  for(let y=0;y<H*0.3;y++){
+    if(tarja[y]){ let e=y; while(e<H&&tarja[e])e++; e=cresce(e-1,+1)+1;
+      if(e-y>=MIN) top=Math.min(e+Math.round(H*0.012),H-1); break; }
+  }
+  for(let y=Math.floor(H*0.62);y<H;y++){
+    if(tarja[y]){ let e=y; while(e<H&&tarja[e])e++; const ini=cresce(y,-1);
+      if(e-y>=MIN){ bot=Math.max(ini-Math.round(H*0.012),0); break; } }
+  }
+  if(bot<=top){ top=0; bot=H-1; }
+
+  const alt=bot-top+1;
+  const c2=document.createElement('canvas'); c2.width=W; c2.height=alt;
+  const x2=c2.getContext('2d',{willReadFrequently:true});
+  x2.fillStyle='#fff'; x2.fillRect(0,0,W,alt);
+  x2.drawImage(c, 0,top,W,alt, 0,0,W,alt);
+  return {canvas:c2, corte:`${top}..${bot}/${H}`};
+}
+
+function recorta(src, zona){
+  const W=src.width, H=src.height;
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const x=c.getContext('2d',{willReadFrequently:true});
+  x.drawImage(src,0,0);
+  const id=x.getImageData(0,0,W,H), d=id.data;
+
+  const L=new Float32Array(W*H);
+  for(let i=0;i<W*H;i++){const o=i*4; L[i]=lum(d[o],d[o+1],d[o+2]);}
+
+  // 1. regiao de fundo = tudo claro LIGADO a borda (nao come brilho interno do produto)
+  const fundo=new Uint8Array(W*H);
+  const pilha=[];
+  const push=(px,py)=>{const k=py*W+px; if(!fundo[k] && L[k]>REGIAO){fundo[k]=1; pilha.push(k);}};
+  for(let px=0;px<W;px++){ push(px,0); push(px,H-1); }
+  for(let py=0;py<H;py++){ push(0,py); push(W-1,py); }
+  while(pilha.length){
+    const k=pilha.pop(), px=k%W, py=(k-px)/W;
+    if(px>0)   push(px-1,py);
+    if(px<W-1) push(px+1,py);
+    if(py>0)   push(px,py-1);
+    if(py<H-1) push(px,py+1);
+  }
+
+  // 2. alfa: rampa suave pela luminancia dentro da regiao de fundo
+  const A=new Float32Array(W*H);
+  const faixa=A_VAZIO-A_OPACO;
+  for(let i=0;i<W*H;i++){
+    A[i] = fundo[i] ? Math.max(0, Math.min(1, (A_VAZIO-L[i])/faixa)) : 1;
+  }
+
+  // 3. suaviza a borda (media 3x3) para nao ficar serrilhado
+  const B=new Float32Array(W*H);
+  for(let py=0;py<H;py++) for(let px=0;px<W;px++){
+    let s=0,n=0;
+    for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++){
+      const qy=py+dy, qx=px+dx;
+      if(qy<0||qy>=H||qx<0||qx>=W) continue;
+      s+=A[qy*W+qx]; n++;
+    }
+    B[py*W+px]=s/n;
+  }
+
+  // 4. aplica, escurecendo o halo claro da borda para nao virar franja branca
+  let x0=W,y0=H,x1=-1,y1=-1;
+  for(let i=0;i<W*H;i++){
+    const o=i*4, a=B[i];
+    d[o+3]=Math.round(a*255);
+    if(a>0 && a<1){ const f=.55+.45*a; d[o]*=f; d[o+1]*=f; d[o+2]*=f; }
+    if(a>0.06){ const px=i%W, py=(i-px)/W;
+      if(px<x0)x0=px; if(px>x1)x1=px; if(py<y0)y0=py; if(py>y1)y1=py; }
+  }
+  if(x1<0){x0=0;y0=0;x1=W-1;y1=H-1;}
+  x.putImageData(id,0,0);
+
+  // ---- caixa das capsulas: erode a mascara para sumir com o cabo (fino),
+  //      sobra so o corpo do fone; depois separa os blocos e descarta reflexo
+  const R=Math.max(7, Math.round(Math.min(W,H)*0.026));
+  const M=new Uint8Array(W*H);
+  for(let i=0;i<W*H;i++) M[i]=B[i]>0.5?1:0;
+  const T=new Uint8Array(W*H), E=new Uint8Array(W*H);
+  for(let py=0;py<H;py++) for(let px=0;px<W;px++){      // erosao horizontal
+    let v=1; for(let k=-R;k<=R;k++){const q=px+k; if(q<0||q>=W||!M[py*W+q]){v=0;break;}}
+    T[py*W+px]=v;
+  }
+  for(let py=0;py<H;py++) for(let px=0;px<W;px++){      // erosao vertical
+    let v=1; for(let k=-R;k<=R;k++){const q=py+k; if(q<0||q>=H||!T[q*W+px]){v=0;break;}}
+    E[py*W+px]=v;
+  }
+  // zona: zera a mascara fora da faixa util, assim o laco de cabo e o reflexo
+  // nao ficam grudados nas capsulas quando os blocos forem separados
+  if(zona){
+    const ya=Math.round(H*zona[0]), yb=Math.round(H*zona[1]);
+    for(let py=0;py<H;py++) if(py<ya||py>yb) E.fill(0, py*W, py*W+W);
+  }
+
+  // blocos conectados
+  const marca=new Int32Array(W*H).fill(-1); const blocos=[];
+  for(let i0=0;i0<W*H;i0++){
+    if(!E[i0]||marca[i0]>=0) continue;
+    const id2=blocos.length, fila=[i0]; marca[i0]=id2;
+    let n=0,ax0=W,ay0=H,ax1=-1,ay1=-1;
+    while(fila.length){
+      const k=fila.pop(), px=k%W, py=(k-px)/W; n++;
+      if(px<ax0)ax0=px; if(px>ax1)ax1=px; if(py<ay0)ay0=py; if(py>ay1)ay1=py;
+      const viz=[px>0?k-1:-1, px<W-1?k+1:-1, py>0?k-W:-1, py<H-1?k+W:-1];
+      for(const v of viz) if(v>=0 && E[v] && marca[v]<0){ marca[v]=id2; fila.push(v); }
+    }
+    blocos.push({n,ax0,ay0,ax1,ay1,cy:(ay0+ay1)/2,alt:ay1-ay0+1});
+  }
+  let cx0=x0,cy0=y0,cx1=x1,cy1=y1;
+  if(blocos.length){
+    // capsula = bloco cheio (cabo erodido vira caco comprido e vazado)
+    const cheio = b => b.n / (((b.ax1-b.ax0+1)*(b.ay1-b.ay0+1))||1);
+    let cand = blocos.filter(b => cheio(b) > 0.34);
+    if(!cand.length) cand = blocos.slice();
+    if(!cand.length) cand = blocos.slice();
+    cand.sort((a,b)=>b.n-a.n);
+    const principal = cand[0];
+    // a par: segundo bloco de tamanho parecido e na MESMA fileira.
+    // reflexo tem tamanho parecido mas fica embaixo, entao cai fora aqui.
+    const bons = [principal];
+    for(const b of cand.slice(1)){
+      if(b.n >= principal.n*0.45 && Math.abs(b.cy - principal.cy) < principal.alt*0.6){
+        bons.push(b); break;
+      }
+    }
+    cx0=Math.min(...bons.map(b=>b.ax0))-R; cy0=Math.min(...bons.map(b=>b.ay0))-R;
+    cx1=Math.max(...bons.map(b=>b.ax1))+R; cy1=Math.max(...bons.map(b=>b.ay1))+R;
+  }
+  return {c,x0,y0,x1,y1,cx0,cy0,cx1,cy1,capsulas:blocos.length};
+}
+
+function padroniza(r){
+  const cw=r.cx1-r.cx0+1, ch=r.cy1-r.cy0+1;
+  const out=document.createElement('canvas'); out.width=OW; out.height=OH;
+  const o=out.getContext('2d');
+  o.imageSmoothingQuality='high';
+  // escala definida pelas CAPSULAS, nao pelo contorno todo
+  const s=Math.min(OW*CAP_W/cw, OH*CAP_H/ch);
+  // centro das capsulas no centro do quadro; o cabo sai do quadro naturalmente
+  const centroX=(r.cx0+r.cx1)/2, centroY=(r.cy0+r.cy1)/2;
+  o.drawImage(r.c, 0,0, r.c.width, r.c.height,
+              OW/2 - centroX*s, OH/2 - centroY*s, r.c.width*s, r.c.height*s);
+  return out;
+}
+
+(async()=>{
+  const linhas=[];
+  for(const [src,nome,zona] of JOBS){
+    try{
+      const img=await load(src);
+      const t=semTarja(img);
+      const r=recorta(t.canvas, zona);
+      r.corte=t.corte;
+      const out=padroniza(r);
+      const blob=await new Promise(k=>out.toBlob(k,'image/webp',0.9));
+      await fetch('/save?name='+encodeURIComponent(nome+'.webp'),{method:'POST',body:blob});
+      linhas.push(`${(nome+'.webp').padEnd(24)} ok  tarja=${r.corte}  capsulas=${r.cx1-r.cx0+1}x${r.cy1-r.cy0+1}(${r.capsulas})  ${(blob.size/1024|0)}KB`);
+      const f=document.createElement('figure');
+      const u=URL.createObjectURL(blob);
+      f.innerHTML=`<img src="${u}"><figcaption>${nome}</figcaption>`;
+      g.appendChild(f);
+    }catch(e){ linhas.push(`${nome} ERRO ${e}`); }
+    log.textContent=linhas.join('\n');
+  }
+  linhas.push('— concluido —');
+  log.textContent=linhas.join('\n');
+})();
+</script>

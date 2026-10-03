@@ -46,22 +46,32 @@ Referência: beatsbydre.com — tipografia display pesada e fechada, hero full-b
 - Tipografia: **DM Sans** (400–900), display em 900 com tracking fechado
 - Um arquivo: `index.html` com CSS e JS inline. Sem build, sem dependência além da fonte do Google.
 
+## Modelos: a seção fala por área sonora
+
+A linha não é apresentada como tabela de drivers. É dividida por **onde o som pesa**, porque é assim que o músico escolhe:
+
+| área | pra quem | modelos |
+|---|---|---|
+| **Grave** | bateristas, baixistas, percussionistas, DJs | XE ONE+/PRO · XE3/PRO · XE6/PRO |
+| **Médio** | vocalistas, guitarristas, tecladistas | XE4/PRO · XE5/PRO · XE8/PRO |
+| **Agudo e detalhe** | técnicos de som, produtores, audiófilos | XE ONEMAX/PRO · XE12/PRO · XE14/PRO |
+
+O "indicado para" de cada card é a recomendação oficial da marca, transcrita das tarjas das próprias fotos do catálogo. O resto da copy fala em bumbo, refrão, naipe de sopro e PA — não em dB/mW.
+
+As trilhas do quiz (`TRILHAS` no script) ficam **dentro** da área que a resposta indica, pra não contradizer essa seção. Ao mexer numa, confira a outra.
+
 ## Fotos de produto
 
-As imagens do catálogo vinham com uma tarja preta de propaganda queimada na arte ("INDICADO PARA BATERISTAS…", "LANÇAMENTO!"), em enquadramentos e escalas diferentes. Foram reprocessadas: tarja recortada, produto isolado pelo bounding box e recentralizado num tile 4:3 branco, com a mesma proporção em todos os modelos. O script está em `tools/crop.html` — sirva a pasta com `tools/writer.py` e abra para regerar.
+As imagens do catálogo vinham com tarja preta de propaganda queimada na arte ("INDICADO PARA BATERISTAS…", "LANÇAMENTO!"), fundo branco, escalas e enquadramentos diferentes. `tools/knockout.html` resolve tudo numa passada — sirva a pasta das fontes com `tools/writer.py` e abra:
 
-Cada modelo usa uma foto da **sua própria** página de produto, escolhida para que nenhum par se repita visualmente:
+1. **corta a tarja** — acha a faixa pelo trecho contínuo de preto na linha e estende por densidade (o texto branco da tarja quebra a faixa e engana a detecção simples);
+2. **tira o fundo** — flood fill a partir da borda, então brilho interno do produto não é perdido; o alfa é uma rampa por luminância, com a borda escurecida pra não virar franja branca;
+3. **enquadra pelas cápsulas** — erode a máscara até o cabo sumir, separa os blocos, descarta reflexo e caco de cabo, e escala pelo corpo do fone. É isso que faz todos os cards terem o produto do mesmo tamanho, independente do cabo da foto;
+4. exporta WebP com transparência, ~50 KB cada.
 
-| | acabamento | | acabamento |
-|---|---|---|---|
-| XE ONE+/PRO | roxo | XE8/PRO | cinza marmorizado |
-| XE ONEMAX/PRO | azul-petróleo | XE12/PRO | madeira escura |
-| XE3/PRO | madeira clara | XE14/PRO | preto |
-| XE4/PRO | laranja | Xtreme Stage | verde |
-| XE5/PRO | rosa | Xtreme One Plus | azul translúcido |
-| XE6/PRO | bege | Xtreme ONEMAX | preto |
+Quando a própria composição atrapalha (laço de cabo por cima no ONEMAX, reflexo espelhado embaixo no XE6), o job aceita uma `zona` — a faixa de altura onde procurar as cápsulas.
 
-O faceplate é escolhido pelo cliente, então essas cores são exemplos do catálogo — não são a única opção de cada modelo. Ao trocar uma foto, vale rodar a comparação de cor média para garantir que nenhuma ficou parecida demais com outra.
+Cada modelo usa foto da **sua própria** página de produto, escolhida pra que nenhum par se repita: roxo, azul-petróleo, madeira clara, laranja, rosa, bege, cinza marmorizado, madeira escura, preto; verde, azul translúcido e preto nos universais. O faceplate é escolhido pelo cliente, então são exemplos do catálogo. Ao trocar uma foto, rode a comparação de cor média pra garantir que nenhuma ficou parecida demais com outra.
 
 ## Rodar
 

@@ -224,24 +224,19 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ---------- rail de produtos ---------- */
 .rail-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;margin-bottom:34px}
-.rail{
-  display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
-  padding:4px calc(var(--gutter)) 24px;margin-inline:calc(var(--gutter) * -1);
-  scrollbar-width:none;-ms-overflow-style:none;
-}
-.rail::-webkit-scrollbar{display:none}
 .card{
-  flex:0 0 clamp(268px,30vw,340px);scroll-snap-align:start;
   background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-lg);
   overflow:hidden;display:flex;flex-direction:column;
   transition:border-color .3s,transform .3s var(--ease);
 }
 .card:hover{border-color:var(--line);transform:translateY(-4px)}
-.card-media{background:var(--tile);aspect-ratio:4/3;overflow:hidden;position:relative}
-.card-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.card-media{background:radial-gradient(120% 92% at 50% 36%,#242427 0%,#151517 54%,#0c0c0d 100%);aspect-ratio:4/3;overflow:hidden;position:relative}
+.card-media img{width:100%;height:100%;object-fit:cover;filter:drop-shadow(0 16px 24px rgba(0,0,0,.6));transition:transform .5s var(--ease)}
 .card:hover .card-media img{transform:scale(1.05)}
 .card-flag{
-  position:absolute;top:14px;left:14px;background:#000;color:#fff;
+  position:absolute;top:14px;left:14px;color:#fff;
+  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.24);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   font:800 10px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;
   padding:7px 11px;border-radius:999px;
 }
@@ -258,7 +253,24 @@ button,input,select,textarea{font:inherit;color:inherit}
 .card-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--line-soft);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .card-price{font-size:13px;color:var(--muted);line-height:1.3}
 .card-price b{display:block;font-size:17px;color:var(--ink);font-weight:800;letter-spacing:-.02em}
-.rail-hint{font-size:13px;color:var(--faint);margin-top:-8px}
+
+/* ---------- areas sonoras ---------- */
+.area{margin-top:clamp(56px,7vw,92px)}
+.area:first-of-type{margin-top:0}
+.area-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px 48px;align-items:end;
+  padding-bottom:26px;margin-bottom:26px;border-bottom:1px solid var(--line-soft)}
+.area-tag{display:inline-flex;align-items:center;gap:10px;font:800 12px/1 var(--sans);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.area-tag i{display:flex;gap:3px;align-items:flex-end;height:14px}
+.area-tag i b{width:3px;background:var(--accent);border-radius:1px;display:block}
+.area-head h3{font-weight:900;letter-spacing:-.03em;line-height:1.04;margin:0;font-size:clamp(26px,3.2vw,42px)}
+.area-who{margin:0;color:var(--muted);font-size:15.5px;line-height:1.6;max-width:50ch}
+.area-who b{color:var(--ink-2);font-weight:600}
+.area-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card-for{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);margin:0}
+@media (max-width:1080px){.area-grid{grid-template-columns:1fr 1fr}.area-head{grid-template-columns:1fr}}
+@media (max-width:720px){.area-grid{grid-template-columns:1fr}}
 
 /* ---------- processo ---------- */
 .steps{display:grid;gap:16px;grid-template-columns:repeat(5,1fr);counter-reset:s}
@@ -412,7 +424,6 @@ button,input,select,textarea{font:inherit;color:inherit}
   .care-grid{grid-template-columns:1fr 1fr}
   .frow{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr;gap:34px}
-  .card{flex-basis:80vw}
   .btn-row .btn{width:100%}
   .float{right:14px;bottom:14px;padding:13px 18px;font-size:14px}
   .hero-tag{font-size:11px;letter-spacing:.08em;padding:7px 14px}
@@ -433,7 +444,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     <nav class="nav-links" aria-label="Principal">
       <a href="#porque">Por que moldado</a>
       <a href="#encontre">Encontre seu fone</a>
-      <a href="#modelos">Modelos</a>
+      <a href="#modelos">Modelos por área</a>
       <a href="#processo">Como funciona</a>
       <a href="#artistas">Quem usa</a>
       <a href="#duvidas">Dúvidas</a>
@@ -449,7 +460,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 <div class="drawer" id="drawer">
   <a href="#porque">Por que moldado</a>
   <a href="#encontre">Encontre seu fone</a>
-  <a href="#modelos">Modelos</a>
+  <a href="#modelos">Modelos por área</a>
   <a href="#processo">Como funciona</a>
   <a href="#artistas">Quem usa</a>
   <a href="#duvidas">Dúvidas</a>
@@ -581,28 +592,32 @@ button,input,select,textarea{font:inherit;color:inherit}
   </div>
 </section>
 
-<!-- ============================ MODELOS MOLDADOS ============================ -->
-<section class="section" id="modelos">
-  <div class="wrap">
-    <div class="rail-head rv">
-      <div>
-        <span class="kicker">Linha PRO · moldados</span>
-        <h2 class="h2">Feitos para o seu ouvido<br>e para o que você toca.</h2>
-      </div>
-      <p class="rail-hint">Arraste para o lado para ver todos os modelos →</p>
-    </div>
+<!-- ============================ MODELOS POR AREA SONORA ============================ -->
+<section class="section wrap" id="modelos">
+  <div class="section-head rv">
+    <span class="kicker">Linha PRO · moldados</span>
+    <h2 class="h2">Não é sobre quantos drivers.<br>É sobre o que você precisa ouvir.</h2>
+    <p class="lede">Baterista não ouve o show do mesmo jeito que o cantor, e o técnico não ouve como nenhum dos dois. Por isso a linha é dividida por onde o som pesa — escolha pela sua função no palco, não pela tabela.</p>
   </div>
 
-  <div class="wrap">
-    <div class="rail" id="railPro">
+  <!-- ÁREA 1: GRAVE -->
+  <div class="area">
+    <header class="area-head rv">
+      <div>
+        <span class="area-tag"><i aria-hidden="true"><b style="height:14px"></b><b style="height:9px"></b><b style="height:5px"></b></i>Grave</span>
+        <h3>Pra quem segura o tempo.</h3>
+      </div>
+      <p class="area-who"><b>Bateristas, baixistas, percussionistas e DJs.</b> Se o bumbo some no meio da banda e você acaba tocando pelo que sente no chão em vez do que ouve, é aqui que começa. Grave com corpo e ataque, sem embolar com o resto.</p>
+    </header>
 
-      <article class="card">
-        <div class="card-media"><img src="assets/one-plus-pro.jpg" alt="Fone in-ear moldado XE ONE+/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Entrada PRO</span></div>
+    <div class="area-grid">
+      <article class="card rv">
+        <div class="card-media"><img src="assets/one-plus-pro.webp" alt="Fone in-ear moldado XE ONE+/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Primeiro moldado</span></div>
         <div class="card-body">
           <h3>XE ONE+/PRO</h3>
-          <p class="card-sig">Separação instrumental e som limpo</p>
-          <p>Três microdrivers com crossover de 3 vias: cada faixa de frequência no seu transdutor. O começo certo para quem está saindo do universal.</p>
-          <div class="spec"><b>3 drivers</b><b>Crossover 3 vias</b><b>Moldado</b></div>
+          <p class="card-for">Bateristas, baixistas e guitarristas</p>
+          <p>Cada faixa no seu próprio driver: o bumbo para de embolar com o baixo e você finalmente separa o que está tocando do que a banda está tocando. É a saída do universal.</p>
+          <div class="spec"><b>3 drivers</b><b>Crossover 3 vias</b></div>
           <div class="card-foot">
             <span class="card-price">A partir de<b>R$ 2.690</b></span>
             <a class="btn btn-outline btn-sm" href="#falar" data-model="XE ONE+/PRO" data-cta="card">Falar sobre</a>
@@ -610,27 +625,13 @@ button,input,select,textarea{font:inherit;color:inherit}
         </div>
       </article>
 
-      <article class="card">
-        <div class="card-media"><img src="assets/onemax-pro.jpg" alt="Fone in-ear moldado XE ONEMAX/PRO" loading="lazy" width="1200" height="900"></div>
-        <div class="card-body">
-          <h3>XE ONEMAX/PRO</h3>
-          <p class="card-sig">Musical, aveludado e equilibrado</p>
-          <p>Quatro drivers — dois para graves, um médio e um agudo. Graves aveludados e agudos cristalinos: o favorito de cantores e audiófilos.</p>
-          <div class="spec"><b>4 drivers</b><b>3 vias</b><b>28 Ω</b><b>10 Hz–20 kHz</b></div>
-          <div class="card-foot">
-            <span class="card-price">A partir de<b>R$ 3.990</b></span>
-            <a class="btn btn-outline btn-sm" href="#falar" data-model="XE ONEMAX/PRO" data-cta="card">Falar sobre</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-media"><img src="assets/xe3-pro.jpg" alt="Fone in-ear moldado XE3/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Mais grave</span></div>
+      <article class="card rv">
+        <div class="card-media"><img src="assets/xe3-pro.webp" alt="Fone in-ear moldado XE3/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">O rei do punch</span></div>
         <div class="card-body">
           <h3>XE3/PRO</h3>
-          <p class="card-sig">O rei do punch</p>
-          <p>Maior sensibilidade e headroom dinâmico da linha. Dois drivers para graves e médios, um para altas. Bateristas, baixistas e DJs sentem a diferença na primeira música.</p>
-          <div class="spec"><b>3 drivers</b><b>2 vias</b><b>35 Ω</b><b>123 dB/mW</b></div>
+          <p class="card-for">Bateristas e baixistas</p>
+          <p>O grave bate no peito e ainda sobra fôlego quando a banda inteira sobe no refrão. É o modelo com mais sensibilidade e headroom da linha — o técnico não precisa forçar o seu canal.</p>
+          <div class="spec"><b>3 drivers</b><b>2 vias</b><b>123 dB/mW</b><b>35 Ω</b></div>
           <div class="card-foot">
             <span class="card-price">A partir de<b>R$ 4.280</b></span>
             <a class="btn btn-outline btn-sm" href="#falar" data-model="XE3/PRO" data-cta="card">Falar sobre</a>
@@ -638,13 +639,40 @@ button,input,select,textarea{font:inherit;color:inherit}
         </div>
       </article>
 
-      <article class="card">
-        <div class="card-media"><img src="assets/xe4-pro.jpg" alt="Fone in-ear moldado XE4/PRO" loading="lazy" width="1200" height="900"></div>
+      <article class="card rv">
+        <div class="card-media"><img src="assets/xe6-pro.webp" alt="Fone in-ear moldado XE6/PRO" loading="lazy" width="1200" height="900"></div>
+        <div class="card-body">
+          <h3>XE6/PRO</h3>
+          <p class="card-for">Bateristas, baixistas e percussionistas</p>
+          <p>O mesmo peso do XE3 com detalhe de sobra: dá pra ouvir a diferença entre o tom e o surdo, entre a mão e a baqueta. Pra quem já sabe o que quer e precisa de leitura fina do kit.</p>
+          <div class="spec"><b>6 drivers</b><b>3 vias</b><b>122 dB/mW</b><b>10 Hz–20 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 5.890</b></span>
+            <a class="btn btn-outline btn-sm" href="#falar" data-model="XE6/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- ÁREA 2: MÉDIO -->
+  <div class="area">
+    <header class="area-head rv">
+      <div>
+        <span class="area-tag"><i aria-hidden="true"><b style="height:6px"></b><b style="height:14px"></b><b style="height:7px"></b></i>Médio</span>
+        <h3>Pra quem canta e pra quem faz a melodia.</h3>
+      </div>
+      <p class="area-who"><b>Vocalistas, guitarristas e tecladistas.</b> O médio é onde mora a sua voz e o seu instrumento — e é a primeira coisa que o palco engole. Aqui o foco é se achar na afinação sem precisar pedir mais volume no retorno.</p>
+    </header>
+
+    <div class="area-grid">
+      <article class="card rv">
+        <div class="card-media"><img src="assets/xe4-pro.webp" alt="Fone in-ear moldado XE4/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Flat</span></div>
         <div class="card-body">
           <h3>XE4/PRO</h3>
-          <p class="card-sig">A definição de flat</p>
-          <p>Resposta plana, sem ênfase em nenhuma região. Agudo presente sem acentuação, médio equilibrado e grave somando ao sub de forma homogênea.</p>
-          <div class="spec"><b>4 drivers</b><b>3 vias</b><b>25 Ω</b><b>10 Hz–17 kHz</b></div>
+          <p class="card-for">Vocalistas, técnicos de som e guitarristas</p>
+          <p>Nada empurrado, nada escondido: a sua voz sai do retorno do mesmo jeito que entrou no microfone. É por isso que técnico de som pede esse — o que ele ouve é o que está indo pro PA.</p>
+          <div class="spec"><b>4 drivers</b><b>3 vias</b><b>Resposta plana</b><b>10 Hz–17 kHz</b></div>
           <div class="card-foot">
             <span class="card-price">A partir de<b>R$ 4.680</b></span>
             <a class="btn btn-outline btn-sm" href="#falar" data-model="XE4/PRO" data-cta="card">Falar sobre</a>
@@ -652,12 +680,12 @@ button,input,select,textarea{font:inherit;color:inherit}
         </div>
       </article>
 
-      <article class="card">
-        <div class="card-media"><img src="assets/xe5-pro.jpg" alt="Fone in-ear moldado XE5/PRO" loading="lazy" width="1200" height="900"></div>
+      <article class="card rv">
+        <div class="card-media"><img src="assets/xe5-pro.webp" alt="Fone in-ear moldado XE5/PRO" loading="lazy" width="1200" height="900"></div>
         <div class="card-body">
           <h3>XE5/PRO</h3>
-          <p class="card-sig">Transparente e cirúrgico</p>
-          <p>Drivers duplos para graves e médios mais um de precisão para as altas. Versatilidade absoluta: funciona no calor do palco e na fidelidade do estúdio.</p>
+          <p class="card-for">Vocalistas, técnicos de som e guitarristas</p>
+          <p>O XE4 com mais resolução. Guitarra com corpo sem comer o vocal, vocal que não desaparece quando a banda sobe. Serve o palco à noite e a referência no estúdio no dia seguinte.</p>
           <div class="spec"><b>5 drivers</b><b>3 vias</b><b>25 Ω</b><b>10 Hz–17 kHz</b></div>
           <div class="card-foot">
             <span class="card-price">A partir de<b>R$ 5.290</b></span>
@@ -666,40 +694,53 @@ button,input,select,textarea{font:inherit;color:inherit}
         </div>
       </article>
 
-      <article class="card">
-        <div class="card-media"><img src="assets/xe6-pro.jpg" alt="Fone in-ear moldado XE6/PRO" loading="lazy" width="1200" height="900"></div>
-        <div class="card-body">
-          <h3>XE6/PRO</h3>
-          <p class="card-sig">Analítico e brilhante</p>
-          <p>Resposta estendida e riqueza de detalhes para quem precisa de apresentação analítica impecável. A escolha de artistas consagrados.</p>
-          <div class="spec"><b>6 drivers</b><b>3 vias</b><b>30 Ω</b><b>122 dB/mW</b></div>
-          <div class="card-foot">
-            <span class="card-price">A partir de<b>R$ 5.890</b></span>
-            <a class="btn btn-outline btn-sm" href="#falar" data-model="XE6/PRO" data-cta="card">Falar sobre</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-media"><img src="assets/xe8-pro.jpg" alt="Fone in-ear moldado XE8/PRO" loading="lazy" width="1200" height="900"></div>
+      <article class="card rv">
+        <div class="card-media"><img src="assets/xe8-pro.webp" alt="Fone in-ear moldado XE8/PRO" loading="lazy" width="1200" height="900"></div>
         <div class="card-body">
           <h3>XE8/PRO</h3>
-          <p class="card-sig">Grave articulado, equilíbrio total</p>
-          <p>Quatro drivers dedicados só aos graves, com presença texturizada. O equilíbrio entre a energia do palco e a sofisticação de estúdio.</p>
-          <div class="spec"><b>8 drivers</b><b>3 vias</b><b>22 Ω</b><b>10 Hz–20 kHz</b></div>
+          <p class="card-for">Vocalistas, tecladistas e guitarristas</p>
+          <p>Quatro drivers só pro grave e, mesmo assim, o médio na frente. Grave que você sente sem perder a própria voz — feito pra show grande, naipe de sopro e teclado com camada em cima de camada.</p>
+          <div class="spec"><b>8 drivers</b><b>3 vias</b><b>4 drivers de grave</b><b>10 Hz–20 kHz</b></div>
           <div class="card-foot">
             <span class="card-price">A partir de<b>R$ 7.890</b></span>
             <a class="btn btn-outline btn-sm" href="#falar" data-model="XE8/PRO" data-cta="card">Falar sobre</a>
           </div>
         </div>
       </article>
+    </div>
+  </div>
 
-      <article class="card">
-        <div class="card-media"><img src="assets/xe12-pro.jpg" alt="Fone in-ear moldado XE12/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Padrão ouro</span></div>
+  <!-- ÁREA 3: AGUDO E DETALHE -->
+  <div class="area">
+    <header class="area-head rv">
+      <div>
+        <span class="area-tag"><i aria-hidden="true"><b style="height:5px"></b><b style="height:9px"></b><b style="height:14px"></b></i>Agudo e detalhe</span>
+        <h3>Pra quem precisa ouvir tudo.</h3>
+      </div>
+      <p class="area-who"><b>Técnicos de som, produtores e audiófilos.</b> Quando a sua função é decidir o que vai pro PA ou o que fica na mixagem, descobrir o problema no vídeo do show depois não serve. Agudo aberto, separação e palco sonoro.</p>
+    </header>
+
+    <div class="area-grid">
+      <article class="card rv">
+        <div class="card-media"><img src="assets/onemax-pro.webp" alt="Fone in-ear moldado XE ONEMAX/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Mais musical</span></div>
+        <div class="card-body">
+          <h3>XE ONEMAX/PRO</h3>
+          <p class="card-for">Técnicos de som, vocalistas e tecladistas</p>
+          <p>Agudo cristalino sem aquele brilho que cansa, grave aveludado por baixo. O mais musical da faixa de entrada — quem ensaia de fone todo dia sente a diferença no fim do dia.</p>
+          <div class="spec"><b>4 drivers</b><b>3 vias</b><b>28 Ω</b><b>10 Hz–20 kHz</b></div>
+          <div class="card-foot">
+            <span class="card-price">A partir de<b>R$ 3.990</b></span>
+            <a class="btn btn-outline btn-sm" href="#falar" data-model="XE ONEMAX/PRO" data-cta="card">Falar sobre</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card rv">
+        <div class="card-media"><img src="assets/xe12-pro.webp" alt="Fone in-ear moldado XE12/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Padrão ouro</span></div>
         <div class="card-body">
           <h3>XE12/PRO</h3>
-          <p class="card-sig">Resolução máxima e soundstage</p>
-          <p>Doze microdrivers: 4 subgraves, 4 graves, 2 médios e 2 agudos, com crossover de 4 vias. Separação de frequências e palco sonoro que desafiam a realidade.</p>
+          <p class="card-for">Vocalistas, audiófilos, técnicos e produtores</p>
+          <p>Subgrave separado do grave, médio separado do agudo: quatro vias de verdade. Cada instrumento ocupa um lugar próprio no palco sonoro, e o problema aparece na hora — não depois.</p>
           <div class="spec"><b>12 drivers</b><b>4 vias</b><b>15 Ω</b><b>10 Hz–20 kHz</b></div>
           <div class="card-foot">
             <span class="card-price">A partir de<b>R$ 11.890</b></span>
@@ -708,12 +749,12 @@ button,input,select,textarea{font:inherit;color:inherit}
         </div>
       </article>
 
-      <article class="card">
-        <div class="card-media"><img src="assets/xe14-pro.jpg" alt="Fone in-ear moldado XE14/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Flagship</span></div>
+      <article class="card rv">
+        <div class="card-media"><img src="assets/xe14-pro.webp" alt="Fone in-ear moldado XE14/PRO" loading="lazy" width="1200" height="900"><span class="card-flag">Topo da linha</span></div>
         <div class="card-body">
           <h3>XE14/PRO</h3>
-          <p class="card-sig">O topo absoluto da linha</p>
-          <p>Catorze microdrivers com HexaDrive Array™ — seis drivers em formação hexagonal só para os médios — e driver E50D com resposta estendida até 50 kHz.</p>
+          <p class="card-for">Audiófilos — o som mais puro</p>
+          <p>Seis drivers só pros médios, em formação hexagonal, e um driver de alta que estende até 50 kHz. É o fim da linha: o que você escuta aqui é o que está na gravação, sem interpretação.</p>
           <div class="spec"><b>14 drivers</b><b>4 vias</b><b>HexaDrive Array™</b><b>até 50 kHz</b></div>
           <div class="card-foot">
             <span class="card-price">A partir de<b>R$ 18.990</b></span>
@@ -721,10 +762,10 @@ button,input,select,textarea{font:inherit;color:inherit}
           </div>
         </div>
       </article>
-
     </div>
-    <p class="tiny" style="margin-top:4px">Valores a partir de, para a configuração base. Personalização de cápsula, faceplate, cabo e logo é orçada junto com o especialista.</p>
   </div>
+
+  <p class="tiny" style="margin-top:30px">Valores a partir de, para a configuração base. A indicação por área é o ponto de partida — na conversa a gente ajusta ao que você toca, ao tamanho do palco e ao que já não funciona hoje. Cor da cápsula, faceplate, cabo e logo são orçados junto.</p>
 </section>
 
 <!-- ============================ UNIVERSAIS ============================ -->
@@ -732,18 +773,18 @@ button,input,select,textarea{font:inherit;color:inherit}
   <div class="rail-head rv">
     <div>
       <span class="kicker neutral">Linha universal</span>
-      <h2 class="h2">Começando agora?</h2>
-      <p class="body">Os universais usam ponteiras de silicone ou espuma e saem em até 2 dias úteis — sem pré-molde. É o caminho de quem quer entrar no in-ear antes de partir para o moldado.</p>
+      <h2 class="h2">Ainda não dá pra parar<br>pra tirar molde?</h2>
+      <p class="body">Os universais usam ponteira de silicone ou espuma e saem em até 2 dias úteis, sem pré-molde. Resolve a turnê que começa semana que vem — e serve de reserva depois que o moldado chegar.</p>
     </div>
   </div>
 
-  <div class="rail">
-    <article class="card">
-      <div class="card-media"><img src="assets/xtreme-stage.jpg" alt="Fone in-ear universal Xtreme Stage" loading="lazy" width="1200" height="900"></div>
+  <div class="area-grid">
+    <article class="card rv">
+      <div class="card-media"><img src="assets/xtreme-stage.webp" alt="Fone in-ear universal Xtreme Stage" loading="lazy" width="1200" height="900"></div>
       <div class="card-body">
         <h3>Xtreme Stage</h3>
-        <p class="card-sig">O primeiro passo</p>
-        <p>Driver dinâmico de neodímio com cápsula ergonômica e acoplador acústico 3D. Som detalhado e grave profundo para o dia a dia.</p>
+        <p class="card-for">Primeiro in-ear</p>
+        <p>Driver dinâmico de neodímio numa cápsula anatômica. Grave cheio e som detalhado pra ensaio, estudo e o dia a dia — sem gastar o de um moldado.</p>
         <div class="spec"><b>1 driver dinâmico</b><b>16 Ω</b><b>20 Hz–17 kHz</b></div>
         <div class="card-foot">
           <span class="card-price">A partir de<b>R$ 890</b></span>
@@ -752,12 +793,12 @@ button,input,select,textarea{font:inherit;color:inherit}
       </div>
     </article>
 
-    <article class="card">
-      <div class="card-media"><img src="assets/xtreme-one-plus.jpg" alt="Fone in-ear universal Xtreme One Plus" loading="lazy" width="1200" height="900"></div>
+    <article class="card rv">
+      <div class="card-media"><img src="assets/xtreme-one-plus.webp" alt="Fone in-ear universal Xtreme One Plus" loading="lazy" width="1200" height="900"></div>
       <div class="card-body">
         <h3>Xtreme One Plus</h3>
-        <p class="card-sig">Topo da linha universal</p>
-        <p>Três microdrivers de armadura balanceada com tecnologia Knowles e crossover de 3 vias. Alta resolução com cabo removível.</p>
+        <p class="card-for">Topo da linha universal</p>
+        <p>Três drivers de armadura balanceada Knowles com crossover de 3 vias. É o universal que chega mais perto de um moldado de entrada — e o cabo é removível, então dura.</p>
         <div class="spec"><b>3 drivers</b><b>3 vias</b><b>26 Ω</b><b>10 Hz–17 kHz</b></div>
         <div class="card-foot">
           <span class="card-price">A partir de<b>R$ 2.200</b></span>
@@ -766,12 +807,12 @@ button,input,select,textarea{font:inherit;color:inherit}
       </div>
     </article>
 
-    <article class="card">
-      <div class="card-media"><img src="assets/xtreme-onemax.jpg" alt="Fone in-ear universal Xtreme ONEMAX" loading="lazy" width="1200" height="900"></div>
+    <article class="card rv">
+      <div class="card-media"><img src="assets/xtreme-onemax.webp" alt="Fone in-ear universal Xtreme ONEMAX" loading="lazy" width="1200" height="900"></div>
       <div class="card-body">
         <h3>Xtreme ONEMAX</h3>
-        <p class="card-sig">Quatro drivers sem pré-molde</p>
-        <p>Dois drivers para graves, um médio e um agudo com crossover integrado de 3 vias. A sonoridade da linha PRO em formato universal.</p>
+        <p class="card-for">Quatro drivers sem pré-molde</p>
+        <p>Dois drivers de grave, um de médio e um de agudo. A assinatura da linha PRO em formato universal, pra quem quer ouvir o que vai encontrar no moldado antes de encomendar.</p>
         <div class="spec"><b>4 drivers</b><b>3 vias</b><b>28 Ω</b><b>10 Hz–20 kHz</b></div>
         <div class="card-foot">
           <span class="card-price">A partir de<b>R$ 2.890</b></span>
@@ -1041,7 +1082,7 @@ button,input,select,textarea{font:inherit;color:inherit}
         <ul>
           <li><a href="#porque">Por que moldado</a></li>
           <li><a href="#encontre">Encontre seu fone</a></li>
-          <li><a href="#modelos">Modelos</a></li>
+          <li><a href="#modelos">Modelos por área</a></li>
           <li><a href="#processo">Como funciona</a></li>
           <li><a href="#artistas">Quem usa</a></li>
           <li><a href="#duvidas">Dúvidas</a></li>
@@ -1129,17 +1170,25 @@ button,input,select,textarea{font:inherit;color:inherit}
 
   /* ---------- catálogo p/ o quiz ---------- */
   var CAT = {
-    'one':    {nome:'XE ONE+/PRO',    preco:'A partir de R$ 2.690',  txt:'3 drivers com crossover de 3 vias. Separação instrumental perfeita e som limpo para quem busca precisão e clareza.'},
-    'onemax': {nome:'XE ONEMAX/PRO',  preco:'A partir de R$ 3.990',  txt:'4 drivers com graves aveludados e agudos cristalinos. Extremamente musical e equilibrado — favorito de cantores e audiófilos.'},
-    'xe3':    {nome:'XE3/PRO',        preco:'A partir de R$ 4.280',  txt:'O rei do punch. Maior sensibilidade e headroom da linha, com foco nos graves. Bateristas, baixistas e DJs.'},
-    'xe4':    {nome:'XE4/PRO',        preco:'A partir de R$ 4.680',  txt:'A definição de flat. Resposta plana, sem ênfase em nenhuma região — para ouvir tudo como realmente é.'},
-    'xe5':    {nome:'XE5/PRO',        preco:'A partir de R$ 5.290',  txt:'Versatilidade e alta resolução. Som transparente e cirúrgico, do palco à referência de estúdio.'},
-    'xe6':    {nome:'XE6/PRO',        preco:'A partir de R$ 5.890',  txt:'6 drivers para um som analítico, rico em detalhes e com brilho inigualável. A escolha de artistas consagrados.'},
-    'xe8':    {nome:'XE8/PRO',        preco:'A partir de R$ 7.890',  txt:'4 drivers só para os graves: presença articulada e texturizada, com equilíbrio e naturalidade em qualquer estilo.'},
-    'xe12':   {nome:'XE12/PRO',       preco:'A partir de R$ 11.890', txt:'12 drivers e crossover de 4 vias. Resolução máxima, profundidade cirúrgica e o soundstage do padrão ouro.'},
-    'xe14':   {nome:'XE14/PRO',       preco:'A partir de R$ 18.990', txt:'O flagship: 14 drivers, HexaDrive Array™ com 6 drivers só para os médios e resposta estendida até 50 kHz.'}
+    'one':    {nome:'XE ONE+/PRO',    preco:'A partir de R$ 2.690',  area:'Grave',
+               txt:'Cada faixa no seu driver: o bumbo para de embolar com o baixo. A saída do universal, pra baterista, baixista e guitarrista.'},
+    'onemax': {nome:'XE ONEMAX/PRO',  preco:'A partir de R$ 3.990',  area:'Agudo e detalhe',
+               txt:'Agudo cristalino sem o brilho que cansa, grave aveludado por baixo. Técnico de som, vocalista e tecladista.'},
+    'xe3':    {nome:'XE3/PRO',        preco:'A partir de R$ 4.280',  area:'Grave',
+               txt:'O rei do punch. Bate no peito e sobra fôlego quando a banda sobe no refrão. Baterista e baixista.'},
+    'xe4':    {nome:'XE4/PRO',        preco:'A partir de R$ 4.680',  area:'Médio',
+               txt:'Flat de verdade: sua voz sai do retorno como entrou no microfone. Vocalista, técnico de som e guitarrista.'},
+    'xe5':    {nome:'XE5/PRO',        preco:'A partir de R$ 5.290',  area:'Médio',
+               txt:'Guitarra com corpo sem comer o vocal. Serve o palco à noite e a referência no estúdio no dia seguinte.'},
+    'xe6':    {nome:'XE6/PRO',        preco:'A partir de R$ 5.890',  area:'Grave',
+               txt:'O peso do XE3 com leitura fina do kit: dá pra ouvir a diferença entre a mão e a baqueta.'},
+    'xe8':    {nome:'XE8/PRO',        preco:'A partir de R$ 7.890',  area:'Médio',
+               txt:'Quatro drivers só pro grave e o médio ainda na frente. Show grande, naipe de sopro, teclado em camadas.'},
+    'xe12':   {nome:'XE12/PRO',       preco:'A partir de R$ 11.890', area:'Agudo e detalhe',
+               txt:'Quatro vias de verdade: cada instrumento com lugar próprio no palco sonoro. O problema aparece na hora.'},
+    'xe14':   {nome:'XE14/PRO',       preco:'A partir de R$ 18.990', area:'Agudo e detalhe',
+               txt:'Seis drivers só pros médios e extensão até 50 kHz. O que você escuta é o que está na gravação.'}
   };
-
   var Q2 = {
     palco: {
       titulo:'Qual sonoridade você precisa no seu retorno?',
@@ -1168,18 +1217,21 @@ button,input,select,textarea{font:inherit;color:inherit}
   };
 
   /* perfil + característica -> trilha de modelos por nível */
+  /* perfil + caracteristica -> trilha de 3 modelos (essencial, alta, referencia).
+     Cada trilha fica dentro da area que a resposta indica, pra nao contradizer
+     a secao de modelos: grave = one/xe3/xe6, medio = xe4/xe5/xe8,
+     agudo = onemax/xe12/xe14. */
   var TRILHAS = {
-    'palco|punch':        ['xe3','xe8','xe12'],
-    'palco|clareza':      ['onemax','xe6','xe12'],
-    'palco|equilibrio':   ['xe4','xe5','xe8'],
-    'estudio|flat':       ['xe4','xe5','xe12'],
-    'estudio|detalhe':    ['xe5','xe6','xe14'],
-    'estudio|extremos':   ['xe8','xe12','xe14'],
+    'palco|punch':        ['one','xe3','xe6'],      // grave
+    'palco|clareza':      ['xe4','xe5','xe8'],      // medio
+    'palco|equilibrio':   ['xe4','xe8','xe12'],     // medio -> agudo
+    'estudio|flat':       ['xe4','xe5','xe8'],      // medio
+    'estudio|detalhe':    ['onemax','xe12','xe14'], // agudo
+    'estudio|extremos':   ['xe8','xe12','xe14'],    // grave articulado -> agudo
     'hifi|musical':       ['onemax','xe8','xe12'],
-    'hifi|precisao':      ['one','xe6','xe14'],
-    'hifi|palco':         ['xe5','xe12','xe14']
-  };
-  var NIVEL = {essencial:0, alta:1, referencia:2};
+    'hifi|precisao':      ['xe4','xe12','xe14'],
+    'hifi|palco':         ['xe6','xe12','xe14']
+  };  var NIVEL = {essencial:0, alta:1, referencia:2};
   var LABEL_PERFIL = {palco:'monitoramento de palco', estudio:'produção em estúdio', hifi:'audição de alta fidelidade'};
 
   var resp = {};
@@ -1219,9 +1271,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 
     var grid = document.getElementById('resultGrid');
     grid.innerHTML =
-      '<article class="result-card lead"><span class="result-badge">Recomendado para você</span>' +
+      '<article class="result-card lead"><span class="result-badge">Recomendado para você · área ' + principal.area + '</span>' +
         '<h4>' + principal.nome + '</h4><p class="result-price">' + principal.preco + '</p><p>' + principal.txt + '</p></article>' +
-      '<article class="result-card"><span class="result-badge">Também vale ouvir</span>' +
+      '<article class="result-card"><span class="result-badge">Também vale ouvir · área ' + alt.area + '</span>' +
         '<h4>' + alt.nome + '</h4><p class="result-price">' + alt.preco + '</p><p>' + alt.txt + '</p></article>';
 
     var msg = 'Olá! Fiz o teste no site da Xtreme Ears.\n\n' +
