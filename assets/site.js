@@ -283,13 +283,34 @@
           iv_load_policy:3, fs:0
         },
         events: {
-          onReady: function(ev){ ev.target.mute(); ev.target.playVideo(); },
+          onReady: function(ev){ tocar(ev.target); },
           onStateChange: function(ev){
             if(ev.data === YT.PlayerState.PLAYING) elYt.classList.add('ok');
-          }
+          },
+          onError: function(){ elYt.innerHTML = ''; }   // some, a foto fica
         }
       });
     };
+  }
+
+  // O autoplay mudo e permitido na maioria dos navegadores, mas nao em todos:
+  // politica de midia, economia de dados e aba em segundo plano derrubam. Entao
+  // insiste algumas vezes e, se ainda assim nao for, engata no primeiro gesto
+  // do visitante — a essa altura o navegador libera.
+  function tocar(player){
+    player.mute();
+    var tentativas = 0;
+    var t = setInterval(function(){
+      if(elYt.classList.contains('ok') || ++tentativas > 6) return clearInterval(t);
+      try { player.playVideo(); } catch(e){ clearInterval(t); }
+    }, 700);
+
+    var gestos = ['pointerdown','keydown','touchstart','scroll'];
+    function noGesto(){
+      if(!elYt.classList.contains('ok')){ try { player.mute(); player.playVideo(); } catch(e){} }
+      gestos.forEach(function(g){ window.removeEventListener(g, noGesto); });
+    }
+    gestos.forEach(function(g){ window.addEventListener(g, noGesto, {once:false, passive:true}); });
   }
 
   if(elVideo && !economiza){
