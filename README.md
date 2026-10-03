@@ -44,7 +44,7 @@ Referência: beatsbydre.com — tipografia display pesada e fechada, hero full-b
 - Preto e branco puros, como a marca: base `#000`, superfícies `#0b0b0b`/`#141414`, tiles de produto em branco
 - Acento é o próprio branco — CTA é pílula branca com texto preto. Não há cor de destaque
 - Tipografia: **DM Sans** (400–900), display em 900 com tracking fechado
-- Um arquivo: `index.html` com CSS e JS inline. Sem build, sem dependência além da fonte do Google.
+- Sem build. `assets/site.css` e `assets/site.js` são compartilhados pela home e pelas 13 páginas; a única dependência externa é a fonte do Google e o `embed.js` do Instagram.
 
 ## Modelos: a seção fala por área sonora
 
@@ -59,6 +59,40 @@ A linha não é apresentada como tabela de drivers. É dividida por **onde o som
 O "indicado para" de cada card é a recomendação oficial da marca, transcrita das tarjas das próprias fotos do catálogo. O resto da copy fala em bumbo, refrão, naipe de sopro e PA — não em dB/mW.
 
 As trilhas do quiz (`TRILHAS` no script) ficam **dentro** da área que a resposta indica, pra não contradizer essa seção. Ao mexer numa, confira a outra.
+
+## Uma página por modelo
+
+Cada fone tem a sua própria página, em `/<slug>/` — o vendedor manda o link do modelo exato no WhatsApp e o músico abre a apresentação completa: pra quem é, como soa, configuração dos drivers, specs, o que vem na caixa, depoimento em vídeo, processo e CTA.
+
+As 12 páginas são **geradas**, não escritas à mão:
+
+```bash
+python3 tools/gerar-paginas.py
+```
+
+Os dados ficam na lista `MODELOS` dentro do script. Escritas separadamente, 12 páginas divergiriam na primeira correção de nav, rodapé ou processo. **Não edite o HTML gerado** — mexa no script e rode de novo.
+
+Specs, configuração de drivers e "indicado para" vêm do catálogo e das tarjas das fotos oficiais. Não invente número ali.
+
+## Vídeo e prova social
+
+**Hero.** O fundo é um `<video>` com a foto da Lauana Prado como `poster`. Sem `assets/hero.mp4` no lugar, o navegador mostra o poster — ou seja, hoje se comporta como a foto de antes. Basta largar um `hero.mp4` em `assets/` para virar fundo em vídeo, sem tocar em código.
+
+**Player.** O botão na hero abre um modal com o reel da Lauana (`DOO-skcDgb7`). Limitação real do embed do Instagram: **o vídeo não toca dentro do site** — clicar no play leva o visitante pro Instagram, que ainda mostra muro de cadastro. Por isso o rótulo do botão diz "abre no Instagram". Só um arquivo de vídeo próprio resolve isso de verdade.
+
+**Depoimentos.** A seção `#dizendo` usa embeds oficiais do Instagram (`blockquote.instagram-media` + `embed.js`), com reels reais do @xtremeears. Vantagem: atribuição e contagem de curtidas ao vivo, sem rehospedar vídeo de ninguém. Desvantagem: o embed é um iframe branco de outro domínio, então não dá pra estilizar por dentro — destoa do preto do site, e some se o post for apagado.
+
+Reels em uso, por área, em `REEL_POR_AREA` (páginas de modelo) e na seção `#dizendo` da home:
+
+| reel | quem |
+|---|---|
+| `DOO-skcDgb7` | Lauana Prado — hero |
+| `DdpiEGPMb8i` | Heitor Gomes, baixista |
+| `C9fyU-ZBS3a` | Dinho Ouro Preto, Capital Inicial |
+| `DdkE-7uSR2n` | Paulo Farat, engenheiro de som |
+| `Dd2HSHGSWDA` | Lucas Lima, Pagode dos Ex |
+| `DduYbIxSL9d` | Léo, Pagode dos Ex |
+| `DdcW6XpSr9c` | audiometria e pré-molde |
 
 ## Fotos de produto
 
