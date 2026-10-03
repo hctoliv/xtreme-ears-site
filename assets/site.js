@@ -249,27 +249,72 @@
   }, {passive:true});
 
 
-  /* ---------- player da hero: abre o reel num modal ---------- */
-  var REEL_HERO = 'DOO-skcDgb7';   // Lauana Prado no palco, @xtremeears
+  /* ==================================================================
+     HERO EM VIDEO
+     Ordem de preferencia:
+       1. assets/hero.mp4 — arquivo proprio, sem marca de terceiro
+       2. YouTube do canal oficial, mudo e em loop, como fundo
+       3. a foto (poster), que fica sempre atras dos dois
+     O video so aparece quando REALMENTE comeca a tocar; se o navegador
+     bloquear o autoplay, a foto continua no lugar e ninguem ve buraco.
+     ================================================================== */
+  var YT_HERO = 'PI09H57rC9k';   // Lauana Prado & Xtreme Ears, canal oficial
+  var elVideo = document.querySelector('.hero-video');
+  var elYt    = $('heroYt');
+
+  var economiza = (navigator.connection && (navigator.connection.saveData ||
+                   /2g/.test(navigator.connection.effectiveType || ''))) ||
+                  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function fundoYoutube(){
+    if(!elYt || economiza) return;
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+
+    window.onYouTubeIframeAPIReady = function(){
+      var alvo = document.createElement('div');
+      elYt.appendChild(alvo);
+      new YT.Player(alvo, {
+        videoId: YT_HERO,
+        playerVars: {
+          autoplay:1, mute:1, loop:1, playlist:YT_HERO, controls:0,
+          modestbranding:1, playsinline:1, rel:0, disablekb:1,
+          iv_load_policy:3, fs:0
+        },
+        events: {
+          onReady: function(ev){ ev.target.mute(); ev.target.playVideo(); },
+          onStateChange: function(ev){
+            if(ev.data === YT.PlayerState.PLAYING) elYt.classList.add('ok');
+          }
+        }
+      });
+    };
+  }
+
+  if(elVideo && !economiza){
+    // se o mp4 proprio existir, ele ganha: sem marca do YouTube e mais leve
+    elVideo.addEventListener('playing', function(){ elVideo.classList.add('ok'); });
+    elVideo.addEventListener('error', fundoYoutube, true);
+    var p = elVideo.play();
+    if(p && p.catch) p.catch(fundoYoutube);
+    // navegador que nem tenta carregar a fonte nao dispara error: confere depois
+    setTimeout(function(){
+      if(!elVideo.classList.contains('ok') && !elYt.firstChild) fundoYoutube();
+    }, 1800);
+  } else {
+    fundoYoutube();
+  }
+
+  /* ---------- player da hero: abre o video completo, com som ---------- */
   var play = $('heroPlay'), modal = $('modalVideo'), corpo = $('modalCorpo'),
       fechar = $('modalClose'), aberto = false;
 
-  function processaEmbeds(){
-    if(window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
-  }
-
   function abreModal(){
-    if(!corpo.dataset.pronto){
-      corpo.innerHTML = '<blockquote class="instagram-media" data-instgrm-version="14" ' +
-        'data-instgrm-permalink="https://www.instagram.com/reel/' + REEL_HERO + '/"></blockquote>';
-      corpo.dataset.pronto = '1';
-      // embed.js pode ainda estar carregando: tenta de novo por alguns segundos
-      var tentativas = 0;
-      var t = setInterval(function(){
-        processaEmbeds();
-        if(++tentativas > 12 || corpo.querySelector('iframe')) clearInterval(t);
-      }, 400);
-    }
+    corpo.innerHTML = '<div class="modal-video"><iframe src="https://www.youtube-nocookie.com/embed/' +
+      YT_HERO + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" ' +
+      'title="Lauana Prado &amp; Xtreme Ears" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      'allowfullscreen></iframe></div>';
     modal.classList.add('aberto');
     document.body.classList.add('is-locked');
     aberto = true;
@@ -279,6 +324,7 @@
   function fechaModal(){
     modal.classList.remove('aberto');
     document.body.classList.remove('is-locked');
+    corpo.innerHTML = '';          // para o audio ao fechar
     aberto = false;
     if(play) play.focus();
   }
@@ -288,6 +334,10 @@
     fechar.addEventListener('click', fechaModal);
     modal.addEventListener('click', function(e){ if(e.target === modal) fechaModal(); });
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && aberto) fechaModal(); });
+  }
+
+  function processaEmbeds(){
+    if(window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
   }
 
   /* ---------- reels da prova social ---------- */
