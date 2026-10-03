@@ -131,9 +131,16 @@ button,input,select,textarea{font:inherit;color:inherit}
 .hero-yt.ok{opacity:.78}
 .hero-yt{overflow:hidden;pointer-events:none}
 .hero-yt iframe{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  position:absolute;top:50%;left:50%;
   width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;
   border:0;pointer-events:none;
+  /* Os videos do canal sao antigos e tem tarja preta QUEIMADA no quadro:
+     uns em 4:3 dentro de 16:9 (tarja nas laterais), outros em cinemascope
+     (tarja em cima e embaixo). Trocar de video nao resolve — o material e
+     assim. O zoom empurra a tarja pra fora, e cada video precisa de um
+     valor diferente, medido do proprio quadro. O JS troca --zoom a cada
+     artista; o valor aqui e so o fallback. */
+  transform:translate(-50%,-50%) scale(var(--zoom, 1.4));
 }
 .hero-media::after{
   content:"";position:absolute;inset:0;

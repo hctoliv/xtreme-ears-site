@@ -19,6 +19,10 @@ import pathlib
 
 WHATS = "5511950295494"
 
+# Muda a cada deploy que mexa em site.css ou site.js: sem isso o navegador
+# serve a versao em cache e o site quebra em pedacos dificeis de diagnosticar.
+VERSAO_ASSETS = "202610032032"
+
 CAIXA_MOLDADO = [
     "Fone de ouvido in ear moldado",
     "Ferramenta de limpeza para o duto de saída",
@@ -397,7 +401,7 @@ def pagina(m, todos):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap">
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v={VERSAO_ASSETS}">
 </head>
 <body>
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
@@ -588,7 +592,7 @@ def pagina(m, todos):
 </a>
 
 <script async src="https://www.instagram.com/embed.js"></script>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v={VERSAO_ASSETS}"></script>
 </body>
 </html>
 '''

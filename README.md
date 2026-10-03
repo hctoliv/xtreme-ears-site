@@ -78,21 +78,30 @@ Specs, configuração de drivers e "indicado para" vêm do catálogo e das tarja
 
 **Hero.** O fundo faz um rodízio de artistas, trocando a cada 13 segundos, com o crédito embaixo acompanhando quem está no ar. A lista fica em `HERO_VIDEOS` (`assets/site.js`) — vídeos do canal oficial da Xtreme Ears no YouTube, mudos e sem controles:
 
-Lauana Prado · Aquiles Priester · Gilberto Gil · Fabiano Manhas · Wesley Safadão · Marcelo Falcão · Robson Caffé · Bruno Graveto
+Lauana Prado · Aquiles Priester · Bruno Graveto · Fabiano Manhas · Marcelo Falcão · Wesley Safadão
 
-**Só entram vídeos 16:9.** O player do YouTube encaixota o que não for widescreen, e no fundo da hero essa tarja preta aparece nas laterais — foi o caso do vídeo do Fabiano Manhas em 4:3, trocado pela versão 16:9 do mesmo artista. Antes de adicionar um vídeo, confira a proporção:
+### A tarja preta
 
-```bash
-curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json"
-```
+Os vídeos do canal são antigos e quase todos têm **tarja preta queimada no quadro** — uns em 4:3 dentro de 16:9 (tarja nas laterais), outros em cinemascope (tarja em cima e embaixo). O `oembed` não revela isso: ele informa a proporção do *player*, não a do conteúdo. Trocar de vídeo não resolve; o material é assim.
 
-e veja se `width/height` dá ~1.77.
+A saída é dar zoom pra empurrar a tarja pra fora do enquadramento, e **cada vídeo precisa de um valor diferente**. `tools/medir-tarja.html` mede isso no próprio quadro e devolve o zoom mínimo. O JS aplica por vídeo via a custom property `--zoom`.
 
-Só entram vídeos com footage de palco. Os do canal que são card de título ou entrevista sentada (Lexa, Kiko Freitas, Hananiel, PJ, Johnny Essi, Júnior Carelli) ficam de fora: como fundo, viram tela parada. Cada item tem um `t`, o segundo onde começar, para pular a vinheta de abertura. Um vídeo que saia do ar ou bloqueie embed é pulado pelo `onError`.
+| artista | conteúdo real do quadro | zoom |
+|---|---|---|
+| Aquiles Priester | 100% × 100% | 1.05 |
+| Lauana Prado | 84% da largura | 1.24 |
+| Bruno Graveto | 77% da largura | 1.36 |
+| Fabiano Manhas | 74% da altura | 1.40 |
+| Marcelo Falcão | 72% × 71% | 1.47 |
+| Wesley Safadão | 71% da altura | 1.48 |
+
+**Ficaram de fora por tarja demais:** Robson Caffé (58% da largura, zoom 1.72) e Gilberto Gil (30% × 64%, zoom 3.4 — confirmado em dois quadros diferentes). Acima de ~1.6 o corte come a imagem e o vídeo antigo fica borrado.
+
+Também ficam de fora os vídeos do canal que são card de título ou entrevista sentada (Lexa, Kiko Freitas, Hananiel, PJ, Júnior Carelli, Johnny Essi, Guilherme Fahl): como fundo, viram tela parada.
 
 **Capital Inicial não está no canal.** O Dinho Ouro Preto só existe como reel no Instagram (`C9fyU-ZBS3a`), e reel do Instagram não serve de fundo. Ele aparece na seção de depoimentos.
 
-A ordem de preferência do fundo continua: `assets/hero.mp4` se existir (arquivo próprio, sem marca de terceiro) → YouTube → a foto. O vídeo só aparece quando realmente começa a tocar; se o autoplay for bloqueado, a foto fica e ninguém vê buraco. Conexão lenta, `saveData` ou `prefers-reduced-motion` pulam o vídeo.
+A ordem de preferência do fundo: `assets/hero.mp4` se existir (arquivo próprio, sem tarja, sem marca de terceiro e sem precisar de zoom nenhum) → YouTube → a foto. O vídeo só aparece quando realmente começa a tocar; se o autoplay for bloqueado, a foto fica e ninguém vê buraco. Conexão lenta, `saveData` ou `prefers-reduced-motion` pulam o vídeo.
 
 **Player.** O botão da hero abre o vídeo **do artista que estiver no ar**, em modal, com som e sem sair do site. O rodízio pausa com o modal aberto.
 
@@ -128,6 +137,8 @@ Cada modelo usa foto da **sua própria** página de produto, escolhida pra que n
 ```bash
 python3 -m http.server 4178
 ```
+
+**Ao mexer em `site.css` ou `site.js`**, bump o `VERSAO_ASSETS` em `tools/gerar-paginas.py` e rode o gerador: as páginas referenciam `assets/site.css?v=...`. Sem isso o navegador serve a versão em cache e o site quebra em pedaços difíceis de diagnosticar — foi exatamente o que aconteceu com o zoom da hero, que chegava no CSS mas não era aplicado.
 
 Depois abra `http://localhost:4178`.
 

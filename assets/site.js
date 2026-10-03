@@ -272,15 +272,16 @@
      `t` = segundo onde comecar, pra pular vinheta de abertura.
      Capital Inicial nao existe no canal: o Dinho so tem reel no Instagram. */
   var HERO_VIDEOS = [
-    {id:'PI09H57rC9k', quem:'Lauana Prado',    t:5},
-    {id:'cwc_h8WMzkw', quem:'Aquiles Priester', t:8},
-    {id:'ZeooE9AeeZ0', quem:'Gilberto Gil',    t:5},
-    {id:'QbDrR2BFitE', quem:'Fabiano Manhas',  t:6},
-    {id:'0LAQgR3c9YU', quem:'Wesley Safadão',  t:5},
-    {id:'tIrMgNO4Ljk', quem:'Marcelo Falcão',  t:5},
-    {id:'DHLvefrSbNk', quem:'Robson Caffé',    t:6},
-    {id:'DpMVZTAPBz4', quem:'Bruno Graveto',   t:8}
+    // zoom: medido do proprio quadro do video (ver README). Valor minimo pra
+    // tarja sair do enquadramento, com uma folga pequena.
+    {id:'PI09H57rC9k', quem:'Lauana Prado',     t:5, zoom:1.24},
+    {id:'cwc_h8WMzkw', quem:'Aquiles Priester', t:8, zoom:1.05},
+    {id:'DpMVZTAPBz4', quem:'Bruno Graveto',    t:8, zoom:1.36},
+    {id:'QbDrR2BFitE', quem:'Fabiano Manhas',   t:6, zoom:1.40},
+    {id:'tIrMgNO4Ljk', quem:'Marcelo Falcão',   t:5, zoom:1.47},
+    {id:'0LAQgR3c9YU', quem:'Wesley Safadão',   t:5, zoom:1.48}
   ];
+
   var SEGUNDOS = 13;          // quanto cada artista fica no ar
   var atual = Math.floor(Math.random() * HERO_VIDEOS.length);   // nao comeca sempre igual
   var playerHero = null, troca = null;
@@ -295,6 +296,7 @@
   function creditar(){
     var c = $('heroCredito');
     if(c) c.textContent = HERO_VIDEOS[atual].quem;
+    elYt.style.setProperty('--zoom', HERO_VIDEOS[atual].zoom);
   }
 
   function proximo(){
@@ -314,6 +316,8 @@
     var tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     document.head.appendChild(tag);
+
+    elYt.style.setProperty('--zoom', HERO_VIDEOS[atual].zoom);
 
     window.onYouTubeIframeAPIReady = function(){
       playerHero = new YT.Player(elYt.firstChild, {
