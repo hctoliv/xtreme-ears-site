@@ -258,7 +258,25 @@
      O video so aparece quando REALMENTE comeca a tocar; se o navegador
      bloquear o autoplay, a foto continua no lugar e ninguem ve buraco.
      ================================================================== */
-  var YT_HERO = 'PI09H57rC9k';   // Lauana Prado & Xtreme Ears, canal oficial
+  /* Rodizio de artistas no fundo da hero. So entram videos com footage de
+     palco de verdade — os do canal que sao card de titulo ou entrevista
+     sentada ficam de fora, porque como fundo viram uma tela parada.
+     `t` = segundo onde comecar, pra pular vinheta de abertura.
+     Capital Inicial nao existe no canal: o Dinho so tem reel no Instagram. */
+  var HERO_VIDEOS = [
+    {id:'PI09H57rC9k', quem:'Lauana Prado',    t:5},
+    {id:'cwc_h8WMzkw', quem:'Aquiles Priester', t:8},
+    {id:'ZeooE9AeeZ0', quem:'Gilberto Gil',    t:5},
+    {id:'G6BkVSKdvz8', quem:'Fabiano Manhas',  t:6},
+    {id:'0LAQgR3c9YU', quem:'Wesley Safadão',  t:5},
+    {id:'tIrMgNO4Ljk', quem:'Marcelo Falcão',  t:5},
+    {id:'DHLvefrSbNk', quem:'Robson Caffé',    t:6},
+    {id:'DpMVZTAPBz4', quem:'Bruno Graveto',   t:8}
+  ];
+  var SEGUNDOS = 13;          // quanto cada artista fica no ar
+  var atual = Math.floor(Math.random() * HERO_VIDEOS.length);   // nao comeca sempre igual
+  var playerHero = null, troca = null;
+
   var elVideo = document.querySelector('.hero-video');
   var elYt    = $('heroYt');
 
@@ -266,37 +284,55 @@
                    /2g/.test(navigator.connection.effectiveType || ''))) ||
                   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  function creditar(){
+    var c = $('heroCredito');
+    if(c) c.textContent = HERO_VIDEOS[atual].quem;
+  }
+
+  function proximo(){
+    if(!playerHero || !playerHero.loadVideoById) return;
+    atual = (atual + 1) % HERO_VIDEOS.length;
+    try {
+      playerHero.loadVideoById({videoId: HERO_VIDEOS[atual].id,
+                                startSeconds: HERO_VIDEOS[atual].t});
+      playerHero.mute();
+    } catch(e){}
+  }
+
   function fundoYoutube(){
-    if(!elYt || economiza) return;
+    if(!elYt || economiza || elYt.firstChild) return;
+    elYt.appendChild(document.createElement('div'));   // marca que ja comecou
+
     var tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     document.head.appendChild(tag);
 
     window.onYouTubeIframeAPIReady = function(){
-      var alvo = document.createElement('div');
-      elYt.appendChild(alvo);
-      new YT.Player(alvo, {
-        videoId: YT_HERO,
+      playerHero = new YT.Player(elYt.firstChild, {
+        videoId: HERO_VIDEOS[atual].id,
         playerVars: {
-          autoplay:1, mute:1, loop:1, playlist:YT_HERO, controls:0,
+          autoplay:1, mute:1, controls:0, start:HERO_VIDEOS[atual].t,
           modestbranding:1, playsinline:1, rel:0, disablekb:1,
           iv_load_policy:3, fs:0
         },
         events: {
           onReady: function(ev){ tocar(ev.target); },
           onStateChange: function(ev){
-            if(ev.data === YT.PlayerState.PLAYING) elYt.classList.add('ok');
+            if(ev.data === YT.PlayerState.PLAYING){
+              elYt.classList.add('ok');
+              creditar();
+              clearTimeout(troca);
+              troca = setTimeout(proximo, SEGUNDOS * 1000);
+            }
+            if(ev.data === YT.PlayerState.ENDED) proximo();
           },
-          onError: function(){ elYt.innerHTML = ''; }   // some, a foto fica
+          // video removido ou com embed bloqueado: pula pro proximo artista
+          onError: function(){ proximo(); }
         }
       });
     };
   }
 
-  // O autoplay mudo e permitido na maioria dos navegadores, mas nao em todos:
-  // politica de midia, economia de dados e aba em segundo plano derrubam. Entao
-  // insiste algumas vezes e, se ainda assim nao for, engata no primeiro gesto
-  // do visitante — a essa altura o navegador libera.
   function tocar(player){
     player.mute();
     var tentativas = 0;
@@ -332,9 +368,11 @@
       fechar = $('modalClose'), aberto = false;
 
   function abreModal(){
+    var v = HERO_VIDEOS[atual];
+    clearTimeout(troca);                       // nao troca o fundo com o modal aberto
     corpo.innerHTML = '<div class="modal-video"><iframe src="https://www.youtube-nocookie.com/embed/' +
-      YT_HERO + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" ' +
-      'title="Lauana Prado &amp; Xtreme Ears" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
+      v.id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" ' +
+      'title="' + v.quem + ' &amp; Xtreme Ears" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" ' +
       'allowfullscreen></iframe></div>';
     modal.classList.add('aberto');
     document.body.classList.add('is-locked');
@@ -347,6 +385,7 @@
     document.body.classList.remove('is-locked');
     corpo.innerHTML = '';          // para o audio ao fechar
     aberto = false;
+    troca = setTimeout(proximo, SEGUNDOS * 1000);
     if(play) play.focus();
   }
 

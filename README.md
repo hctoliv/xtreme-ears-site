@@ -76,9 +76,17 @@ Specs, configuração de drivers e "indicado para" vêm do catálogo e das tarja
 
 ## Vídeo e prova social
 
-**Hero.** O fundo é um `<video>` com a foto da Lauana Prado como `poster`. Sem `assets/hero.mp4` no lugar, o navegador mostra o poster — ou seja, hoje se comporta como a foto de antes. Basta largar um `hero.mp4` em `assets/` para virar fundo em vídeo, sem tocar em código.
+**Hero.** O fundo faz um rodízio de artistas, trocando a cada 13 segundos, com o crédito embaixo acompanhando quem está no ar. A lista fica em `HERO_VIDEOS` (`assets/site.js`) — vídeos do canal oficial da Xtreme Ears no YouTube, mudos e sem controles:
 
-**Player.** O botão na hero abre um modal com o reel da Lauana (`DOO-skcDgb7`). Limitação real do embed do Instagram: **o vídeo não toca dentro do site** — clicar no play leva o visitante pro Instagram, que ainda mostra muro de cadastro. Por isso o rótulo do botão diz "abre no Instagram". Só um arquivo de vídeo próprio resolve isso de verdade.
+Lauana Prado · Aquiles Priester · Gilberto Gil · Fabiano Manhas · Wesley Safadão · Marcelo Falcão · Robson Caffé · Bruno Graveto
+
+Só entram vídeos com footage de palco. Os do canal que são card de título ou entrevista sentada (Lexa, Kiko Freitas, Hananiel, PJ, Johnny Essi, Júnior Carelli) ficam de fora: como fundo, viram tela parada. Cada item tem um `t`, o segundo onde começar, para pular a vinheta de abertura. Um vídeo que saia do ar ou bloqueie embed é pulado pelo `onError`.
+
+**Capital Inicial não está no canal.** O Dinho Ouro Preto só existe como reel no Instagram (`C9fyU-ZBS3a`), e reel do Instagram não serve de fundo. Ele aparece na seção de depoimentos.
+
+A ordem de preferência do fundo continua: `assets/hero.mp4` se existir (arquivo próprio, sem marca de terceiro) → YouTube → a foto. O vídeo só aparece quando realmente começa a tocar; se o autoplay for bloqueado, a foto fica e ninguém vê buraco. Conexão lenta, `saveData` ou `prefers-reduced-motion` pulam o vídeo.
+
+**Player.** O botão da hero abre o vídeo **do artista que estiver no ar**, em modal, com som e sem sair do site. O rodízio pausa com o modal aberto.
 
 **Depoimentos.** A seção `#dizendo` usa embeds oficiais do Instagram (`blockquote.instagram-media` + `embed.js`), com reels reais do @xtremeears. Vantagem: atribuição e contagem de curtidas ao vivo, sem rehospedar vídeo de ninguém. Desvantagem: o embed é um iframe branco de outro domínio, então não dá pra estilizar por dentro — destoa do preto do site, e some se o post for apagado.
 
