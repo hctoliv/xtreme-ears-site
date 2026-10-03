@@ -9,18 +9,18 @@ figcaption{padding:4px;font-size:10px}
 <div class=g id=g></div>
 <script>
 const JOBS = [
-  ["one-A.jpg",        "one-plus-pro.jpg"],
-  ["onemax-A.jpg",     "onemax-pro.jpg"],
-  ["xe3-pro.jpg",      "xe3-pro.jpg"],
-  ["xe4-pro.jpg",      "xe4-pro.jpg"],
-  ["xe5-A.jpg",        "xe5-pro.jpg"],
-  ["xe6-pro.jpg",      "xe6-pro.jpg"],
-  ["xe8-A.jpg",        "xe8-pro.jpg"],
-  ["xe12-pro.jpg",     "xe12-pro.jpg"],
-  ["xe14-A.jpg",       "xe14-pro.jpg"],
-  ["xtreme-stage.jpg", "xtreme-stage.jpg"],
-  ["xtreme-one-plus.jpg","xtreme-one-plus.jpg"],
-  ["xtreme-onemax.jpg","xtreme-onemax.jpg"]
+  ["one_1.jpg",     "one-plus-pro.jpg"],      // roxo
+  ["onemax_0.jpg",  "onemax-pro.jpg"],        // azul-petroleo
+  ["xe3_0.jpg",     "xe3-pro.jpg"],           // madeira clara
+  ["xe4_0.jpg",     "xe4-pro.jpg"],           // laranja
+  ["xe5_0.png",     "xe5-pro.jpg"],           // rosa
+  ["xe6_1.png",     "xe6-pro.jpg"],           // bege
+  ["xe8_0.png",     "xe8-pro.jpg"],           // cinza marmorizado
+  ["xe12_0.png",    "xe12-pro.jpg"],          // madeira escura
+  ["xe14_0.png",    "xe14-pro.jpg"],          // preto
+  ["ustage_5.png",  "xtreme-stage.jpg"],      // verde
+  ["uone_4.jpg",    "xtreme-one-plus.jpg"],   // azul translucido
+  ["uonemax_0.jpg", "xtreme-onemax.jpg"]      // preto
 ];
 
 const OW = 1200, OH = 900;   // tile 4:3, igual ao card
@@ -36,6 +36,8 @@ function analyse(img){
   const c = document.createElement('canvas');
   c.width = img.naturalWidth; c.height = img.naturalHeight;
   const x = c.getContext('2d', {willReadFrequently:true});
+  // PNG com fundo transparente vira preto no canvas: pinta branco antes
+  x.fillStyle = '#ffffff'; x.fillRect(0,0,c.width,c.height);
   x.drawImage(img,0,0);
   const W=c.width, H=c.height;
   const d = x.getImageData(0,0,W,H).data;
@@ -43,22 +45,28 @@ function analyse(img){
   // 1. faixas de banner: linha com um TRECHO CONTINUO de preto muito largo
   //    (a tarja e solida; o produto, mesmo escuro, quebra em pedacos menores)
   const bannerRow = new Uint8Array(H);
+  const darkFrac  = new Float32Array(H);
   for(let y=0;y<H;y++){
-    let run=0, best=0;
+    let run=0, best=0, dark=0;
     for(let xx=0;xx<W;xx++){
       const i=(y*W+xx)*4;
-      if(lum(d[i],d[i+1],d[i+2])<55){ run++; if(run>best) best=run; }
+      if(lum(d[i],d[i+1],d[i+2])<55){ run++; dark++; if(run>best) best=run; }
       else run=0;
     }
+    darkFrac[y] = dark/W;
     bannerRow[y] = (best > W*0.5) ? 1 : 0;
   }
+  // a tarja costuma ter texto branco por cima, o que quebra o trecho continuo.
+  // entao estica a banda enquanto a linha continuar majoritariamente escura.
+  const grow = (y, dir) => { let e=y; while(e+dir>=0 && e+dir<H && darkFrac[e+dir]>0.45) e+=dir; return e; };
   const MINBAND = Math.max(8, H*0.025);   // altura minima para valer como tarja
   let top=0, bot=H-1;
   // tarja colada no topo
   for(let y=0; y<H*0.3; y++){
     if(bannerRow[y]){
       let e=y; while(e<H && bannerRow[e]) e++;
-      if(e-y >= MINBAND) top = Math.min(e + Math.round(H*0.01), H-1);
+      e = grow(e-1, +1) + 1;
+      if(e-y >= MINBAND) top = Math.min(e + Math.round(H*0.012), H-1);
       break;
     }
   }
@@ -66,7 +74,8 @@ function analyse(img){
   for(let y=Math.floor(H*0.62); y<H; y++){
     if(bannerRow[y]){
       let e=y; while(e<H && bannerRow[e]) e++;
-      if(e-y >= MINBAND){ bot = Math.max(y - Math.round(H*0.012), 0); break; }
+      const ini = grow(y, -1);
+      if(e-y >= MINBAND){ bot = Math.max(ini - Math.round(H*0.012), 0); break; }
     }
   }
 

@@ -48,9 +48,20 @@ Referência: beatsbydre.com — tipografia display pesada e fechada, hero full-b
 
 ## Fotos de produto
 
-As imagens do catálogo vinham com uma tarja preta de propaganda queimada na arte ("INDICADO PARA BATERISTAS…"), em enquadramentos e escalas diferentes. Foram reprocessadas: tarja recortada, produto isolado pelo bounding box e recentralizado num tile 4:3 branco com a mesma proporção em todos os modelos. O script está em `tools/crop.html` — abra servindo a pasta com `tools/writer.py` para regerar.
+As imagens do catálogo vinham com uma tarja preta de propaganda queimada na arte ("INDICADO PARA BATERISTAS…", "LANÇAMENTO!"), em enquadramentos e escalas diferentes. Foram reprocessadas: tarja recortada, produto isolado pelo bounding box e recentralizado num tile 4:3 branco, com a mesma proporção em todos os modelos. O script está em `tools/crop.html` — sirva a pasta com `tools/writer.py` e abra para regerar.
 
-**Pendência de conteúdo:** XE12/PRO e XE14/PRO usam praticamente a mesma foto no catálogo da marca (o mesmo par de madeira). Vale pedir fotos distintas para os dois.
+Cada modelo usa uma foto da **sua própria** página de produto, escolhida para que nenhum par se repita visualmente:
+
+| | acabamento | | acabamento |
+|---|---|---|---|
+| XE ONE+/PRO | roxo | XE8/PRO | cinza marmorizado |
+| XE ONEMAX/PRO | azul-petróleo | XE12/PRO | madeira escura |
+| XE3/PRO | madeira clara | XE14/PRO | preto |
+| XE4/PRO | laranja | Xtreme Stage | verde |
+| XE5/PRO | rosa | Xtreme One Plus | azul translúcido |
+| XE6/PRO | bege | Xtreme ONEMAX | preto |
+
+O faceplate é escolhido pelo cliente, então essas cores são exemplos do catálogo — não são a única opção de cada modelo. Ao trocar uma foto, vale rodar a comparação de cor média para garantir que nenhuma ficou parecida demais com outra.
 
 ## Rodar
 
