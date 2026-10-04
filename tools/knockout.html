@@ -12,18 +12,8 @@ figcaption{padding:5px 8px;font-size:10px;color:#9cf;background:#000}
 <div class=g id=g></div>
 <script>
 const JOBS = [
-  // [arquivo, nome, zona?] — zona limita ONDE procurar as capsulas, em fracao da
-  // altura. So e preciso quando a propria foto atrapalha: laco de cabo por cima,
-  // reflexo espelhado por baixo.
-  ["one_1.jpg",     "one-plus-pro"],
-  ["onemax_0.jpg",  "onemax-pro",      [0.54, 1.00]],  // laco de cabo em cima
-  ["xe3_0.jpg",     "xe3-pro"],
-  ["xe4_0.jpg",     "xe4-pro"],
-  ["xe5_0.png",     "xe5-pro"],
-  ["xe6_1.png",     "xe6-pro",         [0.00, 0.52]],  // reflexo espelhado embaixo
-  ["xe8_0.png",     "xe8-pro"],
-  ["xe12_0.png",    "xe12-pro"],
-  ["xe14_0.png",    "xe14-pro"],
+  // so os universais: eles tem aparencia propria de fabrica, nao faceplate
+  // escolhido pelo cliente. Os moldados usam a base unica recolorida.
   ["ustage_5.png",  "xtreme-stage"],
   ["uone_4.jpg",    "xtreme-one-plus"],
   ["uonemax_0.jpg", "xtreme-onemax"]
@@ -191,6 +181,62 @@ function recorta(src, zona){
     cx0=Math.min(...bons.map(b=>b.ax0))-R; cy0=Math.min(...bons.map(b=>b.ay0))-R;
     cx1=Math.max(...bons.map(b=>b.ax1))+R; cy1=Math.max(...bons.map(b=>b.ay1))+R;
   }
+  // ---- dissolve o que esta longe das capsulas ----
+  // Nas fotos originais o cabo sai do quadro. Tirando o fundo, ele vira um
+  // coto terminando no ar — le como imagem quebrada. E o reflexo de estudio,
+  // que sumia no branco, vira mancha cinza no preto.
+  // Em vez de cortar (qualquer corte deixa coto), o alfa cai suavemente
+  // conforme se afasta do corpo do fone: o cabo desaparece em vez de acabar,
+  // e o reflexo some junto.
+  const capW = cx1 - cx0 + 1, capH = cy1 - cy0 + 1;
+  const R1 = Math.max(capW, capH) * 0.10;   // ate aqui, intacto
+  const R2 = Math.max(capW, capH) * 0.34;   // daqui pra fora, nada
+  for(let py = 0; py < H; py++){
+    const dy = Math.max(0, cy0 - py, py - cy1);
+    for(let px = 0; px < W; px++){
+      const i = (py*W + px)*4;
+      if(!d[i+3]) continue;
+      const dx = Math.max(0, cx0 - px, px - cx1);
+      if(!dx && !dy) continue;                       // dentro das capsulas
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist <= R1) continue;
+      const f = dist >= R2 ? 0 : 1 - (dist - R1) / (R2 - R1);
+      d[i+3] = Math.round(d[i+3] * f * f);           // queda suave
+    }
+  }
+  x.putImageData(id, 0, 0);
+
+  // ---- mata o reflexo ----
+  // As fotos sao de estudio com o fone espelhado numa superficie. No fundo
+  // branco o reflexo some; no preto do site vira mancha cinza embaixo do
+  // produto. Abaixo das capsulas, o que e LARGO e reflexo; o que e FINO e
+  // cabo, e fica. A largura das capsulas da a referencia.
+  const larguraCaps = cx1 - cx0 + 1;
+  const corte = cy1 + Math.round(H * 0.012);
+  for(let py = corte; py < H; py++){
+    let opacos = 0;
+    for(let px = 0; px < W; px++) if(B[py*W + px] > 0.15) opacos++;
+    if(opacos > larguraCaps * 0.34){          // largo demais pra ser cabo
+      for(let px = 0; px < W; px++){
+        const i = (py*W + px)*4;
+        d[i+3] = 0;
+      }
+    }
+  }
+  x.putImageData(id, 0, 0);
+
+  // o bbox do produto precisa ser recalculado sem o reflexo
+  y0 = H; y1 = -1; x0 = W; x1 = -1;
+  for(let py = 0; py < H; py++){
+    for(let px = 0; px < W; px++){
+      if(d[(py*W + px)*4 + 3] > 16){
+        if(px < x0) x0 = px; if(px > x1) x1 = px;
+        if(py < y0) y0 = py; if(py > y1) y1 = py;
+      }
+    }
+  }
+  if(x1 < 0){ x0 = 0; y0 = 0; x1 = W-1; y1 = H-1; }
+
   return {c,x0,y0,x1,y1,cx0,cy0,cx1,cy1,capsulas:blocos.length};
 }
 

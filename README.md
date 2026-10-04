@@ -138,7 +138,9 @@ Reels em uso, por área, em `REEL_POR_AREA` (páginas de modelo) e na seção `#
 
 ## Fotos de produto: uma só, recolorida
 
-**Há uma única foto de fone no site** — `assets/fone-base.webp` — e o que muda entre os modelos é a cor do faceplate, por filtro CSS (`CORES` e `COR_DO_MODELO` em `tools/home_modelos.py`).
+**Os 9 moldados usam uma foto só** — `assets/fone-base.webp` — e o que muda entre eles é a cor do faceplate, por filtro CSS (`CORES` e `COR_DO_MODELO` em `tools/home_modelos.py`).
+
+**Os 3 universais mantêm foto própria.** Eles não têm pré-molde nem faceplate escolhido pelo cliente: têm aparência de fábrica, e a foto do produto é a foto dele mesmo. Ficam listados em `SEM_PRE_MOLDE`, e `foto()` decide qual imagem cada modelo usa.
 
 Isso é mais honesto do que uma foto por modelo. O faceplate é **escolha do cliente**, não característica do fone: antes, cada card tinha uma foto diferente do catálogo, o que dava a entender que o XE6 "é" bege e o XE4 "é" vermelho — e nenhum dos dois é. As cores disponíveis são as mesmas do personalizador da loja: transparente, preto, preto-translúcido, azul, verde, vermelho, rosa, rosa-claro.
 

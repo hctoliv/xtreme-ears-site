@@ -58,6 +58,11 @@ CORES = {
     "transparente":      "saturate(.07) brightness(1.35) contrast(.9)",
 }
 
+# Os UNIVERSAIS nao entram aqui: eles tem aparencia propria de fabrica, e a
+# foto deles e a foto do produto mesmo. Faceplate escolhido pelo cliente so
+# existe no moldado — e so por isso a base unica recolorida faz sentido.
+SEM_PRE_MOLDE = {"xtreme-stage", "xtreme-one-plus", "xtreme-onemax"}
+
 # uma cor por modelo, so pra linha nao ficar monocromatica
 COR_DO_MODELO = {
     "one-plus-pro":    "azul",
@@ -69,14 +74,19 @@ COR_DO_MODELO = {
     "onemax-pro":      "verde",
     "xe12-pro":        "preto",
     "xe14-pro":        "rosa-claro",
-    "xtreme-stage":    "verde",
-    "xtreme-one-plus": "azul",
-    "xtreme-onemax":   "preto",
 }
 
 
 def tint(slug):
+    """Filtro de cor do faceplate. Vazio para quem usa foto propria."""
+    if slug in SEM_PRE_MOLDE:
+        return "none"
     return CORES.get(COR_DO_MODELO.get(slug, "rosa"), "none")
+
+
+def foto(slug):
+    """Universal mostra o proprio produto; moldado usa a base recolorida."""
+    return f"{slug}.webp" if slug in SEM_PRE_MOLDE else "fone-base.webp"
 
 AREA_ORDEM = ["grave", "medio", "agudo", "universal"]
 
@@ -132,7 +142,7 @@ def _linha(m, areas):
     return (
         f'      <article class="modelo-linha rv" id="{e(m["slug"])}">\n'
         f'        <a class="modelo-img" href="{e(m["slug"])}/" tabindex="-1" aria-hidden="true">\n'
-        f'          <img src="assets/fone-base.webp" alt="" loading="lazy" width="1200" height="900"\n'
+        f'          <img src="assets/{foto(m["slug"])}" alt="" loading="lazy" width="1200" height="900"\n'
         f'               style="filter:{tint(m["slug"])}">\n'
         f'        </a>\n'
         f'        <div class="modelo-txt">\n'

@@ -20,13 +20,13 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import home_modelos
-from home_modelos import tint
+from home_modelos import tint, foto
 
 WHATS = "5511950295494"
 
 # Muda a cada deploy que mexa em site.css ou site.js: sem isso o navegador
 # serve a versao em cache e o site quebra em pedacos dificeis de diagnosticar.
-VERSAO_ASSETS = "202610032103"
+VERSAO_ASSETS = "202610032105"
 
 CAIXA_MOLDADO = [
     "Fone de ouvido in ear moldado",
@@ -365,7 +365,7 @@ def pagina(m, todos):
                    "Estojo", "Manual do usuário"])
 
     irmaos_html = "\n".join(f'''      <a class="irmao rv" href="../{o["slug"]}/">
-        <img src="../assets/fone-base.webp" alt="{e(o["nome"])}" loading="lazy" width="1200" height="900" style="filter:{tint(o["slug"])}">
+        <img src="../assets/{foto(o["slug"])}" alt="{e(o["nome"])}" loading="lazy" width="1200" height="900" style="filter:{tint(o["slug"])}">
         <div><strong>{e(o["nome"])}</strong><span>{e(o["assinatura"])}</span>
         <em>A partir de R$ {e(o["preco"])}</em></div>
       </a>''' for o in irmaos)
@@ -400,7 +400,7 @@ def pagina(m, todos):
 <link rel="icon" href="../assets/logo-xtreme-branco.png" type="image/png">
 <meta property="og:title" content="{e(m["nome"])} — Xtreme Ears">
 <meta property="og:description" content="{e(m["chamada"])}">
-<meta property="og:image" content="../assets/fone-base.webp">
+<meta property="og:image" content="../assets/{foto(m["slug"])}">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -461,7 +461,7 @@ def pagina(m, todos):
       <p class="tiny" style="margin-top:20px">{e(prazo)} · Garantia de 1 ano · Frete grátis</p>
     </div>
     <figure class="modelo-foto">
-      <img src="../assets/fone-base.webp" alt="{e(m["nome"])}" width="1200" height="900" fetchpriority="high" style="filter:{tint(m["slug"])}">
+      <img src="../assets/{foto(m["slug"])}" alt="{e(m["nome"])}" width="1200" height="900" fetchpriority="high" style="filter:{tint(m["slug"])}">
       {f'<figcaption class="card-flag">{e(m["flag"])}</figcaption>' if m.get("flag") else ''}
     </figure>
   </div>
