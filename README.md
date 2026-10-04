@@ -142,11 +142,11 @@ Cada fone fica dentro de um **círculo de borda branca, sem preenchimento**. O p
 
 **A ponta do cabo tem que encostar na borda.** Se ela morre antes, volta a parecer imagem cortada no ar — que era o problema original. Por isso:
 
-- as imagens são geradas num **canvas quadrado com o produto ajustado ao quadro inteiro**, então cada produto encosta na borda pelo lado mais comprido;
-- o círculo tem `overflow:hidden`, então é ele quem corta o cabo;
-- a imagem vai a `104%` do círculo, pra garantir o encosto.
+- as imagens são geradas com o produto **ajustado ao círculo, não ao quadrado**. A escala sai do ponto mais distante do centro do produto, não da caixa que o contém. Encaixar no quadrado deixava tudo que ficasse perto dos cantos fora do círculo — foi o que cortava os universais, que são diagonais;
+- o círculo tem `overflow:hidden`, então é ele quem termina o cabo;
+- a imagem fica em `100%` — acima disso o produto é cortado.
 
-Com a normalização no gerador, **um único valor de CSS serve para todas** — moldado ou universal. Antes de normalizar, cada imagem precisaria de um valor diferente (de 141% a 237%), o que quebraria na primeira troca de foto.
+Com a normalização no gerador, **um único valor de CSS serve para todas** — moldado ou universal. Sem ela, cada imagem precisaria de um valor próprio (de 141% a 237%), o que quebraria na primeira troca de foto.
 
 **Os 9 moldados usam uma foto só** — `assets/fone-base.webp` — e o que muda entre eles é a cor do faceplate, por filtro CSS (`CORES` e `COR_DO_MODELO` em `tools/home_modelos.py`).
 

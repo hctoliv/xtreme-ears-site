@@ -243,24 +243,30 @@ function recorta(src, zona){
 }
 
 function padroniza(r){
-  const cw=r.cx1-r.cx0+1, ch=r.cy1-r.cy0+1;   // so as capsulas
-  const tw=r.x1-r.x0+1,  th=r.y1-r.y0+1;      // produto inteiro, com cabo
   const out=document.createElement('canvas'); out.width=OW; out.height=OH;
   const o=out.getContext('2d');
   o.imageSmoothingQuality='high';
 
-  // A escala QUER ser definida pelas capsulas, pra que o fone apareca do mesmo
-  // tamanho em todos os cards. Mas o cabo nao pode ser cortado na borda: isso
-  // le como erro, nao como enquadramento. Entao a escala das capsulas e o
-  // alvo, e o produto inteiro e o teto — vence o menor dos dois.
-  const s = Math.min(OW/tw, OH/th);   // produto ajustado ao quadro
+  // Ajusta ao CIRCULO, nao ao quadrado. A mascara no site e redonda; encaixar
+  // o produto no quadrado deixa tudo que esta perto dos cantos pra fora do
+  // circulo. A escala sai do ponto mais distante do centro: assim ele encosta
+  // na borda e nada passa dela.
+  const W=r.c.width, H=r.c.height;
+  const x2=r.c.getContext('2d',{willReadFrequently:true});
+  const d=x2.getImageData(0,0,W,H).data;
+  const cenX=(r.x0+r.x1)/2, cenY=(r.y0+r.y1)/2;
+  let maxR=1;
+  for(let py=r.y0;py<=r.y1;py++) for(let px=r.x0;px<=r.x1;px++){
+    if(d[(py*W+px)*4+3]<=16) continue;
+    const rr=Math.hypot(px-cenX, py-cenY);
+    if(rr>maxR) maxR=rr;
+  }
+  const s=(OW/2)/maxR;
 
-  // centra pelo produto inteiro, pra sobrar margem igual dos dois lados
-  const centroX=(r.x0+r.x1)/2, centroY=(r.y0+r.y1)/2;
-  o.drawImage(r.c, 0,0, r.c.width, r.c.height,
-              OW/2 - centroX*s, OH/2 - centroY*s, r.c.width*s, r.c.height*s);
+  o.drawImage(r.c, 0,0, W, H, OW/2 - cenX*s, OH/2 - cenY*s, W*s, H*s);
   return out;
 }
+
 
 (async()=>{
   const linhas=[];

@@ -26,7 +26,7 @@ WHATS = "5511950295494"
 
 # Muda a cada deploy que mexa em site.css ou site.js: sem isso o navegador
 # serve a versao em cache e o site quebra em pedacos dificeis de diagnosticar.
-VERSAO_ASSETS = "202610032117"
+VERSAO_ASSETS = "202610032127"
 
 CAIXA_MOLDADO = [
     "Fone de ouvido in ear moldado",

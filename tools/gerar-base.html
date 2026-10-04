@@ -102,8 +102,20 @@ const load=s=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerro
     if(px<X0)X0=px; if(px>X1)X1=px; if(py<Y0)Y0=py; if(py>Y1)Y1=py}
   const out=document.createElement('canvas'); out.width=OW; out.height=OH;
   const o=out.getContext('2d'); o.imageSmoothingQuality='high';
-  const s=Math.min(OW/(X1-X0+1), OH/(Y1-Y0+1));
-  const mx=(X0+X1)/2, my=(Y0+Y1)/2;
+  // ---- ajusta ao CIRCULO, nao ao quadrado ----
+  // A mascara no site e redonda. Encaixar o produto no quadrado deixa tudo
+  // que esta perto dos cantos pra fora do circulo — e o que cortava os
+  // universais, que sao diagonais. Aqui a escala sai do ponto mais distante
+  // do centro: assim ele encosta na borda e nada passa dela.
+  const cenX=(X0+X1)/2, cenY=(Y0+Y1)/2;
+  let maxR=1;
+  for(let py=Y0;py<=Y1;py++) for(let px=X0;px<=X1;px++){
+    if(dd[(py*W+px)*4+3]<=16) continue;
+    const r=Math.hypot(px-cenX, py-cenY);
+    if(r>maxR) maxR=r;
+  }
+  const s=(OW/2)/maxR;
+  const mx=cenX, my=cenY;
   o.drawImage(c1,0,0,W,alt, OW/2-mx*s, OH/2-my*s, W*s, alt*s);
 
   const blob=await new Promise(k=>out.toBlob(k,'image/webp',0.92));

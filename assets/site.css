@@ -271,13 +271,13 @@ button,input,select,textarea{font:inherit;color:inherit}
   transition:border-color .4s var(--ease);
 }
 .modelo-linha:hover .modelo-img{border-color:rgba(255,255,255,.42)}
-/* As imagens sao geradas num quadrado com o produto ajustado ao quadro
-   inteiro (ver tools/gerar-base.html). Entao 104% faz o produto encostar na
-   borda do circulo pelo lado mais comprido e ser cortado por ela — e o mesmo
-   valor serve pra todas, moldado ou universal. Abaixo de 100% sobra vao e
-   volta a parecer imagem cortada no ar. */
+/* 100%, nao mais: as imagens sao geradas num quadrado com o produto ajustado
+   ao quadro (tools/gerar-base.html), e o circulo inscrito nesse quadrado tem
+   o mesmo diametro. Entao em 100% a ponta do cabo encosta na borda e NADA e
+   cortado. Qualquer valor acima come o produto — nos universais, que sao
+   altos, come o proprio fone. */
 .modelo-img img{
-  width:104%;height:auto;max-width:none;
+  width:100%;height:auto;max-width:none;
   transition:transform .6s var(--ease);
 }
 .modelo-linha:hover .modelo-img img{transform:scale(1.04)}
@@ -569,7 +569,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .modelo-foto{margin:0;position:relative;display:grid;place-items:center;
   width:min(100%,480px);aspect-ratio:1;margin-inline:auto;
   border:1px solid rgba(255,255,255,.2);border-radius:50%;overflow:hidden}
-.modelo-foto img{width:104%;height:auto;max-width:none;display:block}
+.modelo-foto img{width:100%;height:auto;max-width:none;display:block}
 /* o selo segue o circulo, nao o canto do quadrado que o contem */
 .modelo-foto .card-flag{position:absolute;top:9%;left:50%;transform:translateX(-50%)}
 
@@ -600,7 +600,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .irmao:hover{border-color:var(--line);transform:translateY(-3px)}
 .irmao .volta{display:grid;place-items:center;width:72%;aspect-ratio:1;margin:24px auto 0;
   border:1px solid rgba(255,255,255,.18);border-radius:50%;overflow:hidden}
-.irmao img{width:104%;height:auto;max-width:none;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))}
+.irmao img{width:100%;height:auto;max-width:none;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))}
 .irmao div{padding:22px 24px 26px}
 .irmao strong{display:block;font-size:21px;font-weight:900;letter-spacing:-.03em}
 .irmao span{display:block;font-size:14px;color:var(--muted);margin-top:5px}
