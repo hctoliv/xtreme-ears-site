@@ -261,14 +261,20 @@ button,input,select,textarea{font:inherit;color:inherit}
 .area .modelo-linha:first-of-type{border-top:0;padding-top:0}
 /* alterna o lado da foto, pra leitura nao ficar em coluna unica */
 .modelo-linha:nth-child(even) .modelo-img{order:2}
-.modelo-img{display:block;line-height:0}
+/* circulo em volta do fone: so a borda, sem preenchimento. Da chao ao
+   produto recortado, que sozinho no preto parece flutuando. */
+.modelo-img{
+  display:grid;place-items:center;line-height:0;
+  width:min(100%,420px);aspect-ratio:1;margin-inline:auto;
+  border:1px solid rgba(255,255,255,.2);border-radius:50%;
+  transition:border-color .4s var(--ease);
+}
+.modelo-linha:hover .modelo-img{border-color:rgba(255,255,255,.42)}
 .modelo-img img{
-  width:100%;height:auto;
+  width:122%;height:auto;max-width:none;
   transition:transform .6s var(--ease);
 }
-/* a sombra fica num wrapper, porque o filter inline da cor sobrescreveria */
-.modelo-img{filter:drop-shadow(0 26px 40px rgba(0,0,0,.75))}
-.modelo-linha:hover .modelo-img img{transform:scale(1.03)}
+.modelo-linha:hover .modelo-img img{transform:scale(1.04)}
 .modelo-txt h3{margin:0;font-size:clamp(30px,3.6vw,46px);font-weight:900;letter-spacing:-.035em;line-height:1}
 .modelo-txt h3 a{transition:opacity .2s}
 .modelo-txt h3 a:hover{opacity:.72}
@@ -300,7 +306,7 @@ button,input,select,textarea{font:inherit;color:inherit}
   .area-head{grid-template-columns:1fr}
   .modelo-linha{grid-template-columns:1fr;gap:26px}
   .modelo-linha:nth-child(even) .modelo-img{order:0}
-  .modelo-img img{max-width:420px;margin-inline:auto}
+  .modelo-img{width:min(100%,340px)}
 }
 
 /* ---------- processo ---------- */
@@ -554,12 +560,12 @@ button,input,select,textarea{font:inherit;color:inherit}
 .modelo-meta span{display:block;font:700 11.5px/1 var(--sans);letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .modelo-meta strong{display:block;font-size:17px;font-weight:700;letter-spacing:-.015em;max-width:30ch}
-.modelo-foto{margin:0;position:relative;border-radius:var(--r-lg);overflow:hidden;
-  background:radial-gradient(120% 92% at 50% 36%,#242427 0%,#151517 54%,#0c0c0d 100%);
-  border:1px solid var(--line-soft)}
-.modelo-foto img{width:100%;height:auto;display:block;
-  filter:drop-shadow(0 22px 34px rgba(0,0,0,.65))}
-.modelo-foto .card-flag{position:absolute;top:18px;left:18px}
+.modelo-foto{margin:0;position:relative;display:grid;place-items:center;
+  width:min(100%,480px);aspect-ratio:1;margin-inline:auto;
+  border:1px solid rgba(255,255,255,.2);border-radius:50%}
+.modelo-foto img{width:122%;height:auto;max-width:none;display:block}
+/* o selo segue o circulo, nao o canto do quadrado que o contem */
+.modelo-foto .card-flag{position:absolute;top:9%;left:50%;transform:translateX(-50%)}
 
 .ouvir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .ouvir-item{background:var(--surface-2);border:1px solid var(--line-soft);
@@ -586,9 +592,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .irmao{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:var(--r-lg);
   overflow:hidden;display:block;transition:border-color .3s,transform .3s var(--ease)}
 .irmao:hover{border-color:var(--line);transform:translateY(-3px)}
-.irmao img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;
-  background:radial-gradient(120% 92% at 50% 36%,#242427 0%,#151517 54%,#0c0c0d 100%);
-  filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))}
+.irmao .volta{display:grid;place-items:center;width:72%;aspect-ratio:1;margin:24px auto 0;
+  border:1px solid rgba(255,255,255,.18);border-radius:50%}
+.irmao img{width:122%;height:auto;max-width:none;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))}
 .irmao div{padding:22px 24px 26px}
 .irmao strong{display:block;font-size:21px;font-weight:900;letter-spacing:-.03em}
 .irmao span{display:block;font-size:14px;color:var(--muted);margin-top:5px}

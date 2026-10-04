@@ -20,13 +20,13 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import home_modelos
-from home_modelos import tint, foto
+from home_modelos import tint, foto, filtro
 
 WHATS = "5511950295494"
 
 # Muda a cada deploy que mexa em site.css ou site.js: sem isso o navegador
 # serve a versao em cache e o site quebra em pedacos dificeis de diagnosticar.
-VERSAO_ASSETS = "202610032105"
+VERSAO_ASSETS = "202610032111"
 
 CAIXA_MOLDADO = [
     "Fone de ouvido in ear moldado",
@@ -365,7 +365,7 @@ def pagina(m, todos):
                    "Estojo", "Manual do usuário"])
 
     irmaos_html = "\n".join(f'''      <a class="irmao rv" href="../{o["slug"]}/">
-        <img src="../assets/{foto(o["slug"])}" alt="{e(o["nome"])}" loading="lazy" width="1200" height="900" style="filter:{tint(o["slug"])}">
+        <span class="volta"><img src="../assets/{foto(o["slug"])}" alt="{e(o["nome"])}" loading="lazy" width="1200" height="900" style="filter:{filtro(o["slug"])}"></span>
         <div><strong>{e(o["nome"])}</strong><span>{e(o["assinatura"])}</span>
         <em>A partir de R$ {e(o["preco"])}</em></div>
       </a>''' for o in irmaos)
@@ -461,7 +461,7 @@ def pagina(m, todos):
       <p class="tiny" style="margin-top:20px">{e(prazo)} · Garantia de 1 ano · Frete grátis</p>
     </div>
     <figure class="modelo-foto">
-      <img src="../assets/{foto(m["slug"])}" alt="{e(m["nome"])}" width="1200" height="900" fetchpriority="high" style="filter:{tint(m["slug"])}">
+      <img src="../assets/{foto(m["slug"])}" alt="{e(m["nome"])}" width="1200" height="900" fetchpriority="high" style="filter:{filtro(m["slug"])}">
       {f'<figcaption class="card-flag">{e(m["flag"])}</figcaption>' if m.get("flag") else ''}
     </figure>
   </div>

@@ -88,6 +88,15 @@ def foto(slug):
     """Universal mostra o proprio produto; moldado usa a base recolorida."""
     return f"{slug}.webp" if slug in SEM_PRE_MOLDE else "fone-base.webp"
 
+
+SOMBRA = "drop-shadow(0 16px 26px rgba(0,0,0,.7))"
+
+
+def filtro(slug):
+    """Cor do faceplate + sombra, juntas: o style inline sobrescreveria o CSS."""
+    c = tint(slug)
+    return SOMBRA if c == "none" else f"{c} {SOMBRA}"
+
 AREA_ORDEM = ["grave", "medio", "agudo", "universal"]
 
 AREA_TEXTO = {
@@ -143,7 +152,7 @@ def _linha(m, areas):
         f'      <article class="modelo-linha rv" id="{e(m["slug"])}">\n'
         f'        <a class="modelo-img" href="{e(m["slug"])}/" tabindex="-1" aria-hidden="true">\n'
         f'          <img src="assets/{foto(m["slug"])}" alt="" loading="lazy" width="1200" height="900"\n'
-        f'               style="filter:{tint(m["slug"])}">\n'
+        f'               style="filter:{filtro(m["slug"])}">\n'
         f'        </a>\n'
         f'        <div class="modelo-txt">\n'
         f'          <span class="area-tag mini"><i aria-hidden="true">{_barras(barras)}</i>{e(area_nome)}</span>\n'

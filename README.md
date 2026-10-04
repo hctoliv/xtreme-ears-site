@@ -136,7 +136,9 @@ Reels em uso, por área, em `REEL_POR_AREA` (páginas de modelo) e na seção `#
 | `DduYbIxSL9d` | Léo, Pagode dos Ex |
 | `DdcW6XpSr9c` | audiometria e pré-molde |
 
-## Fotos de produto: uma só, recolorida
+## Fotos de produto: uma só, recolorida, dentro de um círculo
+
+Cada fone fica dentro de um **círculo de borda branca, sem preenchimento**. O produto recortado sozinho no preto parece flutuando; o círculo dá chão sem sujar o fundo. A imagem é maior que o círculo de propósito (122%), porque a base tem margem transparente embutida — o que passa da borda é transparente, e o cabo cruzando a linha dá profundidade.
 
 **Os 9 moldados usam uma foto só** — `assets/fone-base.webp` — e o que muda entre eles é a cor do faceplate, por filtro CSS (`CORES` e `COR_DO_MODELO` em `tools/home_modelos.py`).
 
