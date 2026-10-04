@@ -138,7 +138,15 @@ Reels em uso, por área, em `REEL_POR_AREA` (páginas de modelo) e na seção `#
 
 ## Fotos de produto: uma só, recolorida, dentro de um círculo
 
-Cada fone fica dentro de um **círculo de borda branca, sem preenchimento**. O produto recortado sozinho no preto parece flutuando; o círculo dá chão sem sujar o fundo. A imagem é maior que o círculo de propósito (122%), porque a base tem margem transparente embutida — o que passa da borda é transparente, e o cabo cruzando a linha dá profundidade.
+Cada fone fica dentro de um **círculo de borda branca, sem preenchimento**. O produto recortado sozinho no preto parece flutuando; o círculo dá chão sem sujar o fundo.
+
+**A ponta do cabo tem que encostar na borda.** Se ela morre antes, volta a parecer imagem cortada no ar — que era o problema original. Por isso:
+
+- as imagens são geradas num **canvas quadrado com o produto ajustado ao quadro inteiro**, então cada produto encosta na borda pelo lado mais comprido;
+- o círculo tem `overflow:hidden`, então é ele quem corta o cabo;
+- a imagem vai a `104%` do círculo, pra garantir o encosto.
+
+Com a normalização no gerador, **um único valor de CSS serve para todas** — moldado ou universal. Antes de normalizar, cada imagem precisaria de um valor diferente (de 141% a 237%), o que quebraria na primeira troca de foto.
 
 **Os 9 moldados usam uma foto só** — `assets/fone-base.webp` — e o que muda entre eles é a cor do faceplate, por filtro CSS (`CORES` e `COR_DO_MODELO` em `tools/home_modelos.py`).
 

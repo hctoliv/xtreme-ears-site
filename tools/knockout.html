@@ -19,9 +19,11 @@ const JOBS = [
   ["uonemax_0.jpg", "xtreme-onemax"]
 ];
 
-const OW = 1200, OH = 900;        // 4:3, igual ao card
-const CAP_W = 0.56, CAP_H = 0.46;   // alvo: quanto as CAPSULAS ocupam do quadro
-const TUDO_W = 0.90, TUDO_H = 0.84;  // teto: o produto INTEIRO tem que caber
+// Quadrado, porque no site a foto vive dentro de um circulo. O produto e
+// ajustado ao quadro inteiro: encosta na borda pelo lado mais comprido, e
+// um unico valor de CSS serve pra todas as imagens.
+const OW = 1000, OH = 1000;
+
 const REGIAO = 205;               // o que entra na regiao de fundo (ligado a borda)
 const A_OPACO = 216, A_VAZIO = 247;   // rampa de alfa por luminancia
 
@@ -251,9 +253,7 @@ function padroniza(r){
   // tamanho em todos os cards. Mas o cabo nao pode ser cortado na borda: isso
   // le como erro, nao como enquadramento. Entao a escala das capsulas e o
   // alvo, e o produto inteiro e o teto — vence o menor dos dois.
-  const alvo = Math.min(OW*CAP_W/cw,  OH*CAP_H/ch);
-  const teto = Math.min(OW*TUDO_W/tw, OH*TUDO_H/th);
-  const s = Math.min(alvo, teto);
+  const s = Math.min(OW/tw, OH/th);   // produto ajustado ao quadro
 
   // centra pelo produto inteiro, pra sobrar margem igual dos dois lados
   const centroX=(r.x0+r.x1)/2, centroY=(r.y0+r.y1)/2;

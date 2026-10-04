@@ -11,7 +11,10 @@ img{display:block;max-width:560px;margin-top:10px;background:#000}</style>
 <div id=log>gerando…</div><img id=prev>
 <script>
 const FONTE = 'xe5_0.png';     // magenta saturado, recorte mais limpo da serie
-const OW = 1200, OH = 900, CAP_W = 0.56, CAP_H = 0.46;
+// Quadrado, porque no site a foto fica dentro de um circulo. O produto e
+// ajustado ao quadro inteiro: assim ele encosta na borda do circulo pelo
+// lado mais comprido, e um unico valor de CSS serve pra todas as imagens.
+const OW = 1000, OH = 1000;
 const lum=(r,g,b)=>.2126*r+.7152*g+.0722*b;
 const load=s=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>j(s);i.src=s});
 
@@ -85,18 +88,11 @@ const load=s=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerro
   piso += Math.round(alt*0.002);
   for(let py=piso; py<alt; py++) for(let px=0;px<W;px++) d[(py*W+px)*4+3]=0;
 
-  // ---- cabo dissolve em vez de terminar no ar ----
-  cy1 = Math.min(cy1, piso);
-  const capW=cx1-cx0+1, capH=cy1-cy0+1;
-  const R1=Math.max(capW,capH)*0.06, R2=Math.max(capW,capH)*0.30;
-  for(let py=0;py<alt;py++){
-    const dy=Math.max(0,cy0-py,py-cy1);
-    for(let px=0;px<W;px++){
-      const i=(py*W+px)*4; if(!d[i+3]) continue;
-      const dx=Math.max(0,cx0-px,px-cx1); if(!dx&&!dy) continue;
-      const dist=Math.hypot(dx,dy); if(dist<=R1) continue;
-      const f = dist>=R2 ? 0 : 1-(dist-R1)/(R2-R1);
-      d[i+3]=Math.round(d[i+3]*f*f)}}
+  // ---- o cabo vai inteiro ate a borda da imagem ----
+  // Antes ele dissolvia, pra nao virar coto terminando no ar. Mas no site a
+  // foto fica dentro de um circulo que a recorta: o cabo precisa ALCANCAR a
+  // borda e ser cortado por ela. Dissolvendo, sobrava um vao entre a ponta do
+  // cabo e o circulo, e voltava a parecer imagem cortada.
   x1.putImageData(id,0,0);
 
   // ---- bbox final e enquadramento ----
@@ -106,8 +102,7 @@ const load=s=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerro
     if(px<X0)X0=px; if(px>X1)X1=px; if(py<Y0)Y0=py; if(py>Y1)Y1=py}
   const out=document.createElement('canvas'); out.width=OW; out.height=OH;
   const o=out.getContext('2d'); o.imageSmoothingQuality='high';
-  const s=Math.min(OW*CAP_W/(cx1-cx0+1), OH*CAP_H/(cy1-cy0+1),
-                   OW*0.90/(X1-X0+1), OH*0.84/(Y1-Y0+1));
+  const s=Math.min(OW/(X1-X0+1), OH/(Y1-Y0+1));
   const mx=(X0+X1)/2, my=(Y0+Y1)/2;
   o.drawImage(c1,0,0,W,alt, OW/2-mx*s, OH/2-my*s, W*s, alt*s);
 

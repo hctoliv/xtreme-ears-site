@@ -151,7 +151,7 @@ def _linha(m, areas):
     return (
         f'      <article class="modelo-linha rv" id="{e(m["slug"])}">\n'
         f'        <a class="modelo-img" href="{e(m["slug"])}/" tabindex="-1" aria-hidden="true">\n'
-        f'          <img src="assets/{foto(m["slug"])}" alt="" loading="lazy" width="1200" height="900"\n'
+        f'          <img src="assets/{foto(m["slug"])}" alt="" loading="lazy" width="1000" height="1000"\n'
         f'               style="filter:{filtro(m["slug"])}">\n'
         f'        </a>\n'
         f'        <div class="modelo-txt">\n'
