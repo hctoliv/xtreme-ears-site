@@ -136,18 +136,26 @@ Reels em uso, por área, em `REEL_POR_AREA` (páginas de modelo) e na seção `#
 | `DduYbIxSL9d` | Léo, Pagode dos Ex |
 | `DdcW6XpSr9c` | audiometria e pré-molde |
 
-## Fotos de produto
+## Fotos de produto: uma só, recolorida
 
-As imagens do catálogo vinham com tarja preta de propaganda queimada na arte ("INDICADO PARA BATERISTAS…", "LANÇAMENTO!"), fundo branco, escalas e enquadramentos diferentes. `tools/knockout.html` resolve tudo numa passada — sirva a pasta das fontes com `tools/writer.py` e abra:
+**Há uma única foto de fone no site** — `assets/fone-base.webp` — e o que muda entre os modelos é a cor do faceplate, por filtro CSS (`CORES` e `COR_DO_MODELO` em `tools/home_modelos.py`).
 
-1. **corta a tarja** — acha a faixa pelo trecho contínuo de preto na linha e estende por densidade (o texto branco da tarja quebra a faixa e engana a detecção simples);
-2. **tira o fundo** — flood fill a partir da borda, então brilho interno do produto não é perdido; o alfa é uma rampa por luminância, com a borda escurecida pra não virar franja branca;
-3. **enquadra pelas cápsulas** — erode a máscara até o cabo sumir, separa os blocos, descarta reflexo e caco de cabo, e escala pelo corpo do fone. É isso que faz todos os cards terem o produto do mesmo tamanho, independente do cabo da foto;
-4. exporta WebP com transparência, ~50 KB cada.
+Isso é mais honesto do que uma foto por modelo. O faceplate é **escolha do cliente**, não característica do fone: antes, cada card tinha uma foto diferente do catálogo, o que dava a entender que o XE6 "é" bege e o XE4 "é" vermelho — e nenhum dos dois é. As cores disponíveis são as mesmas do personalizador da loja: transparente, preto, preto-translúcido, azul, verde, vermelho, rosa, rosa-claro.
 
-Quando a própria composição atrapalha (laço de cabo por cima no ONEMAX, reflexo espelhado embaixo no XE6), o job aceita uma `zona` — a faixa de altura onde procurar as cápsulas.
+Duas cores fogem do real de propósito: **preto** sai mais claro do que o produto, senão a silhueta some no fundo preto; e **transparente** sai mais claro que **preto-translúcido**, senão viram o mesmo cinza.
 
-Cada modelo usa foto da **sua própria** página de produto, escolhida pra que nenhum par se repita: roxo, azul-petróleo, madeira clara, laranja, rosa, bege, cinza marmorizado, madeira escura, preto; verde, azul translúcido e preto nos universais. O faceplate é escolhido pelo cliente, então são exemplos do catálogo. Ao trocar uma foto, rode a comparação de cor média pra garantir que nenhuma ficou parecida demais com outra.
+### Por que não dá pra usar as fotos do catálogo direto
+
+Foram quatro tentativas antes de chegar aqui, e vale registrar o que não funciona:
+
+1. As imagens do catálogo têm **tarja preta de propaganda queimada na arte**.
+2. São fotos de estúdio **em fundo branco, com reflexo espelhado**. No branco o reflexo some; no preto do site vira mancha cinza.
+3. **O cabo sai do quadro** na foto original. Tirando o fundo, ele vira um coto terminando no ar.
+4. Produto escuro (o XE4 vermelho-escuro, por exemplo) **desaparece no fundo preto**.
+
+`tools/gerar-base.html` é o script que produz a base limpa a partir de `xe5_0.png` do catálogo: corta a tarja, tira o fundo por flood fill da borda, acha a "cintura" onde o fone encosta no próprio reflexo e corta ali, e dissolve o cabo com uma queda de alfa por distância, em vez de cortá-lo.
+
+**Melhor caminho, se possível:** a loja tem um personalizador de faceplate (Custom Product Builder). A arte em camadas dele seria a fonte ideal — transparência de verdade, sem reflexo, sem tarja. Não consegui alcançá-la pela página pública; de dentro do admin da loja, dá.
 
 ## Rodar
 

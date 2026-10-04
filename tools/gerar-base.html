@@ -1,0 +1,119 @@
+<!doctype html><meta charset=utf-8>
+<title>Base unica do fone</title>
+<!--
+  UMA foto serve de base pra todos os modelos; a cor do faceplate muda por
+  CSS. Isso e mais honesto que fingir foto propria por modelo: o faceplate e
+  escolhido pelo cliente, nao e caracteristica do fone.
+  Esta pagina gera essa base limpa: fundo fora, reflexo fora, cabo dissolvido.
+-->
+<style>body{background:#000;color:#8af;font:12px ui-monospace;margin:0;padding:12px}
+img{display:block;max-width:560px;margin-top:10px;background:#000}</style>
+<div id=log>gerando…</div><img id=prev>
+<script>
+const FONTE = 'xe5_0.png';     // magenta saturado, recorte mais limpo da serie
+const OW = 1200, OH = 900, CAP_W = 0.56, CAP_H = 0.46;
+const lum=(r,g,b)=>.2126*r+.7152*g+.0722*b;
+const load=s=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>j(s);i.src=s});
+
+(async()=>{
+  const img = await load(FONTE);
+  const W=img.naturalWidth, H=img.naturalHeight;
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const x=c.getContext('2d',{willReadFrequently:true});
+  x.fillStyle='#fff'; x.fillRect(0,0,W,H); x.drawImage(img,0,0);
+
+  // ---- corta a tarja de propaganda ----
+  const d0=x.getImageData(0,0,W,H).data;
+  let bot=H-1;
+  for(let y=Math.floor(H*0.62); y<H; y++){
+    let run=0,best=0;
+    for(let px=0;px<W;px++){const i=(y*W+px)*4;
+      if(lum(d0[i],d0[i+1],d0[i+2])<55){run++;if(run>best)best=run}else run=0}
+    if(best>W*0.5){ bot=Math.max(y-Math.round(H*0.012),0); break; }
+  }
+  const alt=bot+1;
+  const c1=document.createElement('canvas'); c1.width=W; c1.height=alt;
+  const x1=c1.getContext('2d',{willReadFrequently:true});
+  x1.fillStyle='#fff'; x1.fillRect(0,0,W,alt); x1.drawImage(c,0,0,W,alt,0,0,W,alt);
+
+  // ---- tira o fundo branco ----
+  const id=x1.getImageData(0,0,W,alt), d=id.data;
+  const L=new Float32Array(W*alt);
+  for(let i=0;i<W*alt;i++){const o=i*4; L[i]=lum(d[o],d[o+1],d[o+2])}
+  const fundo=new Uint8Array(W*alt), pilha=[];
+  const push=(px,py)=>{const k=py*W+px; if(!fundo[k]&&L[k]>205){fundo[k]=1;pilha.push(k)}};
+  for(let px=0;px<W;px++){push(px,0);push(px,alt-1)}
+  for(let py=0;py<alt;py++){push(0,py);push(W-1,py)}
+  while(pilha.length){const k=pilha.pop(),px=k%W,py=(k-px)/W;
+    if(px>0)push(px-1,py); if(px<W-1)push(px+1,py);
+    if(py>0)push(px,py-1); if(py<alt-1)push(px,py+1)}
+  const A=new Float32Array(W*alt);
+  for(let i=0;i<W*alt;i++) A[i]= fundo[i] ? Math.max(0,Math.min(1,(247-L[i])/31)) : 1;
+  const B=new Float32Array(W*alt);
+  for(let py=0;py<alt;py++)for(let px=0;px<W;px++){
+    let s=0,n=0;
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+      const qy=py+dy,qx=px+dx; if(qy<0||qy>=alt||qx<0||qx>=W)continue; s+=A[qy*W+qx];n++}
+    B[py*W+px]=s/n}
+  for(let i=0;i<W*alt;i++){const o=i*4,a=B[i];
+    d[o+3]=Math.round(a*255);
+    if(a>0&&a<1){const f=.55+.45*a; d[o]*=f; d[o+1]*=f; d[o+2]*=f}}
+
+  // ---- acha as capsulas (erosao mata o cabo fino) ----
+  const R=Math.max(7,Math.round(Math.min(W,alt)*0.026));
+  const M=new Uint8Array(W*alt); for(let i=0;i<W*alt;i++) M[i]=B[i]>0.5?1:0;
+  const T=new Uint8Array(W*alt), E=new Uint8Array(W*alt);
+  for(let py=0;py<alt;py++)for(let px=0;px<W;px++){
+    let v=1; for(let k=-R;k<=R;k++){const q=px+k; if(q<0||q>=W||!M[py*W+q]){v=0;break}} T[py*W+px]=v}
+  for(let py=0;py<alt;py++)for(let px=0;px<W;px++){
+    let v=1; for(let k=-R;k<=R;k++){const q=py+k; if(q<0||q>=alt||!T[q*W+px]){v=0;break}} E[py*W+px]=v}
+  let cx0=W,cy0=alt,cx1=-1,cy1=-1;
+  for(let i=0;i<W*alt;i++) if(E[i]){const px=i%W,py=(i-px)/W;
+    if(px<cx0)cx0=px; if(px>cx1)cx1=px; if(py<cy0)cy0=py; if(py>cy1)cy1=py}
+  cx0-=R; cy0-=R; cx1+=R; cy1+=R;
+
+  // ---- reflexo fora ----
+  // O reflexo e um espelho colado no produto, entao a erosao o engole junto
+  // com a capsula. Mas onde o fone encosta no proprio reflexo existe uma
+  // cintura: a linha com menos pixels opacos. E ali que a foto termina.
+  const largura = py => { let n=0; for(let px=0;px<W;px++) if(d[(py*W+px)*4+3]>40) n++; return n; };
+  let piso = cy1, menor = Infinity;
+  for(let py = Math.round(cy0 + (cy1-cy0)*0.42); py <= cy1; py++){
+    const n = largura(py);
+    if(n < menor){ menor = n; piso = py; }
+  }
+  piso += Math.round(alt*0.002);
+  for(let py=piso; py<alt; py++) for(let px=0;px<W;px++) d[(py*W+px)*4+3]=0;
+
+  // ---- cabo dissolve em vez de terminar no ar ----
+  cy1 = Math.min(cy1, piso);
+  const capW=cx1-cx0+1, capH=cy1-cy0+1;
+  const R1=Math.max(capW,capH)*0.06, R2=Math.max(capW,capH)*0.30;
+  for(let py=0;py<alt;py++){
+    const dy=Math.max(0,cy0-py,py-cy1);
+    for(let px=0;px<W;px++){
+      const i=(py*W+px)*4; if(!d[i+3]) continue;
+      const dx=Math.max(0,cx0-px,px-cx1); if(!dx&&!dy) continue;
+      const dist=Math.hypot(dx,dy); if(dist<=R1) continue;
+      const f = dist>=R2 ? 0 : 1-(dist-R1)/(R2-R1);
+      d[i+3]=Math.round(d[i+3]*f*f)}}
+  x1.putImageData(id,0,0);
+
+  // ---- bbox final e enquadramento ----
+  let X0=W,Y0=alt,X1=-1,Y1=-1;
+  const dd=x1.getImageData(0,0,W,alt).data;
+  for(let py=0;py<alt;py++)for(let px=0;px<W;px++) if(dd[(py*W+px)*4+3]>16){
+    if(px<X0)X0=px; if(px>X1)X1=px; if(py<Y0)Y0=py; if(py>Y1)Y1=py}
+  const out=document.createElement('canvas'); out.width=OW; out.height=OH;
+  const o=out.getContext('2d'); o.imageSmoothingQuality='high';
+  const s=Math.min(OW*CAP_W/(cx1-cx0+1), OH*CAP_H/(cy1-cy0+1),
+                   OW*0.90/(X1-X0+1), OH*0.84/(Y1-Y0+1));
+  const mx=(X0+X1)/2, my=(Y0+Y1)/2;
+  o.drawImage(c1,0,0,W,alt, OW/2-mx*s, OH/2-my*s, W*s, alt*s);
+
+  const blob=await new Promise(k=>out.toBlob(k,'image/webp',0.92));
+  await fetch('/save?name=fone-base.webp',{method:'POST',body:blob});
+  log.textContent=`fone-base.webp  tarja ate ${bot}/${H}  capsulas ${cx1-cx0+1}x${cy1-cy0+1}  piso ${piso}  ${(blob.size/1024|0)}KB`;
+  prev.src=URL.createObjectURL(blob);
+})();
+</script>

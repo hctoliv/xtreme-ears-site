@@ -32,6 +32,52 @@ ARTISTAS_POR_MODELO = {
     "xtreme-one-plus": [("Aquiles Priester", "aquiles-priester.jpg")],
 }
 
+
+# ---------------------------------------------------------------- cores
+#
+# UMA foto serve de base pra todos os modelos; o que muda e a cor do faceplate,
+# por filtro CSS. Isso e mais honesto que fingir foto propria por modelo: o
+# faceplate e ESCOLHA DO CLIENTE, nao caracteristica do fone. Antes, cada card
+# tinha uma foto diferente do catalogo, o que dava a entender que o XE6 "e"
+# bege e o XE4 "e" vermelho — e nenhum dos dois e.
+#
+# A base (assets/fone-base.webp) e rosa saturado, matiz ~325 graus. As cores
+# abaixo sao as MESMAS do personalizador da loja.
+CORES = {
+    "vermelho":          "hue-rotate(38deg) saturate(1.15)",
+    "rosa":              "none",
+    "rosa-claro":        "hue-rotate(6deg) saturate(.62) brightness(1.12)",
+    "azul":              "hue-rotate(-108deg) saturate(1.05)",
+    "azul-claro":        "hue-rotate(-96deg) saturate(.7) brightness(1.12)",
+    "verde":             "hue-rotate(168deg) saturate(.95)",
+    # preto puro sobre fundo preto desaparece: fica mais claro do que o
+    # produto real, pra sobrar silhueta. O mesmo motivo separa translucido
+    # de transparente, que senao viram o mesmo cinza.
+    "preto":             "saturate(.05) brightness(.78) contrast(1.35)",
+    "preto-translucido": "saturate(.3) brightness(.56) contrast(1.2)",
+    "transparente":      "saturate(.07) brightness(1.35) contrast(.9)",
+}
+
+# uma cor por modelo, so pra linha nao ficar monocromatica
+COR_DO_MODELO = {
+    "one-plus-pro":    "azul",
+    "xe3-pro":         "vermelho",
+    "xe6-pro":         "preto-translucido",
+    "xe4-pro":         "transparente",
+    "xe5-pro":         "rosa",
+    "xe8-pro":         "azul-claro",
+    "onemax-pro":      "verde",
+    "xe12-pro":        "preto",
+    "xe14-pro":        "rosa-claro",
+    "xtreme-stage":    "verde",
+    "xtreme-one-plus": "azul",
+    "xtreme-onemax":   "preto",
+}
+
+
+def tint(slug):
+    return CORES.get(COR_DO_MODELO.get(slug, "rosa"), "none")
+
 AREA_ORDEM = ["grave", "medio", "agudo", "universal"]
 
 AREA_TEXTO = {
@@ -86,7 +132,8 @@ def _linha(m, areas):
     return (
         f'      <article class="modelo-linha rv" id="{e(m["slug"])}">\n'
         f'        <a class="modelo-img" href="{e(m["slug"])}/" tabindex="-1" aria-hidden="true">\n'
-        f'          <img src="assets/{e(m["slug"])}.webp" alt="" loading="lazy" width="1200" height="900">\n'
+        f'          <img src="assets/fone-base.webp" alt="" loading="lazy" width="1200" height="900"\n'
+        f'               style="filter:{tint(m["slug"])}">\n'
         f'        </a>\n'
         f'        <div class="modelo-txt">\n'
         f'          <span class="area-tag mini"><i aria-hidden="true">{_barras(barras)}</i>{e(area_nome)}</span>\n'
