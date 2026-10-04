@@ -75,7 +75,17 @@ As trilhas do quiz (`TRILHAS` no script) ficam **dentro** da área que a respost
 
 Os outros seis modelos ficam **sem** a faixa de artista, de propósito. Afirmar que alguém usa um fone sem fonte é forjar endosso, e o estrago cai na marca e no artista. Quando a Xtreme Ears passar a lista de quem usa o quê, é só completar o dicionário e rodar o gerador.
 
-## Uma página por modelo
+## A página de cada fone
+
+Cada fone tem a sua própria página, em `/<slug>/`. Três blocos existem para o músico, não para o catálogo:
+
+**Assinatura sonora** (`assinatura()` em `tools/modelo_blocos.py`) — quantos drivers o modelo dedica a grave, médio e agudo, em barras. É o dado que o músico realmente compara, e diz mais que a linha de impedância. Os números vêm da "Configuração dos drivers" do catálogo e ficam em `FAIXAS`; **não invente número ali**. Onde a configuração compartilha drivers (XE3) ou a marca não divulga a divisão completa (XE14), há uma nota dizendo isso. O Xtreme Stage não tem o gráfico: é driver dinâmico único, sem divisão por faixa.
+
+**Personalizador de faceplate** (`personalizador()`) — o músico troca a cor ali mesmo e vê o resultado, antes de falar com o vendedor. Usa os mesmos filtros CSS da home e as cores do personalizador da loja. Só aparece no moldado: universal não tem faceplate escolhido pelo cliente.
+
+**Quem usa** — a faixa de artista, quando a marca declara (ver acima).
+
+As 12 páginas são **geradas**, não escritas à mão:
 
 Cada fone tem a sua própria página, em `/<slug>/` — o vendedor manda o link do modelo exato no WhatsApp e o músico abre a apresentação completa: pra quem é, como soa, configuração dos drivers, specs, o que vem na caixa, depoimento em vídeo, processo e CTA.
 
@@ -87,7 +97,7 @@ As 12 páginas são **geradas**, não escritas à mão:
 python3 tools/gerar-paginas.py
 ```
 
-Os dados ficam na lista `MODELOS` dentro do script. Escritas separadamente, 12 páginas divergiriam na primeira correção de nav, rodapé ou processo. **Não edite o HTML gerado** — mexa no script e rode de novo.
+Os dados ficam na lista `MODELOS` dentro do script, e os blocos extras em `tools/modelo_blocos.py`. Escritas separadamente, 12 páginas divergiriam na primeira correção de nav, rodapé ou processo. **Não edite o HTML gerado** — mexa no script e rode de novo.
 
 Specs, configuração de drivers e "indicado para" vêm do catálogo e das tarjas das fotos oficiais. Não invente número ali.
 

@@ -616,3 +616,69 @@ button,input,select,textarea{font:inherit;color:inherit}
   .ouvir-grid,.ficha,.irmaos{grid-template-columns:1fr}
   .hero-play .disco{width:54px;height:54px}
 }
+
+/* ===================================================================
+   ASSINATURA SONORA — onde o modelo gasta os drivers
+   =================================================================== */
+.faixas{display:grid;gap:4px}
+.faixa{
+  display:grid;align-items:center;gap:8px 20px;
+  grid-template-columns:88px minmax(0,1fr) 108px;
+  grid-template-areas:"nome barra n" ". quem quem";
+  padding:22px 0;border-bottom:1px solid var(--line-soft);
+}
+.faixa:last-child{border-bottom:0}
+.faixa-nome{grid-area:nome;font:800 15px/1 var(--sans);letter-spacing:-.01em}
+.faixa-barra{grid-area:barra;height:10px;background:rgba(255,255,255,.08);
+  border-radius:99px;overflow:hidden;display:block}
+.faixa-barra i{display:block;height:100%;background:var(--ink);border-radius:99px;
+  transform-origin:left;animation:cresce 1s var(--ease) both}
+@keyframes cresce{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.faixa-n{grid-area:n;font:800 22px/1 var(--sans);letter-spacing:-.03em;text-align:right}
+.faixa-n small{font:600 12px/1 var(--sans);color:var(--muted);margin-left:5px;letter-spacing:0}
+.faixa-quem{grid-area:quem;font-size:14px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.faixa-barra i{animation:none}}
+@media (max-width:620px){
+  .faixa{grid-template-columns:72px minmax(0,1fr) 88px}
+  .faixa-n{font-size:19px}
+}
+
+/* ===================================================================
+   PERSONALIZADOR DE FACEPLATE
+   =================================================================== */
+.perso{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);
+  gap:clamp(28px,5vw,72px);align-items:center}
+.perso-circulo{
+  display:grid;place-items:center;width:min(100%,400px);aspect-ratio:1;
+  margin-inline:auto;border:1px solid rgba(255,255,255,.2);border-radius:50%;
+  overflow:hidden;
+}
+.perso-circulo img{width:100%;height:auto;max-width:none;
+  transition:filter .45s var(--ease)}
+.perso-legenda{margin:20px 0 0;text-align:center;font-size:14px;color:var(--muted)}
+.perso-legenda span{color:var(--ink);font-weight:700}
+.perso-cores{display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
+.cor{
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+  background:var(--surface-2);border:1px solid var(--line-soft);
+  border-radius:999px;padding:9px 16px 9px 9px;
+  font:600 14px/1 var(--sans);transition:border-color .25s,background .25s;
+}
+.cor:hover{border-color:rgba(255,255,255,.4);background:var(--surface-3)}
+.cor[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-3)}
+.cor em{font-style:normal}
+.pastilha{width:22px;height:22px;border-radius:50%;flex:none;
+  border:1px solid rgba(255,255,255,.25)}
+.pastilha-transparente{background:linear-gradient(135deg,#e8e8ea,#b9b9bd)}
+.pastilha-preto{background:#1a1a1c}
+.pastilha-preto-translucido{background:linear-gradient(135deg,#4a4248,#232026)}
+.pastilha-azul{background:#1757c8}
+.pastilha-verde{background:#1e7a3c}
+.pastilha-vermelho{background:#c0231c}
+.pastilha-rosa{background:#d4247e}
+.perso-cores .tiny{flex-basis:100%;margin:10px 0 4px}
+.perso-cores .btn{flex-basis:100%;justify-content:center}
+@media (max-width:900px){
+  .perso{grid-template-columns:1fr}
+  .perso-circulo{width:min(100%,320px)}
+}

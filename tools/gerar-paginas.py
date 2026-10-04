@@ -20,13 +20,14 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import home_modelos
+import modelo_blocos
 from home_modelos import tint, foto, filtro
 
 WHATS = "5511950295494"
 
 # Muda a cada deploy que mexa em site.css ou site.js: sem isso o navegador
 # serve a versao em cache e o site quebra em pedacos dificeis de diagnosticar.
-VERSAO_ASSETS = "202610032127"
+VERSAO_ASSETS = "202610041327"
 
 CAIXA_MOLDADO = [
     "Fone de ouvido in ear moldado",
@@ -36,6 +37,8 @@ CAIXA_MOLDADO = [
     "Cordão Xtreme Ears",
     "Manual do usuário",
 ]
+
+
 
 AREAS = {
     "grave": ("Grave", "Pra quem segura o tempo", [14, 9, 5]),
@@ -480,7 +483,7 @@ def pagina(m, todos):
   </div>
 </section>
 
-<!-- ============================ PROVA SOCIAL ============================ -->
+{modelo_blocos.assinatura(m["slug"])}<!-- ============================ PROVA SOCIAL ============================ -->
 <section class="section band">
   <div class="wrap">
     <div class="section-head rv">
@@ -522,7 +525,7 @@ def pagina(m, todos):
     </div>
   </div>
 </section>
-{processo}
+{modelo_blocos.personalizador(m, zap(m["nome"]))}{processo}
 
 <!-- ============================ IRMÃOS ============================ -->
 <section class="section wrap">

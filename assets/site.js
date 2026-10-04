@@ -421,6 +421,22 @@
     }, 500);
   }
 
+  /* ---------- personalizador de faceplate ---------- */
+  var fonePerso = $('fonePerso'), corNome = $('corNome');
+  if(fonePerso){
+    var sombra = 'drop-shadow(0 16px 26px rgba(0,0,0,.7))';
+    document.querySelectorAll('.cor').forEach(function(b){
+      b.addEventListener('click', function(){
+        var f = b.dataset.filtro;
+        fonePerso.style.filter = (f === 'none' ? '' : f + ' ') + sombra;
+        if(corNome) corNome.textContent = b.dataset.nome;
+        document.querySelectorAll('.cor').forEach(function(o){
+          o.setAttribute('aria-pressed', String(o === b));
+        });
+      });
+    });
+  }
+
   /* ---------- ano ---------- */
   if($('ano')) $('ano').textContent = new Date().getFullYear();
 })();
