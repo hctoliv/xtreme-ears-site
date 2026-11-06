@@ -1,8 +1,0 @@
-<!doctype html><html><body style="margin:0;background:transparent"><canvas id="c" style="width:800px;height:800px;display:block"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script><script src="../assets/iem3d.js"></script>
-<script>
-// gera as fotos dos cards: render.html?cfg=<json>&ry=..
-var q=new URLSearchParams(location.search), cfg=JSON.parse(q.get('cfg'));
-var st=XE3D.stage(document.getElementById('c'),{dist:+(q.get('d')||7.8),ry:+(q.get('ry')||-0.7),rx:+(q.get('rx')||0.18),auto:false,drag:false,preserve:true,exposure:1.45});
-XE3D.loadLogo('../assets/xe-mark.png',function(logo){cfg.logo=logo;var m=XE3D.buildIEM(cfg);XE3D.center(m.root);st.spin.add(m.root);m.update(0);st.renderOnce();setTimeout(function(){st.renderOnce();document.title='ok'},300);});
-</script></body></html>

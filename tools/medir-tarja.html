@@ -1,0 +1,55 @@
+<!doctype html><meta charset=utf-8>
+<title>Medir tarja preta dos videos da hero</title>
+<!--
+  Os videos do canal da Xtreme Ears sao antigos e muitos tem tarja preta
+  QUEIMADA no quadro — uns em 4:3 dentro de 16:9, outros em cinemascope.
+  Como fundo da hero isso aparece como faixa preta, e trocar de video nao
+  resolve: o material e assim.
+
+  Esta pagina mede, no proprio quadro do video, quanto do frame e conteudo
+  e quanto e tarja, e devolve o zoom minimo pra empurrar a tarja pra fora.
+
+  Como usar:
+    1. baixe as miniaturas (mqdefault e 320x180, 16:9 sem padding):
+       curl -sL "https://i.ytimg.com/vi/ID/mqdefault.jpg" -o ID.jpg
+       (se existir, maxresdefault.jpg da um quadro melhor)
+    2. sirva a pasta:  python3 -m http.server 4190
+    3. abra esta pagina e ponha os ids em V
+
+  Cuidado: e UM quadro. Se calhar de ser um fade, a medicao mente — foi o
+  caso do video do Gilberto Gil, que deu 30% x 64% em dois quadros
+  diferentes e acabou saindo do rodizio.
+-->
+<style>body{background:#111;color:#ddd;font:13px ui-monospace,monospace;margin:0;padding:14px;white-space:pre-wrap}</style>
+<div id=o>medindo…</div>
+<script>
+const V=[['Lauana Prado','PI09H57rC9k'],['Aquiles Priester','cwc_h8WMzkw'],
+         ['Bruno Graveto','DpMVZTAPBz4'],['Fabiano Manhas','QbDrR2BFitE'],
+         ['Marcelo Falcao','tIrMgNO4Ljk'],['Wesley Safadao','0LAQgR3c9YU']];
+const lum=(r,g,b)=>.2126*r+.7152*g+.0722*b;
+const load=s=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=s;});
+(async()=>{
+ const out=[];
+ for(const [n,id] of V){
+   const im=await load(id+'.jpg');
+   if(!im){out.push(n.padEnd(18)+'nao achei '+id+'.jpg');continue}
+   const W=im.naturalWidth,H=im.naturalHeight;
+   const c=document.createElement('canvas');c.width=W;c.height=H;
+   const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0);
+   const d=x.getImageData(0,0,W,H).data;
+   const col=px=>{let s=0;for(let y=0;y<H;y++){const i=(y*W+px)*4;s+=lum(d[i],d[i+1],d[i+2])}return s/H};
+   const row=py=>{let s=0;for(let px=0;px<W;px++){const i=(py*W+px)*4;s+=lum(d[i],d[i+1],d[i+2])}return s/W};
+   const LIM=12;
+   let e=0;while(e<W/2&&col(e)<LIM)e++;
+   let dr=W-1;while(dr>W/2&&col(dr)<LIM)dr--;
+   let t=0;while(t<H/2&&row(t)<LIM)t++;
+   let b=H-1;while(b>H/2&&row(b)<LIM)b--;
+   const cw=(dr-e+1)/W, ch=(b-t+1)/H, z=1/Math.min(cw,ch);
+   out.push(n.padEnd(18)+(cw*100).toFixed(0).padStart(3)+'% largura  '+
+            (ch*100).toFixed(0).padStart(3)+'% altura   zoom minimo '+z.toFixed(2)+
+            (z>1.6?'   <<< alto demais, nao use':''));
+   o.textContent=out.join('\n');
+ }
+ o.textContent=out.join('\n')+'\n\n— fim —';
+})();
+</script>
